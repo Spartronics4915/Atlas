@@ -1,8 +1,8 @@
 package frc.team0000.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.CommandBasedRobot;
 
-public class Robot extends IterativeRobot {
+public class Robot extends CommandBasedRobot {
     @Override
     public void robotInit() { }
 
