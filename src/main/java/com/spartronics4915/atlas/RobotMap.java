@@ -10,6 +10,7 @@ package com.spartronics4915.atlas;
  */
 public class RobotMap
 {
+
     //CAN Devices
     public static final int kNumPigeons = 1;
     public static final int kNumPCMs = 1;
@@ -33,5 +34,8 @@ public class RobotMap
     public static final int kHarvesterTopMagneticSwitchId = 0; //DIO 0
     public static final int kHarvesterBottomMagneticSwitchId = 1; //DIO 1
     public static final int klauncherRewoundSwitchId = 3; //DIO 3
+
+    //CAN IDs
+    public static final int kDriveTrainIMUID = 1;
     
 }

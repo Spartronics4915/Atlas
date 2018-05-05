@@ -35,7 +35,7 @@ public class Robot extends IterativeRobot
                 numDevices == RobotMap.kNumCANDevices ? "OK"
                     : ("" + numDevices + "/" + RobotMap.kNumCANDevices));
 
-        mDrivetrain = new Drivetrain();
+        mDrivetrain = Drivetrain.getInstance();
         mLauncher = new Launcher();
         mHarvester = new Harvester();
         mLED = new LED();
@@ -47,11 +47,6 @@ public class Robot extends IterativeRobot
     {
         // This is invoked in both Autonomous and TeleOp, in
         // addition to the autonomousPeriodic and TeleOp periodic.
-    }
-
-    public Drivetrain getDrivetrain()
-    {
-        return mDrivetrain;
     }
 
     @Override
