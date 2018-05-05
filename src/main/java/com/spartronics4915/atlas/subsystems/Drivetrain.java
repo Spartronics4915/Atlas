@@ -1,7 +1,6 @@
 package com.spartronics4915.atlas.subsystems;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.spartronics4915.atlas.Logger;
 import com.spartronics4915.atlas.RobotMap;
 import com.spartronics4915.atlas.commands.StopCommand;
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
@@ -22,6 +21,8 @@ import edu.wpi.first.wpilibj.Victor;
  */
 public class Drivetrain extends SpartronicsSubsystem
 {
+    private static Drivetrain sInstance = null;
+
     // Motors
     public SpeedController mLeftMotor;
     public SpeedController mRightMotor;
@@ -29,7 +30,15 @@ public class Drivetrain extends SpartronicsSubsystem
     //IMU
     public PigeonIMU mIMU;
 
-    public Drivetrain()
+    public static Drivetrain getInstance() {
+        if (sInstance == null)
+        {
+            sInstance = new Drivetrain();
+        }
+        return sInstance;
+    }
+
+    private Drivetrain()
     {
         
         try
