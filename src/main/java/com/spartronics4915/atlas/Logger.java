@@ -3,9 +3,6 @@ package com.spartronics4915.atlas;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -17,7 +14,6 @@ public class Logger
 
     private static final UUID RUN_INSTANCE_UUID = UUID.randomUUID();
     public static int sVerbosity = 0; // 0: notices and above,  1: info and above, 2: all
-    private static final DateFormat s_dateFormat = new SimpleDateFormat("hh:mm:ss");
 
     public static void setVerbosity(String nm)
     {
@@ -103,7 +99,7 @@ public class Logger
             printMarker("DEBUG    " + m);
         }
     }
-    
+
     private static void logMarker(String mark)
     {
         logMarker(mark, null);
