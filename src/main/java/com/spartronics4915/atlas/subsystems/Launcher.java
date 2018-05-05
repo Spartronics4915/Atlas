@@ -17,7 +17,7 @@ import com.spartronics4915.atlas.commands.StopCommand;
 public class Launcher extends SpartronicsSubsystem
 {
 
-    private Logger m_logger;
+    private Logger mLogger;
 
     // Port motors
 
@@ -25,7 +25,7 @@ public class Launcher extends SpartronicsSubsystem
 
     public Launcher()
     {
-        m_logger = new Logger("Launcher", Logger.Level.DEBUG);
+        mLogger = new Logger("Launcher", Logger.Level.DEBUG);
 
         // Pretty much everything should go in the try block,
         // because certain initializations can throw exceptions
@@ -37,11 +37,11 @@ public class Launcher extends SpartronicsSubsystem
 
             // This needs to go at the end. We *don't* set
             // m_initalized here (we only set it on faliure).
-            m_logger.info("initialized successfully");
+            mLogger.info("initialized successfully");
         }
         catch (Exception e)
         {
-            m_logger.exception(e, false);
+            mLogger.exception(e, false);
             m_initialized = false;
         }
     }
