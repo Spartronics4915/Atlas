@@ -1,7 +1,13 @@
 package com.spartronics4915.atlas.subsystems;
 
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.spartronics4915.atlas.RobotMap;
 import com.spartronics4915.atlas.commands.StopCommand;
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
+import com.spartronics4915.util.Rotation2d;
+
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Victor;
 
 /**
  * The subsystem that controls the Drivetrain.
@@ -15,23 +21,37 @@ import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
  */
 public class Drivetrain extends SpartronicsSubsystem
 {
-    // Port motors
+    private static Drivetrain sInstance = null;
 
-    // Starboard motors
+    // Motors
+    public SpeedController mLeftMotor;
+    public SpeedController mRightMotor;
 
-    public Drivetrain()
+    //IMU
+    public PigeonIMU mIMU;
+
+    public static Drivetrain getInstance() {
+        if (sInstance == null)
+        {
+            sInstance = new Drivetrain();
+        }
+        return sInstance;
+    }
+
+    private Drivetrain()
     {
-
-        // Pretty much everything should go in the try block,
-        // because certain initializations can throw exceptions
-        // which we want to print, and because we want m_initalized
-        // to be a correct value.
+        
         try
         {
             // Initialize motors
+            mLeftMotor = new Victor(RobotMap.kLeftDriveMotorId);
+            mRightMotor = new Victor(RobotMap.kRightDriveMotorId);
+            
+            //Initialize IMU
+            mIMU = new PigeonIMU(RobotMap.kDriveTrainIMUID);
 
             // This needs to go at the end. We *don't* set
-            // m_initalized here (we only set it on faliure).
+            // mInitalized here (we only set it on faliure).
             logInitialized(true);
         }
         catch (Exception e)
@@ -52,6 +72,20 @@ public class Drivetrain extends SpartronicsSubsystem
 
     public void stop()
     {
-        // FIXME: Actually stop the motors
+        mLeftMotor.set(0);
+        mRightMotor.set(0);
+    }
+
+    public Rotation2d getIMUHeading()
+    {
+        double[] ypr = new double[3];
+        mIMU.getYawPitchRoll(ypr);
+        return Rotation2d.fromDegrees(ypr[0]);
+    }
+
+    public void driveOpenLoop(double left, double right)
+    {
+        mLeftMotor.set(left);
+        mRightMotor.set(right);
     }
 }
