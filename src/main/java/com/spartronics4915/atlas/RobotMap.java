@@ -10,14 +10,29 @@ package com.spartronics4915.atlas;
  */
 public class RobotMap
 {
-
-    public static final int NUM_CAN_DEVICES = 0; // FIXME: Add the correct number of devices on the CAN bus
-
-    // FIXME: Set these to the correct value.
-    public static final int DRIVETRAIN_MOTOR_PORT_FOLLOWER = 0;
-    public static final int DRIVETRAIN_MOTOR_PORT_MASTER = 0;
-
-    // FIXME: Set these to the correct value.
-    public static final int DRIVETRAIN_MOTOR_STARBOARD_FOLLOWER = 0;
-    public static final int DRIVETRAIN_MOTOR_STARBOARD_MASTER = 0;
+    //CAN Devices
+    public static final int kNumVictors = 2;
+    public static final int kNumTalons = 2;
+    public static final int kNumPCMs = 1;
+    public static final int NUM_CAN_DEVICES = kNumTalons + kNumVictors + kNumPCMs; //don't count PDPs
+    
+    //Solenoid IDs
+    public static final int kHarvesterRetractSolenoidId = 0; //PCM 0
+	public static final int kHarvesterExtendSolenoidId = 1; // PCM 1
+	public static final int kLaunchSolenoidId = 3; //PCM 3
+	
+	//Motor IDs
+	public static final int kLeftDriveMotorId = 0;
+    public static final int kRightDriveMotorId = 1;
+	public static final int kHarvesterCollectionMotorId = 3;
+	public static final int kLauncherWindingMotorId = 4;
+    
+    //Analog IDs
+    public static final int kBallPresentSensorId = 0; //Analog port 0
+    
+    //DIO IDs
+    public static final int kHarvesterRetractedSwitchId = 0; //DIO 0
+    public static final int kHarvesterExtendedSwitchId = 1; //DIO 1
+    public static final int klauncherRewoundSwitchId = 3; //DIO 3
+    
 }
