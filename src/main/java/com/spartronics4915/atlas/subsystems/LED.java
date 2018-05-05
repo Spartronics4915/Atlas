@@ -1,6 +1,7 @@
 package com.spartronics4915.atlas.subsystems;
 
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
+import edu.wpi.first.wpilibj.SerialPort;
 
 /**
  * The subsystem that controls the LED.
@@ -14,29 +15,45 @@ import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
  */
 public class LED extends SpartronicsSubsystem
 {
-    // Port motors
+    private SerialPort mBling;
 
-    // Starboard motors
 
-    public LED()
+    private static LED sInstance = null;
+
+    public static LED getInstance()
+    {
+        if (sInstance == null)
+        {
+            sInstance = new LED();
+        }
+        return sInstance;
+    }
+
+    private enum BlingState
     {
 
-        // Pretty much everything should go in the try block,
-        // because certain initializations can throw exceptions
-        // which we want to print, and because we want m_initalized
-        // to be a correct value.
+    }
+
+    private LED()
+    {
         try
         {
-            // Initialize motors
+        	mBling = new SerialPort(9600, SerialPort.Port.kUSB);
 
-            // This needs to go at the end. We *don't* set
-            // m_initalized here (we only set it on faliure).
             logInitialized(true);
         }
         catch (Exception e)
         {
             logException("Couldn't initialize LED", e);
             logInitialized(false);
+        }
+    }
+
+    public void setBlingState(BlingState blingState)
+    {
+        switch(blingState)
+        {
+            
         }
     }
 

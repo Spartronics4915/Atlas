@@ -36,9 +36,9 @@ public class Robot extends IterativeRobot
                     : ("" + numDevices + "/" + RobotMap.kNumCANDevices));
 
         mDrivetrain = Drivetrain.getInstance();
-        mLauncher = new Launcher();
-        mHarvester = new Harvester();
-        mLED = new LED();
+        mLauncher = Launcher.getInstance();
+        mHarvester = Harvester.getInstance();
+        mLED = LED.getInstance();
         mOI = new OI(this); // make sure OI goes last
     }
 
