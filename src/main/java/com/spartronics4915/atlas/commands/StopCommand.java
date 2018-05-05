@@ -11,22 +11,22 @@ import edu.wpi.first.wpilibj.command.Command;
 public class StopCommand extends Command
 {
 
-    private Drivetrain m_drivetrain;
+    private Drivetrain mDrivetrain;
 
     public StopCommand(Drivetrain drivetrain)
     {
-        m_drivetrain = drivetrain;
+        mDrivetrain = drivetrain;
         requires(drivetrain);
     }
 
     protected void initialize()
     {
-        m_drivetrain.m_logger.info("StopCommand initialized");
+        mDrivetrain.m_logger.info("StopCommand initialized");
     }
 
     protected void execute()
     {
-        m_drivetrain.stop();
+        mDrivetrain.stop();
     }
 
     protected boolean isFinished()
@@ -36,11 +36,11 @@ public class StopCommand extends Command
 
     protected void end()
     {
-        m_drivetrain.m_logger.info("StopCommand ended");
+        mDrivetrain.m_logger.info("StopCommand ended");
     }
 
     protected void interrupted()
     {
-        m_drivetrain.m_logger.info("StopCommand interrupted");
+        mDrivetrain.m_logger.info("StopCommand interrupted");
     }
 }

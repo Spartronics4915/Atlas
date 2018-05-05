@@ -18,13 +18,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class OI
 {
 
-    private Logger m_logger;
-    private Robot m_robot;
+    private Logger mLogger;
+    private Robot mRobot;
 
     public OI(Robot robot)
     {
-        m_robot = robot;
-        m_logger = new Logger("OI", Logger.Level.DEBUG);
+        mRobot = robot;
+        mLogger = new Logger("OI", Logger.Level.DEBUG);
 
         initAutoOI();
         initDrivetrainOI();
@@ -32,6 +32,7 @@ public class OI
         // Init loggers last, as this uses special values generated when other loggers are created.
         initLoggers();
 
+        // TODO: Reimplement in Gradle
         // Version string and related information
         try (InputStream manifest = getClass().getClassLoader().getResourceAsStream("META-INF/MANIFEST.MF"))
         {
@@ -42,18 +43,18 @@ public class OI
                     "  (" + attributes.getValue("Code-Version") + ")";
             SmartDashboard.putString("Build", buildStr);
 
-            m_logger.notice("=================================================");
-            m_logger.notice("Initialized in station " + SmartDashboard.getString("AllianceStation", "Blue"));
-            m_logger.notice(Instant.now().toString());
-            m_logger.notice("Built " + buildStr);
-            m_logger.notice("=================================================");
+            mLogger.notice("=================================================");
+            mLogger.notice("Initialized in station " + SmartDashboard.getString("AllianceStation", "Blue"));
+            mLogger.notice(Instant.now().toString());
+            mLogger.notice("Built " + buildStr);
+            mLogger.notice("=================================================");
 
         }
         catch (IOException e)
         {
             SmartDashboard.putString("Build", "version not found!");
-            m_logger.error("Build version not found!");
-            m_logger.exception(e, true /* no stack trace needed */);
+            mLogger.error("Build version not found!");
+            mLogger.exception(e, true /* no stack trace needed */);
         }
     }
 
@@ -110,7 +111,7 @@ public class OI
                 Level parsed = Level.valueOf(choice);
                 if (parsed == null)
                 {
-                    m_logger.error("The choice '" + choice + "' for logger " + logger.getNamespace() + " isn't a valid value.");
+                    mLogger.error("The choice '" + choice + "' for logger " + logger.getNamespace() + " isn't a valid value.");
                     desired = Level.DEBUG;
                 }
                 else

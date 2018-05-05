@@ -14,18 +14,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot
 {
 
-    public Logger m_logger;
+    public Logger mLogger;
 
-    private Drivetrain m_drivetrain;
+    private Drivetrain mDrivetrain;
+    private Launcher mLauncher;
+    private Harvester mHarvester;
+    private LED mLED;
     private OI m_oi;
 
-    private Command m_autoCommand;
+    private Command mAutoCommand;
 
     @Override
     public void robotInit()
     {
-        m_logger = new Logger("Robot", Logger.Level.DEBUG);
-        m_drivetrain = new Drivetrain();
+        mLogger = new Logger("Robot", Logger.Level.DEBUG);
+        mDrivetrain = new Drivetrain();
+        mLauncher = new Launcher();
+        mHarvester = new Harvester();
+        mLED = new mLED();
         m_oi = new OI(this); // make sure OI goes last
     }
 
@@ -38,22 +44,22 @@ public class Robot extends IterativeRobot
 
     public Drivetrain getDrivetrain()
     {
-        return m_drivetrain;
+        return mDrivetrain;
     }
 
     @Override
     public void autonomousInit()
     {
-        m_autoCommand = m_oi.getAutoCommand();
-        if (m_autoCommand != null)
+        mAutoCommand = m_oi.getAutoCommand();
+        if (mAutoCommand != null)
         {
-            m_autoCommand.start();
+            mAutoCommand.start();
         }
         else
         {
-            m_logger.error("can't start autonomous command because it is null.");
+            mLogger.error("can't start autonomous command because it is null.");
         }
-        m_logger.notice("autonomous initialized");
+        mLogger.notice("autonomous initialized");
     }
 
     @Override
@@ -65,17 +71,17 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopInit()
     {
-        if (m_autoCommand != null)
+        if (mAutoCommand != null)
         {
-            m_autoCommand.cancel();
-            m_autoCommand = null;
+            mAutoCommand.cancel();
+            mAutoCommand = null;
         }
         else
         {
-            m_logger.error("can't cancel a null autonomous command.");
+            mLogger.error("can't cancel a null autonomous command.");
         }
         // FIXME: Actually initialize TeleOp here
-        m_logger.notice("teleop initalized.");
+        mLogger.notice("teleop initalized.");
     }
 
     @Override

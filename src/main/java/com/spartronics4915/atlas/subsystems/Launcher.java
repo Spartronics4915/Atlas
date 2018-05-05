@@ -5,7 +5,7 @@ import com.spartronics4915.atlas.RobotMap;
 import com.spartronics4915.atlas.commands.StopCommand;
 
 /**
- * The subsystem that controls the Drivetrain.
+ * The subsystem that controls the Launcher.
  *
  * A note on motor naming:
  * We're doing port and starboard again. That's all that really matters here.
@@ -14,18 +14,18 @@ import com.spartronics4915.atlas.commands.StopCommand;
  * Port and starboard refer respectively to left and right, relative to the
  * front of the robot.
  */
-public class Drivetrain extends SpartronicsSubsystem
+public class Launcher extends SpartronicsSubsystem
 {
-  
+
     private Logger m_logger;
 
     // Port motors
 
     // Starboard motors
 
-    public Drivetrain()
+    public Launcher()
     {
-        m_logger = new Logger("Drivetrain", Logger.Level.DEBUG);
+        m_logger = new Logger("Launcher", Logger.Level.DEBUG);
 
         // Pretty much everything should go in the try block,
         // because certain initializations can throw exceptions

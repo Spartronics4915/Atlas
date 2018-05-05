@@ -42,34 +42,34 @@ public class Logger
     }
     //@formatter:on
 
-    private static List<Logger> s_allLoggers = new ArrayList<>();
-    private static Logger s_sharedLogger;
-    private static DateFormat s_dateFormat = new SimpleDateFormat("hh:mm:ss");
+    private static List<Logger> sAllLoggers = new ArrayList<>();
+    private static Logger sSharedLogger;
+    private static DateFormat sDateFormat = new SimpleDateFormat("hh:mm:ss");
     // NB: changing the date-format may negatively impact downstream/display
     //     code that may depend upon this format.
 
-    private Level m_loglevel; // per-instance
-    private String m_namespace;
+    private Level mLogLevel; // per-instance
+    private String mNamespace;
 
     public static List<Logger> getAllLoggers()
     {
-        return s_allLoggers;
+        return sAllLoggers;
     }
 
     public static Logger getSharedInstance()
     {
-        if (s_sharedLogger == null)
+        if (sSharedLogger == null)
         {
-            s_sharedLogger = new Logger("<shared>", Level.DEBUG);
+            sSharedLogger = new Logger("<shared>", Level.DEBUG);
         }
-        return s_sharedLogger;
+        return sSharedLogger;
     }
 
     public Logger(String nm, Level lev)
     {
-        m_namespace = nm;
-        m_loglevel = lev;
-        s_allLoggers.add(this);
+        mNamespace = nm;
+        mLogLevel = lev;
+        sAllLoggers.add(this);
     }
 
     public void debug(String msg)
@@ -121,29 +121,29 @@ public class Logger
     private void logMsg(String lvl, String msg)
     {
         Date now = new Date();
-        String nowstr = s_dateFormat.format(now);
-        System.out.println(nowstr + " " + lvl + " " + m_namespace + ": " + msg + "\r"); // We need \r because National Instruments likes to compress frequent messages without the carriage return
+        String nowstr = sDateFormat.format(now);
+        System.out.println(nowstr + " " + lvl + " " + mNamespace + ": " + msg + "\r"); // We need \r because National Instruments likes to compress frequent messages without the carriage return
         // NB: changing the date-format may negatively impact downstream/display
         //     code that may depend upon this format.
     }
 
     private boolean reportLevel(Level lev)
     {
-        return lev.ordinal() >= m_loglevel.ordinal();
+        return lev.ordinal() >= mLogLevel.ordinal();
     }
 
     public String getNamespace()
     {
-        return m_namespace;
+        return mNamespace;
     }
 
     public Level getLogLevel()
     {
-        return m_loglevel;
+        return mLogLevel;
     }
 
     public void setLogLevel(Level level)
     {
-        m_loglevel = level;
+        mLogLevel = level;
     }
 }
