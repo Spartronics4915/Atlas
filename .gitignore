@@ -28,3 +28,6 @@ build/
 # For Eclipse
 .classpath
 .project
+
+# For Visual Studio Code
+.settings/
