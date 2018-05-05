@@ -31,3 +31,4 @@ build/
 
 # For Visual Studio Code
 .settings/
+.vscode/
