@@ -6,8 +6,6 @@ import java.time.Instant;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import com.spartronics4915.atlas.Logger.Level;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,20 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class OI
 {
-
-    private Logger mLogger;
     private Robot mRobot;
 
     public OI(Robot robot)
     {
         mRobot = robot;
-        mLogger = new Logger("OI", Logger.Level.DEBUG);
 
         initAutoOI();
         initDrivetrainOI();
-
-        // Init loggers last, as this uses special values generated when other loggers are created.
-        initLoggers();
 
         // TODO: Reimplement in Gradle
         // Version string and related information
@@ -43,18 +35,18 @@ public class OI
                     "  (" + attributes.getValue("Code-Version") + ")";
             SmartDashboard.putString("Build", buildStr);
 
-            mLogger.notice("=================================================");
-            mLogger.notice("Initialized in station " + SmartDashboard.getString("AllianceStation", "Blue"));
-            mLogger.notice(Instant.now().toString());
-            mLogger.notice("Built " + buildStr);
-            mLogger.notice("=================================================");
+            Logger.notice("=================================================");
+            Logger.notice("Initialized in station " + SmartDashboard.getString("AllianceStation", "Blue"));
+            Logger.notice(Instant.now().toString());
+            Logger.notice("Built " + buildStr);
+            Logger.notice("=================================================");
 
         }
         catch (IOException e)
         {
             SmartDashboard.putString("Build", "version not found!");
-            mLogger.error("Build version not found!");
-            mLogger.exception(e, true /* no stack trace needed */);
+            Logger.error("Build version not found!");
+            Logger.logThrowableCrash(e);
         }
     }
 
@@ -82,44 +74,5 @@ public class OI
     private void initDrivetrainOI()
     {
         // Initalize the drivetrain
-    }
-
-    private void initLoggers()
-    {
-
-        /*
-         * Get the shared instance, then throw away the result.
-         * This ensures that the shared logger is created, even if never used
-         * elsewhere.
-         */
-        Logger.getSharedInstance();
-
-        for (Logger logger : Logger.getAllLoggers())
-        {
-            String key = "Loggers/" + logger.getNamespace();
-            Level desired;
-
-            if (!SmartDashboard.containsKey(key))
-            {
-                // First time this logger has been sent to SmartDashboard
-                SmartDashboard.putString(key, logger.getLogLevel().name());
-                desired = Level.DEBUG;
-            }
-            else
-            {
-                String choice = SmartDashboard.getString(key, "DEBUG");
-                Level parsed = Level.valueOf(choice);
-                if (parsed == null)
-                {
-                    mLogger.error("The choice '" + choice + "' for logger " + logger.getNamespace() + " isn't a valid value.");
-                    desired = Level.DEBUG;
-                }
-                else
-                {
-                    desired = parsed;
-                }
-            }
-            logger.setLogLevel(desired);
-        }
     }
 }

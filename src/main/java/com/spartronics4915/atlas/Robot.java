@@ -1,38 +1,32 @@
 
 package com.spartronics4915.atlas;
 
-import java.util.ArrayList;
-
 import com.spartronics4915.atlas.subsystems.Drivetrain;
+import com.spartronics4915.atlas.subsystems.*;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot
 {
-
-    public Logger mLogger;
-
     private Drivetrain mDrivetrain;
     private Launcher mLauncher;
     private Harvester mHarvester;
     private LED mLED;
-    private OI m_oi;
+    private OI mOI;
 
     private Command mAutoCommand;
 
     @Override
     public void robotInit()
     {
-        mLogger = new Logger("Robot", Logger.Level.DEBUG);
         mDrivetrain = new Drivetrain();
         mLauncher = new Launcher();
         mHarvester = new Harvester();
-        mLED = new mLED();
-        m_oi = new OI(this); // make sure OI goes last
+        mLED = new LED();
+        mOI = new OI(this); // make sure OI goes last
     }
 
     @Override
@@ -50,16 +44,16 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
-        mAutoCommand = m_oi.getAutoCommand();
+        mAutoCommand = mOI.getAutoCommand();
         if (mAutoCommand != null)
         {
             mAutoCommand.start();
         }
         else
         {
-            mLogger.error("can't start autonomous command because it is null.");
+            Logger.error("can't start autonomous command because it is null.");
         }
-        mLogger.notice("autonomous initialized");
+        Logger.notice("autonomous initialized");
     }
 
     @Override
@@ -78,10 +72,10 @@ public class Robot extends IterativeRobot
         }
         else
         {
-            mLogger.error("can't cancel a null autonomous command.");
+            Logger.error("can't cancel a null autonomous command.");
         }
         // FIXME: Actually initialize TeleOp here
-        mLogger.notice("teleop initalized.");
+        Logger.notice("teleop initalized.");
     }
 
     @Override

@@ -1,14 +1,13 @@
 package com.spartronics4915.atlas.subsystems;
 
 import com.spartronics4915.atlas.Logger;
-import com.spartronics4915.atlas.RobotMap;
-import com.spartronics4915.atlas.commands.StopCommand;
+import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
 
 /**
  * The subsystem that controls the LED.
  *
  * A note on motor naming:
- * We're doing port and starboard again. That's all that really matters here.
+ * We're doing port and starboard again. That's all that really matters here.s
  * These directions are relative to the front of the robot, which removes as
  * much possible ambiguity as you can with directions (in this context).
  * Port and starboard refer respectively to left and right, relative to the
@@ -16,16 +15,12 @@ import com.spartronics4915.atlas.commands.StopCommand;
  */
 public class LED extends SpartronicsSubsystem
 {
-
-    private Logger mLogger;
-
     // Port motors
 
     // Starboard motors
 
     public LED()
     {
-        mLogger = new Logger("LED", Logger.Level.DEBUG);
 
         // Pretty much everything should go in the try block,
         // because certain initializations can throw exceptions
@@ -37,27 +32,22 @@ public class LED extends SpartronicsSubsystem
 
             // This needs to go at the end. We *don't* set
             // m_initalized here (we only set it on faliure).
-            mLogger.info("initialized successfully");
+            logInitialized(true);
         }
         catch (Exception e)
         {
-            mLogger.exception(e, false);
-            m_initialized = false;
+            logException("Couldn't initialize LED", e);
+            logInitialized(false);
         }
     }
 
     @Override
     public void initDefaultCommand()
     {
-        if (initialized())
+        if (isInitialized())
         {
-            setDefaultCommand(new StopCommand(this));
+            // setDefaultCommand(null); FIXME: Set a default command!
         }
-    }
-
-    @Override
-    public void validate()
-    {
     }
 
     public void stop()

@@ -1,5 +1,6 @@
 package com.spartronics4915.atlas.commands;
 
+import com.spartronics4915.atlas.Logger;
 import com.spartronics4915.atlas.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -21,7 +22,7 @@ public class StopCommand extends Command
 
     protected void initialize()
     {
-        mDrivetrain.m_logger.info("StopCommand initialized");
+        Logger.info("StopCommand initialized");
     }
 
     protected void execute()
@@ -36,11 +37,11 @@ public class StopCommand extends Command
 
     protected void end()
     {
-        mDrivetrain.m_logger.info("StopCommand ended");
+        Logger.info("StopCommand ended");
     }
 
     protected void interrupted()
     {
-        mDrivetrain.m_logger.info("StopCommand interrupted");
+        Logger.info("StopCommand interrupted");
     }
 }

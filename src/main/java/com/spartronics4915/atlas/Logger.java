@@ -1,149 +1,139 @@
 package com.spartronics4915.atlas;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
-// Logger:
-//  a simple class to route all logging through.
-//  future enhancement:
-//      * support logging to file
-//      * runtime inference of logging level (practice vs competition)
-//  usage:
-//      singleton: Logger.getInstance().debug("here's my message");
-//      via Robot:  robot.m_logger.debug("here's a debugging msg");
-//      via Subsystem: this.m_logger.debug("here's a message");
-//  loglevel conventions:
-//      debug: used for debugging software... not available during
-//          competition.
-//      info:  used for less interesting but non-debugging message.
-//      notice: used for msgs you always want to see in log
-//          - subsystem initializations
-//          - important state transitions (ie entering auto, teleop)
-//      warning: used to convey non-fatal but abnormal state
-//      error: used to convey strong abnormal conditions
-//      exception: used in a catch block to report exceptions.
-//
+/**
+ * Tracks start-up and caught crash events, logging them to a file which dosn't
+ * roll over
+ */
 public class Logger
 {
 
-    // The code formatter attempts to reorder the levels, that doesn't help...
+    private static final UUID RUN_INSTANCE_UUID = UUID.randomUUID();
+    public static int sVerbosity = 0; // 0: notices and above,  1: info and above, 2: all
+    private static final DateFormat s_dateFormat = new SimpleDateFormat("hh:mm:ss");
 
-    //@formatter:off
-    public enum Level
+    public static void setVerbosity(String nm)
     {
-        DEBUG,
-        INFO,
-        NOTICE,
-        WARNING,
-        ERROR
-    }
-    //@formatter:on
-
-    private static List<Logger> sAllLoggers = new ArrayList<>();
-    private static Logger sSharedLogger;
-    private static DateFormat sDateFormat = new SimpleDateFormat("hh:mm:ss");
-    // NB: changing the date-format may negatively impact downstream/display
-    //     code that may depend upon this format.
-
-    private Level mLogLevel; // per-instance
-    private String mNamespace;
-
-    public static List<Logger> getAllLoggers()
-    {
-        return sAllLoggers;
+        if(nm.equals("NOTICE"))
+            sVerbosity = 0;
+        else
+        if(nm.equals("INFO"))
+            sVerbosity = 1;
+        else
+        if(nm.equals("DEBUG"))
+            sVerbosity = 2;
+        else
+            error("Logger: unknown verbosity level:" + nm);
     }
 
-    public static Logger getSharedInstance()
+    public static void logRobotStartup()
     {
-        if (sSharedLogger == null)
+        notice("robot startup");
+    }
+
+    public static void logRobotConstruction()
+    {
+        notice("robot construction");
+    }
+
+    public static void logRobotInit()
+    {
+        notice("robot init");
+    }
+
+    public static void logTeleopInit()
+    {
+        notice("teleop init");
+    }
+
+    public static void logAutoInit()
+    {
+        notice("auto init");
+    }
+
+    public static void logDisabledInit()
+    {
+        notice("disabled init");
+    }
+
+    public static void logThrowableCrash(Throwable throwable)
+    {
+        logMarker("Exception", throwable);
+    }
+
+    public static void logThrowableCrash(String msg, Throwable throwable)
+    {
+        logMarker("ERROR " + msg, throwable);
+    }
+
+    public static void error(String m)
+    {
+        logMarker("ERROR   " + m);
+    }
+
+    public static void warning(String m)
+    {
+        logMarker("WARNING " + m);
+    }
+
+    public static void notice(String m)
+    {
+        logMarker("NOTICE  " + m);
+    }
+
+    public static void info(String m)
+    {
+        if (sVerbosity > 0)
         {
-            sSharedLogger = new Logger("<shared>", Level.DEBUG);
+            printMarker("INFO    " + m);
         }
-        return sSharedLogger;
     }
 
-    public Logger(String nm, Level lev)
+    public static void debug(String m)
     {
-        mNamespace = nm;
-        mLogLevel = lev;
-        sAllLoggers.add(this);
-    }
-
-    public void debug(String msg)
-    {
-        if (reportLevel(Level.DEBUG))
+        if (sVerbosity > 1)
         {
-            logMsg("DEBUG  ", msg);
+            printMarker("DEBUG    " + m);
         }
     }
-
-    public void info(String msg)
+    
+    private static void logMarker(String mark)
     {
-        if (reportLevel(Level.INFO))
+        logMarker(mark, null);
+    }
+
+    private static void printMarker(String mark)
+    {
+        System.out.println(mark);
+    }
+
+    private static void logMarker(String mark, Throwable nullableException)
+    {
+        printMarker(mark);
+        if(nullableException != null)
+            nullableException.printStackTrace();
+        try (PrintWriter writer = new PrintWriter(new FileWriter("/home/lvuser/crash_tracking.txt", true)))
         {
-            logMsg("INFO   ", msg);
+            writer.print(RUN_INSTANCE_UUID.toString());
+            writer.print(", ");
+            writer.print(mark);
+            if (nullableException != null)
+            {
+                writer.print(", ");
+                nullableException.printStackTrace(writer);
+            }
+            writer.println();
         }
-    }
-
-    public void notice(String msg)
-    {
-        if (reportLevel(Level.NOTICE))
-        {
-            logMsg("NOTICE ", msg);
-        }
-    }
-
-    public void warning(String msg)
-    {
-        if (reportLevel(Level.WARNING))
-        {
-            logMsg("WARNING", msg);
-        }
-    }
-
-    public void error(String msg)
-    {
-        logMsg("ERROR  ", msg);
-    }
-
-    public void exception(Exception e, boolean skipStackTrace)
-    {
-        logMsg("EXCEPT ", e.getMessage());
-        if (!skipStackTrace)
+        catch (IOException e)
         {
             e.printStackTrace();
         }
-    }
-
-    private void logMsg(String lvl, String msg)
-    {
-        Date now = new Date();
-        String nowstr = sDateFormat.format(now);
-        System.out.println(nowstr + " " + lvl + " " + mNamespace + ": " + msg + "\r"); // We need \r because National Instruments likes to compress frequent messages without the carriage return
-        // NB: changing the date-format may negatively impact downstream/display
-        //     code that may depend upon this format.
-    }
-
-    private boolean reportLevel(Level lev)
-    {
-        return lev.ordinal() >= mLogLevel.ordinal();
-    }
-
-    public String getNamespace()
-    {
-        return mNamespace;
-    }
-
-    public Level getLogLevel()
-    {
-        return mLogLevel;
-    }
-
-    public void setLogLevel(Level level)
-    {
-        mLogLevel = level;
     }
 }
