@@ -1,6 +1,5 @@
 package com.spartronics4915.atlas.subsystems;
 
-import com.spartronics4915.atlas.Logger;
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
 import edu.wpi.first.wpilibj.SerialPort;
 

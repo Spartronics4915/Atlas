@@ -4,10 +4,15 @@ package com.spartronics4915.atlas;
 import com.spartronics4915.atlas.subsystems.Drivetrain;
 import com.spartronics4915.atlas.subsystems.*;
 
+import com.spartronics4915.util.CANProbe;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.ArrayList;
 
 public class Robot extends IterativeRobot
 {
@@ -22,7 +27,15 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
-        mDrivetrain = new Drivetrain();
+        CANProbe canProbe = CANProbe.getInstance();
+        ArrayList<String> canReport = canProbe.getReport();
+        Logger.notice("CANDevicesFound: " + canReport);
+        int numDevices = canProbe.getCANDeviceCount();
+        SmartDashboard.putString("CANBusStatus",
+                numDevices == RobotMap.kNumCANDevices ? "OK"
+                    : ("" + numDevices + "/" + RobotMap.kNumCANDevices));
+
+        mDrivetrain = Drivetrain.getInstance();
         mLauncher = new Launcher();
         mHarvester = Harvester.getInstance();
         mLED = LED.getInstance();
@@ -34,11 +47,6 @@ public class Robot extends IterativeRobot
     {
         // This is invoked in both Autonomous and TeleOp, in
         // addition to the autonomousPeriodic and TeleOp periodic.
-    }
-
-    public Drivetrain getDrivetrain()
-    {
-        return mDrivetrain;
     }
 
     @Override
