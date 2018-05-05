@@ -11,11 +11,10 @@ package com.spartronics4915.atlas;
 public class RobotMap
 {
     //CAN Devices
-    public static final int kNumVictors = 2;
-    public static final int kNumTalons = 2;
+    public static final int kNumPigeons = 1;
     public static final int kNumPCMs = 1;
-    public static final int NUM_CAN_DEVICES = kNumTalons + kNumVictors + kNumPCMs; //don't count PDPs
-    
+    public static final int kNumCANDevices = kNumPCMs + kNumPigeons;
+
     //Solenoid IDs
     public static final int kHarvesterRetractSolenoidId = 0; //PCM 0
 	public static final int kHarvesterExtendSolenoidId = 1; // PCM 1
