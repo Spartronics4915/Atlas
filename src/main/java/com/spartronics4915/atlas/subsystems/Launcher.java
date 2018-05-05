@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Talon;
 
 /**
  * The subsystem that controls the Launcher.
@@ -61,8 +62,8 @@ public class Launcher extends SpartronicsSubsystem
             // Initialize launcher components
             mLauncherWindingMotor = new Talon(RobotMap.kLauncherWindingMotorId);
             mLauncherRewound = new DigitalInput(RobotMap.klauncherRewoundSwitchId);
-            mLauncherActivate = new DoubleSolenoid(kLaunchExtendSolenoidId, kLaunchRetractSolenoidId);
-            mBallPresent = new AnalogInput(kBallPresentSensorId);
+            mLauncherActivate = new DoubleSolenoid(RobotMap.kLaunchExtendSolenoidId, RobotMap.kLaunchRetractSolenoidId);
+            mBallPresent = new AnalogInput(RobotMap.kBallPresentSensorId);
 
             // This needs to go at the end. We *don't* set
             // m_initalized here (we only set it on faliure).
