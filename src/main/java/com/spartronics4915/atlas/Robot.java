@@ -24,8 +24,8 @@ public class Robot extends IterativeRobot
     {
         mDrivetrain = new Drivetrain();
         mLauncher = new Launcher();
-        mHarvester = new Harvester();
-        mLED = new LED();
+        mHarvester = Harvester.getInstance();
+        mLED = LED.getInstance();
         mOI = new OI(this); // make sure OI goes last
     }
 

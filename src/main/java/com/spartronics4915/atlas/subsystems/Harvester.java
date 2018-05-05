@@ -4,6 +4,10 @@ import com.spartronics4915.atlas.Logger;
 import com.spartronics4915.atlas.RobotMap;
 import com.spartronics4915.atlas.commands.StopCommand;
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Talon;
 
 /**
  * The subsystem that controls the Harvester.
@@ -17,11 +21,24 @@ import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
  */
 public class Harvester extends SpartronicsSubsystem
 {
-    // Port motors
+	
+	private DoubleSolenoid mHarvesterArms;
+	private SpeedController mCollectionMotor;
+	private DigitalInput mTopMagneticSwitch;
+    private DigitalInput mBottomMagneticSwitch;
 
-    // Starboard motors
+    private static Harvester sInstance = null;
 
-    public Harvester()
+    public static Harvester getInstance()
+    {
+        if (sInstance == null)
+        {
+            sInstance = new Harvester();
+        }
+        return sInstance;
+    }
+
+    private Harvester()
     {
 
         // Pretty much everything should go in the try block,
@@ -30,8 +47,11 @@ public class Harvester extends SpartronicsSubsystem
         // to be a correct value.
         try
         {
-            // Initialize motors
-
+        	mHarvesterArms = new DoubleSolenoid(RobotMap.kHarvesterExtendSolenoidId, RobotMap.kHarvesterRetractSolenoidId);
+        	mCollectionMotor = new Talon(RobotMap.kHarvesterCollectionMotorId);
+        	mTopMagneticSwitch = new DigitalInput(RobotMap.kHarvesterTopMagneticSwitchId);
+            mBottomMagneticSwitch = new DigitalInput(RobotMap.kHarvesterBottomMagneticSwitchId);
+        	
             // This needs to go at the end. We *don't* set
             // m_initalized here (we only set it on faliure).
             logInitialized(true);
@@ -43,17 +63,61 @@ public class Harvester extends SpartronicsSubsystem
         }
     }
 
+    /*
+    FROM OLD 2014 CODE:
+    if Harvester is fully up, Hardware returns
+        FALSE for BOTTOM magnetic switch
+        TRUE for TOP magnetic switch
+    if the Harvester is fully down/out/extended, Hardware returns:
+        TRUE for BOTTOM magnetic switch
+        FALSE for TOP magnetic switch
+    
+    if the Harvester is in-between, Hardware returns:
+        TRUE FOR BOTH
+    */
+
+    public boolean isHarvesterDown()
+    {
+        return !mBottomMagneticSwitch.get(); // TODO: is this correct
+    }
+
+    public boolean isHarvesterUp()
+    {
+        return !mTopMagneticSwitch.get(); //TODO:  is this correct
+    }
+
+    public void extendPenumatics()
+    {
+        mHarvesterArms.set(DoubleSolenoid.Value.kForward); //TODO: is this correct
+    }
+
+    public void retractPneumatics()
+    {
+        mHarvesterArms.set(DoubleSolenoid.Value.kReverse);  //TODO: is this correct
+    }
+
+    public void stopPneumatics()
+    {
+        mHarvesterArms.set(DoubleSolenoid.Value.kOff);  //TODO: is this correct
+    }
+
+    public void setWheelSpeed(double speed)
+    {
+        mCollectionMotor.set(speed);
+    }
+
     @Override
     public void initDefaultCommand()
     {
         if (isInitialized())
         {
-            // setDefaultCommand(null); FIXME: Set a default command!
+            //setDefaultCommand(new HarvesterWheelsDefault());
         }
     }
 
     public void stop()
     {
-        // FIXME: Actually stop the motors
+        setWheelSpeed(0.0);
+        stopPneumatics(); //TODO: is this correct??
     }
 }
