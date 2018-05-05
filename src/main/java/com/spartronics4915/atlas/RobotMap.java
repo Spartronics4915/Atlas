@@ -31,8 +31,8 @@ public class RobotMap
     public static final int kBallPresentSensorId = 0; //Analog port 0
     
     //DIO IDs
-    public static final int kHarvesterRetractedSwitchId = 0; //DIO 0
-    public static final int kHarvesterExtendedSwitchId = 1; //DIO 1
+    public static final int kHarvesterTopMagneticSwitchId = 0; //DIO 0
+    public static final int kHarvesterBottomMagneticSwitchId = 1; //DIO 1
     public static final int klauncherRewoundSwitchId = 3; //DIO 3
     
 }
