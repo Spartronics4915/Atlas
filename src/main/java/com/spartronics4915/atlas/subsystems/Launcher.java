@@ -1,5 +1,8 @@
 package com.spartronics4915.atlas.subsystems;
 
+import com.spartronics4915.atlas.Logger;
+import com.spartronics4915.atlas.RobotMap;
+import com.spartronics4915.atlas.commands.StopCommand;
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -29,6 +32,8 @@ import edu.wpi.first.wpilibj.SpeedController;
  */
 public class Launcher extends SpartronicsSubsystem
 {
+    private static Launcher sInstance = null;
+
     // Launcher subsystem
     private static SpeedController mLauncherWindingMotor;    // winding motor
     private static DigitalInput mLauncherRewound;            // limit switch to detect IF rewound complete
@@ -36,7 +41,15 @@ public class Launcher extends SpartronicsSubsystem
     private static AnalogInput mBallPresent;                 // sensor to detect presence of the ball
     private double mLauncherWindingMotorSpeed=0.5;           // IMPORTANT: test winding motor direction 
 
-    public Launcher()
+    // Subsystems are a singleton
+    public static Launcher getInstance() {
+        if (sInstance == null) {
+            sInstance = new Launcher();
+        }
+        return sInstance;
+    }
+
+    private Launcher()
     {
 
         // Pretty much everything should go in the try block,
@@ -71,11 +84,6 @@ public class Launcher extends SpartronicsSubsystem
         }
     }
     
-    public void stop()
-    {
-        // FIXME: Actually stop the motors
-    }
-
     /** 
      * Winding motor controls 
      */
@@ -133,5 +141,16 @@ public class Launcher extends SpartronicsSubsystem
         mLauncherActivate.set(DoubleSolenoid.Value.kForward);
     }
     
+    /** 
+     * TODO: Add ball sensor for detecting
+     */
+    public boolean isBallPresent()
+    {
+        return true;        // FIXME!
+    }
 
+    public double getBallRangeSensorDistance()
+    {
+        return 0.0;         // FIXME!
+    }
 }
