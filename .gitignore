@@ -23,3 +23,8 @@ hs_err_pid*
 
 # For GradleRIO
 .gradle
+build/
+
+# For Eclipse
+.classpath
+.project
