@@ -87,13 +87,15 @@ IMPORTANT: launcher winder can only operate in one direction -- anything else wi
 
 ```java
 /* 
-    Launcher launched/rewound via SingleSolonoid (Note: was DoubleSolonoid before)
+    Launcher launched/rewound via DoubleSolonoid 
 */
-    public static final int kLaunchSolenoidId = 3;    //PCM 3
+    public static final int kLaunchRetractSolenoidId = 3;    //PCM 3
+    public static final int kLaunchExtendSolenoidId = 4;     //PCM 4
 
 // Instantiation & reference will be something like the following
     public static Solenoid launcherActivate;
-    launcherActivate = new Solenoid(kLaunchSolenoidId);     
+    // forwardChannel, reverseChannel
+    launcherActivate = new DoubleSolenoid(kLaunchExtendSolenoidId, kLaunchRetractSolenoidId);     
 ```
 
 ```java
