@@ -1,6 +1,7 @@
 package com.spartronics4915.atlas.subsystems;
 
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
+import com.spartronics4915.atlas.RobotMap;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.DigitalInput;
