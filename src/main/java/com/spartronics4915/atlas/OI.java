@@ -21,7 +21,6 @@ public class OI
     {
         mRobot = robot;
 
-        initAutoOI();
         initDrivetrainOI();
 
         // TODO: Reimplement in Gradle
@@ -48,27 +47,6 @@ public class OI
             Logger.error("Build version not found!");
             Logger.logThrowableCrash(e);
         }
-    }
-
-    private void initAutoOI()
-    {
-        // Add autonomous options to SmartDashboard here
-        // FIXME
-    }
-
-    // getAutoCommand should happen during autonomous init (so long after robotInit).
-    // Timing is important here.
-    public Command getAutoCommand()
-    {
-        return new Command()
-        {
-
-            @Override
-            protected boolean isFinished()
-            {
-                return false;
-            }
-        }; // FIXME
     }
 
     private void initDrivetrainOI()
