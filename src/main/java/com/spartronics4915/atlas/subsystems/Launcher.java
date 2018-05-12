@@ -4,9 +4,9 @@ import com.spartronics4915.atlas.Logger;
 import com.spartronics4915.atlas.RobotMap;
 import com.spartronics4915.atlas.commands.StopCommand;
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
+import com.spartronics4915.util.SpartIRSensor;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -39,8 +39,8 @@ public class Launcher extends SpartronicsSubsystem
     private static SpeedController mLauncherWindingMotor;    // winding motor
     private static DigitalInput mLauncherRewound;            // limit switch to detect IF rewound complete
     private static DoubleSolenoid mLauncherActivate;         // pneumatic for launching ball    
-    private static AnalogInput mBallPresent;                 // sensor to detect presence of the ball
     private double mLauncherWindingMotorSpeed=0.5;           // IMPORTANT: test winding motor direction 
+    private SpartIRSensor mBallPresentSensor = null;         // sensor to detect presence of the ball
 
     // Subsystems are a singleton
     public static Launcher getInstance() 
@@ -64,7 +64,7 @@ public class Launcher extends SpartronicsSubsystem
             mLauncherWindingMotor = new Talon(RobotMap.kLauncherWindingMotorId);
             mLauncherRewound = new DigitalInput(RobotMap.klauncherRewoundSwitchId);
             mLauncherActivate = new DoubleSolenoid(RobotMap.kLaunchExtendSolenoidId, RobotMap.kLaunchRetractSolenoidId);
-            mBallPresent = new AnalogInput(RobotMap.kBallPresentSensorId);
+            mBallPresentSensor = new SpartIRSensor(RobotMap.kBallPresentSensorId);
 
             // This needs to go at the end. We *don't* set
             // m_initalized here (we only set it on faliure).
@@ -147,15 +147,15 @@ public class Launcher extends SpartronicsSubsystem
     }
     
     /** 
-     * TODO: Add ball sensor for detecting
+     * Ball sensor methods for detecting ball & sensor distances
      */
     public boolean isBallPresent()
     {
-        return true;        // FIXME!
+        return mBallPresentSensor.isTargetAcquired();
     }
 
     public double getBallRangeSensorDistance()
     {
-        return 0.0;         // FIXME!
+        return mBallPresentSensor.getDistance();
     }
 }
