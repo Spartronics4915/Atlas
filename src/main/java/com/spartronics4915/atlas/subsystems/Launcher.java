@@ -54,7 +54,6 @@ public class Launcher extends SpartronicsSubsystem
 
     private Launcher()
     {
-
         // Pretty much everything should go in the try block,
         // because certain initializations can throw exceptions
         // which we want to print, and because we want m_initalized
