@@ -43,8 +43,10 @@ public class Launcher extends SpartronicsSubsystem
     private double mLauncherWindingMotorSpeed=0.5;           // IMPORTANT: test winding motor direction 
 
     // Subsystems are a singleton
-    public static Launcher getInstance() {
-        if (sInstance == null) {
+    public static Launcher getInstance() 
+    {
+        if (sInstance == null) 
+        {
             sInstance = new Launcher();
         }
         return sInstance;
@@ -52,7 +54,6 @@ public class Launcher extends SpartronicsSubsystem
 
     private Launcher()
     {
-
         // Pretty much everything should go in the try block,
         // because certain initializations can throw exceptions
         // which we want to print, and because we want m_initalized
@@ -88,7 +89,8 @@ public class Launcher extends SpartronicsSubsystem
     /** 
      * Winding motor controls 
      */
-    public void startLauncherWindingMotor() {
+    public void startLauncherWindingMotor() 
+    {
         mLauncherWindingMotor.set(mLauncherWindingMotorSpeed);
     }
 
@@ -107,7 +109,8 @@ public class Launcher extends SpartronicsSubsystem
         return mLauncherWindingMotor.get();
     }
 
-    public double getLauncherWindingMotorSetSpeed() {
+    public double getLauncherWindingMotorSetSpeed() 
+    {
         return mLauncherWindingMotorSpeed;
     }
 
@@ -119,7 +122,8 @@ public class Launcher extends SpartronicsSubsystem
     /**
      * Limit switch status -- returns true when pushed
      */
-    public boolean isLauncherRewound() {
+    public boolean isLauncherRewound() 
+    {
         return mLauncherRewound.get();
     }
 

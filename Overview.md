@@ -86,7 +86,7 @@ IMPORTANT: launcher winder can only operate in one direction -- anything else wi
     ballPresent = new AnalogInput(kBallPresentSensorId);
 
 ```java
-/* 
+/*
     Launcher launched/rewound via DoubleSolonoid 
 */
     public static final int kLaunchRetractSolenoidId = 3;    //PCM 3
@@ -99,13 +99,13 @@ IMPORTANT: launcher winder can only operate in one direction -- anything else wi
 ```
 
 ```java
-/* 
+/*
     Launcher will depend on the limit switch to stop the winding motor. The limit switches will be wired so that programmatically they act as a single limit switch. Rewind switch is normally closed.
         return 0: when not pushed
         return 1: when pushed
-*/ 
+*/
     public static final int klauncherRewoundSwitchId = 3;    // DIO 3
- 
+
  // Instantiation & reference will be something like the following
     public static DigitalInput launcherRewound;
     launcherRewound = new DigitalInput(klauncherRewoundSwitchId);
@@ -122,7 +122,7 @@ IMPORTANT: launcher winder can only operate in one direction -- anything else wi
 ```
 
 # OI Controls
-* Harvester 
+* Harvester
     * Open  -- extend the harvester
         * command completes when limit switch is reached
     * Close -- retract the harvester
@@ -146,7 +146,7 @@ IMPORTANT: launcher winder can only operate in one direction -- anything else wi
     * Rewind
         * requires the harvester to be extended -- check IF the extended limit switch is activated
         * launchActivate to set(false)
-        * run the launcherWindingMotor UNTIL the rewind limit swith is activated
+        * run the launcherWindingMotor UNTIL the rewind limit switch is activated
         * TBD -- set timeout for the safety system -- needs experimenting
 * Drive train
     * Throttle controls
