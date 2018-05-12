@@ -10,6 +10,9 @@ package com.spartronics4915.atlas;
  */
 public class RobotMap
 {
+    //Speeds
+    public static final double kHarvesterIntakeWheelSpeed = -0.1;
+    public static final double kHarvesterExpelWheelSpeed = 0.1;
 
     //CAN Devices
     public static final int kNumPigeons = 1;
