@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * ActivateLauncher:
  *  - If the Harverster is up, it will end the command
  *  - Release launcher pneumatic to initiate launch
- *  - TODO -- will only launch if the ball is present
+ *  - Note -- will only launch if the ball is present
  */
 public class ActivateLauncher extends Command
 {
