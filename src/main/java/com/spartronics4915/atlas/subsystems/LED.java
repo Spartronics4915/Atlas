@@ -31,9 +31,31 @@ public class LED extends SpartronicsSubsystem
 
     private enum BlingState
     {
-
+    		PURPLE,
+    		DEFAULT,
+    		BLUE,
+    		YELLOW,
+    		RED,
+    		GREEN,
+    		SPARTRONICS_FADE,
+    		FADING,
+    		FLASHING,
+    		FAST_FLASHING,
+    		RESET
     }
-
+    
+    private final byte[] kPurple = "a".getBytes();
+    private final byte[] kDefault = "0".getBytes();
+    private final byte[] kBlue = "1".getBytes();
+    private final byte[] kYellow = "2".getBytes();
+    private final byte[] kRed = "3".getBytes();
+    private final byte[] kGreen = "4".getBytes();
+    private final byte[] kSpartronics_Fade = "5".getBytes();
+    private final byte[] kFading = "6".getBytes();
+    private final byte[] kFlashing = "9".getBytes();
+    private final byte[] kFast_Flashing = "7".getBytes(); 
+    private final byte[] kReset = "8".getBytes();
+    
     private LED()
     {
         try
@@ -51,10 +73,45 @@ public class LED extends SpartronicsSubsystem
 
     public void setBlingState(BlingState blingState)
     {
+        //TODO: check initialization
+        byte[] message = kSpartronics_Fade;
         switch(blingState)
         {
-            
+        case DEFAULT:
+        		message = kDefault;
+        		break;
+        case YELLOW:
+        		message = kYellow;
+        		break;
+        case PURPLE:
+        		message = kPurple;
+        		break;
+        case BLUE:
+        		message = kBlue;
+        		break;
+        case RED:
+        		message = kRed;
+        		break;
+        case GREEN:
+        		message = kGreen;
+        		break;
+        case SPARTRONICS_FADE:
+        		message = kSpartronics_Fade;
+        		break;
+        case FADING:
+        		message = kFading;
+        		break;
+        case FLASHING:
+        		message = kFlashing;
+        		break;
+        case FAST_FLASHING:
+        		message = kFast_Flashing;
+        		break;
+        case RESET:
+        		message = kReset;
+        		break;
         }
+        mBling.write(message, message.length);
     }
 
     @Override
