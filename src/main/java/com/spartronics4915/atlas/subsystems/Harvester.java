@@ -1,6 +1,7 @@
 package com.spartronics4915.atlas.subsystems;
 
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
+import com.spartronics4915.atlas.commands.HarvesterStopWheels;
 import com.spartronics4915.atlas.RobotMap;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -84,7 +85,7 @@ public class Harvester extends SpartronicsSubsystem
         return !mTopMagneticSwitch.get(); //TODO:  is this correct
     }
 
-    public void extendPenumatics()
+    public void extendPneumatics()
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kForward); //TODO: is this correct
     }
@@ -101,7 +102,7 @@ public class Harvester extends SpartronicsSubsystem
 
     public void setWheelSpeed(double speed)
     {
-        mCollectionMotor.set(speed);
+        mCollectionMotor.set(speed); // TODO: is this correct
     }
 
     @Override
@@ -109,7 +110,7 @@ public class Harvester extends SpartronicsSubsystem
     {
         if (isInitialized())
         {
-            //setDefaultCommand(new HarvesterWheelsDefault());
+            setDefaultCommand(new HarvesterStopWheels());
         }
     }
 
