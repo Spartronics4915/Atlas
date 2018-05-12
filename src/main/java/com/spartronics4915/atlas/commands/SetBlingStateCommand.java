@@ -7,7 +7,7 @@ import com.spartronics4915.atlas.subsystems.LED.BlingState;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * The way to switch the BlingState on the Arduino
+ * The way to switch the BlingState on the Arduino.
  */
 public class SetBlingStateCommand extends Command
 {

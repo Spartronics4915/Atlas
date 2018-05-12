@@ -5,13 +5,11 @@ import edu.wpi.first.wpilibj.SerialPort;
 
 /**
  * The subsystem that controls the LED.
- *
- * A note on motor naming:
- * We're doing port and starboard again. That's all that really matters here.s
- * These directions are relative to the front of the robot, which removes as
- * much possible ambiguity as you can with directions (in this context).
- * Port and starboard refer respectively to left and right, relative to the
- * front of the robot.
+ * Communicating to the Arduino by giving
+ * a byte using Serial to the wanted blingstate to be
+ * read by the Arduino to show the given Bling style wanted.
+ * 
+ * Based off the Arduino code under Spartronics4915/Bling/Roborio_functionality
  */
 public class LED extends SpartronicsSubsystem
 {
@@ -28,7 +26,9 @@ public class LED extends SpartronicsSubsystem
         }
         return sInstance;
     }
-
+/**
+ * This enum is giving the possible styles we can have the Arduino express.
+ */
     public enum BlingState
     {
     		PURPLE,
@@ -43,7 +43,9 @@ public class LED extends SpartronicsSubsystem
     		FAST_FLASHING,
     		RESET
     }
-    
+    /**
+     * this will change the style ofthe bling code we wanted based on input from the driver.
+     */
     private final byte[] kPurple = "a".getBytes();
     private final byte[] kDefault = "0".getBytes();
     private final byte[] kBlue = "1".getBytes();
@@ -70,10 +72,15 @@ public class LED extends SpartronicsSubsystem
             logInitialized(false);
         }
     }
-
+    /**
+     * This will go through what we want the bling to do and express that style of bling.
+     */
     public void setBlingState(BlingState blingState)
     {
-        //TODO: check initialization
+        if (!isInitialized()) 
+        {
+            return;
+        }
         byte[] message = kSpartronics_Fade;
         switch(blingState)
         {
