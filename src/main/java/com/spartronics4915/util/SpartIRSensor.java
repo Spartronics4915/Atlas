@@ -1,4 +1,4 @@
-package com.spartronics4915.lib.util;
+package com.spartronics4915.util;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 
