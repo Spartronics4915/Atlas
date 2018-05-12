@@ -29,7 +29,7 @@ public class LED extends SpartronicsSubsystem
         return sInstance;
     }
 
-    private enum BlingState
+    public enum BlingState
     {
     		PURPLE,
     		DEFAULT,
