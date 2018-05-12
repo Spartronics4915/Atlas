@@ -7,11 +7,12 @@ import com.spartronics4915.atlas.subsystems.Harvester;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * WindLauncher:
- *  - Run launcher winding motor until limit switch is hit
- *  - Note: if Harvester is up, it will end the command
+ * ActivateLauncher:
+ *  - If the Harverster is up, it will end the command
+ *  - Release launcher pneumatic to initiate launch
+ *  - TODO -- will only launch if the ball is present
  */
-public class WindLauncher extends Command
+public class ActivateLauncher extends Command
 {
 
     private Harvester mHarvester = Harvester.getInstance();
@@ -19,44 +20,43 @@ public class WindLauncher extends Command
 
     private boolean shouldQuit = false;
 
-    public WindLauncher() {
+    public ActivateLauncher() {
         requires(mLauncher);
     }
 
     protected void initialize()
     {
-        Logger.info("Command: WindLauncher initialize");
+        Logger.info("Command: ActivateLauncher initialize");
         // If harvester is up, cancel the command & turn of harvester wheels
-        if (mHarvester.isHarvesterUp()) 
+        if (mHarvester.isHarvesterUp() || !mLauncher.isBallPresent()) 
         {
             shouldQuit = true;
             return;
         }
 
-        // retract the launcher pneumatics 
-        mLauncher.launcherRetractSolenoid();
-        
-        // set a safety timeout if something goes wrong w/ switch
-        setTimeout(4.5);
+        // extand/release the launcher pneumatics 
+        mLauncher.launcherExtendSolenoid();
 
         setInterruptible(false);
     }
 
     protected void execute()
     {
-        // start winding the motors
+        // if any motors running, turn them off
         if (!shouldQuit)
         {
             mHarvester.setWheelSpeed(0.0);
-            mLauncher.startLauncherWindingMotor();
+            mLauncher.stopLauncherWindingMotor();
         }
+        // activating pneumatics is instantenous -- indicate ready to quit
+        shouldQuit = true;
     }
 
     protected boolean isFinished()
     {
-        if (shouldQuit || isTimedOut() || mLauncher.isLauncherRewound())
+        if (shouldQuit)
         {
-            Logger.info("Command:WindLauncher: isFinished True");
+            Logger.info("Command:ActivateLauncher: isFinished True");
             return true;
         }
         return false;
@@ -64,12 +64,11 @@ public class WindLauncher extends Command
 
     protected void end()
     {
-        Logger.info("Command:WindLauncher: time to end()");
-        mLauncher.stopLauncherWindingMotor();
+        Logger.info("Command:ActivateLauncher: time to end()");
     }
 
     protected void interrupted()
     {
-        Logger.info("Command:WindLauncher: interrupted called, but wasn't interruptable -- why?!");
+        Logger.info("Command:ActivateLauncher: interrupted called, but wasn't interruptable -- why?!");
     }
 }
