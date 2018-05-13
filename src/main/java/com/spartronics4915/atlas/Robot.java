@@ -52,22 +52,13 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
-        mAutoCommand = mOI.getAutoCommand();
-        if (mAutoCommand != null)
-        {
-            mAutoCommand.start();
-        }
-        else
-        {
-            Logger.error("can't start autonomous command because it is null.");
-        }
-        Logger.notice("autonomous initialized");
+        Logger.notice("Autonomous disabled");
     }
 
     @Override
     public void autonomousPeriodic()
     {
-        Scheduler.getInstance().run();
+        Logger.notice("autonomousPeriodic: Autonomous disabled");
     }
 
     @Override
