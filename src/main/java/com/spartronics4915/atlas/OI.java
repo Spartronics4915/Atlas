@@ -9,6 +9,7 @@ import java.util.jar.Manifest;
 import com.spartronics4915.atlas.commands.*;
 import com.spartronics4915.atlas.subsystems.LED;
 import com.spartronics4915.atlas.subsystems.Launcher;
+import com.spartronics4915.atlas.subsystems.Harvester;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class OI
 {
     private Robot mRobot;
+    private Harvester mHarvester;
     private LED mLED;
 
     private static final int kDriveJoystickPort = 1;
@@ -41,10 +43,10 @@ public class OI
     private static final int kHarvesterExtendArcadeStickButton = 4;
     private static final int kHarvesterRetractDriveStickButton = 5;
     private static final int kHarvesterRetractArcadeStickButton = 5;
-    private static final int kHarvesterWheelsForwardDriveStickButton = 6;
-    private static final int kHarvesterWheelsForwardArcadeStickButton = 6;
-    private static final int kHarvesterWheelsReverseDriveStickButton = 7;
-    private static final int kHarvesterWheelsReverseArcadeStickButton = 7;
+    private static final int kHarvesterReleaseDriveStickButton = 6;
+    private static final int kHarvesterReleaseArcadeStickButton = 6;
+    private static final int kHarvesterWheelsToggleDriveStickButton = 7;
+    private static final int kHarvesterWheelsToggleArcadeStickButton = 7;
     private static final int kHarvesterWheelsStopDriveStickButton = 8;
     private static final int kHarvesterWheelsStopArcadeStickButton = 8;
 
@@ -57,6 +59,7 @@ public class OI
     public OI(Robot robot)
     {
         mRobot = robot;
+        mHarvester = Harvester.getInstance();
 
         // TODO: Reimplement in Gradle
         // Version string and related information
@@ -89,16 +92,16 @@ public class OI
         JoystickButton launchCommandGroupButtonOnDriveStick = new JoystickButton(sDriveStick, kLaunchDriveStickButton);
         JoystickButton launchCommandGroupButtonOnArcadeStick = new JoystickButton(sArcadeStick, kLaunchArcadeStickButton);
         JoystickButton windCommandGroupButtonOnDriveStick = new JoystickButton(sDriveStick, kWindLauncherDriveStickButton);
-        JoystickButton windCommandGroupButtonOnArcadeStick = new JoystickButton(sArcadeStick, kLaunchArcadeStickButton);
+        JoystickButton windCommandGroupButtonOnArcadeStick = new JoystickButton(sArcadeStick, kWindLauncherArcadeStickButton);
 
         JoystickButton intakeDownButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterExtendDriveStickButton);
         JoystickButton intakeDownButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterExtendArcadeStickButton);
         JoystickButton intakeUpButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterRetractDriveStickButton);
         JoystickButton intakeUpButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterRetractArcadeStickButton);
-        JoystickButton ejectBallButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterWheelsReverseDriveStickButton);
-        JoystickButton ejectBallButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterWheelsReverseArcadeStickButton);
-        JoystickButton wheelsForwardButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterWheelsForwardDriveStickButton);
-        JoystickButton wheelsForwardButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterWheelsForwardArcadeStickButton);
+        JoystickButton intakeReleaseButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterReleaseDriveStickButton);
+        JoystickButton intakeReleaseButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterReleaseArcadeStickButton);
+        JoystickButton toggleHarvesterWheelsButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterWheelsToggleDriveStickButton);
+        JoystickButton toggleHarvesterWheelsButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterWheelsToggleArcadeStickButton);
         JoystickButton stopHarvesterWheelsButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterWheelsStopDriveStickButton);
         JoystickButton stopHarvesterWheelsButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterWheelsStopArcadeStickButton);
 
@@ -122,10 +125,10 @@ public class OI
         intakeDownButtonOnArcadeStick.whenPressed(new IntakeDown());
         intakeUpButtonOnDriveStick.whenPressed(new IntakeUp());
         intakeUpButtonOnArcadeStick.whenPressed(new IntakeUp());
-        ejectBallButtonOnDriveStick.whenPressed(new HarvesterWheelsExpel());
-        ejectBallButtonOnArcadeStick.whenPressed(new HarvesterWheelsExpel());
-        wheelsForwardButtonOnDriveStick.whenPressed(new HarvesterWheelsIntake());
-        wheelsForwardButtonOnArcadeStick.whenPressed(new HarvesterWheelsIntake());
+        intakeReleaseButtonOnDriveStick.whenPressed(new IntakeRelease());
+        intakeReleaseButtonOnArcadeStick.whenPressed(new IntakeRelease());
+        toggleHarvesterWheelsButtonOnDriveStick.whenPressed(ToggleHarvesterWheels());
+        toggleHarvesterWheelsButtonOnArcadeStick.whenPressed(ToggleHarvesterWheels());
         stopHarvesterWheelsButtonOnDriveStick.whenPressed(new HarvesterStopWheels());
         stopHarvesterWheelsButtonOnArcadeStick.whenPressed(new HarvesterStopWheels());
     }
@@ -133,5 +136,18 @@ public class OI
     private void initDrivetrainOI()
     {
         // Initalize the drivetrain
+    }
+
+    private Command ToggleHarvesterWheels()
+    {
+        //if the command "HarvesterStopWheels" is not currently running
+        if(!mHarvester.getIsStopWheelsRunning())
+        {
+            return new HarvesterStopWheels();
+        }
+        else
+        {
+            return new HarvesterWheelsIntake();
+        }
     }
 }

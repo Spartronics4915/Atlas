@@ -26,6 +26,7 @@ public class Harvester extends SpartronicsSubsystem
 	private SpeedController mCollectionMotor;
 	private DigitalInput mTopMagneticSwitch;
     private DigitalInput mBottomMagneticSwitch;
+    private boolean isStopWheelsRunning = false;
 
     private static Harvester sInstance = null;
 
@@ -84,6 +85,16 @@ public class Harvester extends SpartronicsSubsystem
     public boolean isHarvesterUp()
     {
         return !mTopMagneticSwitch.get(); //TODO:  is this correct
+    }
+
+    public boolean getIsStopWheelsRunning()
+    {
+        return isStopWheelsRunning;
+    }
+
+    public void setIsStopWheelsRunning(boolean b)
+    {
+        isStopWheelsRunning = b;
     }
 
     public void extendPneumatics()
