@@ -8,12 +8,12 @@ import java.util.jar.Manifest;
 
 import com.spartronics4915.atlas.commands.*;
 import com.spartronics4915.atlas.subsystems.LED;
+import com.spartronics4915.atlas.subsystems.Launcher;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import sun.misc.Launcher;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -39,7 +39,14 @@ public class OI
     private static final int kHarvesterRetractDriveStickButton = 5;
     private static final int kHarvesterRetractArcadeStickButton = 5;
     private static final int kHarvesterWheelsForwardDriveStickButton = 6;
-    private static final int kHarvest6rWheelsReverseDriveStickButton = 7;
+    private static final int kHarvesterWheelsForwardArcadeStickButton = 6;
+    private static final int kHarvesterWheelsReverseDriveStickButton = 7;
+    private static final int kHarvesterWheelsReverseArcadeStickButton = 7;
+    private static final int kHarvesterWheelsStopDriveStickButton = 8;
+    private static final int kHarvesterWheelsStopArcadeStickButton = 8;
+
+    public static final Joystick sDriveStick = new Joystick(kDriveJoystickPort);
+    public static final Joystick sArcadeStick = new Joystick(kArcadeStickPort);
 
     // add harvester buttons -- extend & retract
     // add harvester wheel buttons -- trigger style forward & reverse
@@ -73,25 +80,45 @@ public class OI
             Logger.logThrowableCrash(e);
         }
 
-        // initialize joysticks
-        Joystick driveStick = new Joystick(kDriveJoystickPort);
-        Joystick arcadeStick = new Joystick(kArcadeStickPort);
+        // initialize joystick buttons
+        JoystickButton launchCommandGroupButtonOnDriveStick = new JoystickButton(sDriveStick, kLaunchDriveStickButton);
+        JoystickButton launchCommandGroupButtonOnArcadeStick = new JoystickButton(sArcadeStick, kLaunchArcadeStickButton);
+        JoystickButton windCommandGroupButtonOnDriveStick = new JoystickButton(sDriveStick, kWindLauncherDriveStickButton);
+        JoystickButton windCommandGroupButtonOnArcadeStick = new JoystickButton(sArcadeStick, kLaunchArcadeStickButton);
+
+        JoystickButton intakeDownButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterExtendDriveStickButton);
+        JoystickButton intakeDownButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterExtendArcadeStickButton);
+        JoystickButton intakeUpButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterRetractDriveStickButton);
+        JoystickButton intakeUpButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterRetractArcadeStickButton);
+        JoystickButton ejectBallButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterWheelsReverseDriveStickButton);
+        JoystickButton ejectBallButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterWheelsReverseArcadeStickButton);
+        JoystickButton wheelsForwardButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterWheelsForwardDriveStickButton);
+        JoystickButton wheelsForwardButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterWheelsForwardArcadeStickButton);
+        JoystickButton stopHarvesterWheelsButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterWheelsStopDriveStickButton);
+        JoystickButton stopHarvesterWheelsButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterWheelsStopArcadeStickButton);
 
         // get instance to LED system
         mLED = LED.getInstance();
 
         initDrivetrainOI();
 
-        // initialize launchers buttons
-		JoystickButton launchCommandGroupButtonOnDriveStick = new JoystickButton(driveStick, kLaunchDriveStickButton);
+        // initialize launcher buttons
         launchCommandGroupButtonOnDriveStick.whenPressed(new ActivateLauncherCommandGroup(mLED));
-        JoystickButton launchCommandGroupButtonOnArcadeStick = new JoystickButton(arcadeStick, kLaunchArcadeStickButton);
 		launchCommandGroupButtonOnArcadeStick.whenPressed(new ActivateLauncherCommandGroup(mLED));
-
-        JoystickButton windCommandGroupButtonOnDriveStick = new JoystickButton(driveStick, kWindLauncherDriveStickButton);
         windCommandGroupButtonOnDriveStick.whenPressed(new WindLauncherCommandGroup(mLED));
-        JoystickButton windCommandGroupButtonOnArcadeStick = new JoystickButton(arcadeStick, kLaunchArcadeStickButton);
         windCommandGroupButtonOnArcadeStick.whenPressed(new WindLauncherCommandGroup(mLED));
+
+        // initialize harvester buttons
+        intakeDownButtonOnDriveStick.whenPressed(new IntakeDown());
+        intakeDownButtonOnArcadeStick.whenPressed(new IntakeDown());
+        intakeUpButtonOnDriveStick.whenPressed(new IntakeUp());
+        intakeUpButtonOnArcadeStick.whenPressed(new IntakeUp());
+        ejectBallButtonOnDriveStick.whenPressed(new HarvesterWheelsExpel());
+        ejectBallButtonOnArcadeStick.whenPressed(new HarvesterWheelsExpel());
+        wheelsForwardButtonOnDriveStick.whenPressed(new HarvesterWheelsIntake());
+        wheelsForwardButtonOnArcadeStick.whenPressed(new HarvesterWheelsIntake());
+        stopHarvesterWheelsButtonOnDriveStick.whenPressed(new HarvesterStopWheels());
+        stopHarvesterWheelsButtonOnArcadeStick.whenPressed(new HarvesterStopWheels());
     }
 
     private void initDrivetrainOI()
