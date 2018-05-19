@@ -92,7 +92,7 @@ public class OI
         JoystickButton launchCommandGroupButtonOnDriveStick = new JoystickButton(sDriveStick, kLaunchDriveStickButton);
         JoystickButton launchCommandGroupButtonOnArcadeStick = new JoystickButton(sArcadeStick, kLaunchArcadeStickButton);
         JoystickButton windCommandGroupButtonOnDriveStick = new JoystickButton(sDriveStick, kWindLauncherDriveStickButton);
-        JoystickButton windCommandGroupButtonOnArcadeStick = new JoystickButton(sArcadeStick, kLaunchArcadeStickButton);
+        JoystickButton windCommandGroupButtonOnArcadeStick = new JoystickButton(sArcadeStick, kWindLauncherArcadeStickButton);
 
         JoystickButton intakeDownButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterExtendDriveStickButton);
         JoystickButton intakeDownButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterExtendArcadeStickButton);
