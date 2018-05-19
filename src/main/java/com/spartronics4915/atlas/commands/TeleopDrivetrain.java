@@ -6,6 +6,7 @@ import com.spartronics4915.atlas.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * TeleopDrivetrain runs the drivetrain using a drive stick.
@@ -31,8 +32,8 @@ public class TeleopDrivetrain extends Command
     protected void execute()
     {
         mDrivetrain.driveOpenLoop(
-            Math.max(OI.sDriveStick.getThrottle() - OI.sDriveStick.getTwist(), 1),
-            Math.max(OI.sDriveStick.getThrottle() + OI.sDriveStick.getTwist(), 1)
+            Math.max(Math.min(OI.sDriveStick.getX() - OI.sDriveStick.getY(), 1), -1),
+            Math.max(Math.min(OI.sDriveStick.getX() + OI.sDriveStick.getY(), 1), -1)
         );
     }
 
@@ -45,6 +46,7 @@ public class TeleopDrivetrain extends Command
     @Override
     protected void end()
     {
+        mDrivetrain.stop();
         Logger.info("TeleopDrivetrain ended");
     }
 

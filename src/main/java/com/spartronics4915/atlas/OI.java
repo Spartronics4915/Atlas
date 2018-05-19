@@ -28,7 +28,7 @@ public class OI
     private static final int kArcadeStickPort = 2;
 
     // drivetrain controls
-    private static final int kQuickTurnDriveStickButton = 1;
+    private static final int kQuickTurnDriveStickButton = 9;
 
     // launcher controls TODO: Fix button
     private static final int kLaunchDriveStickButton = 2;

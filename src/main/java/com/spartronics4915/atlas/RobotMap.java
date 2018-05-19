@@ -40,6 +40,6 @@ public class RobotMap
     public static final int klauncherRewoundSwitchId = 3; //DIO 3
 
     //CAN IDs
-    public static final int kDriveTrainIMUID = 1;
+    public static final int kDriveTrainIMUID = 2;
     
 }

@@ -2,12 +2,14 @@ package com.spartronics4915.atlas.commands;
 
 import com.spartronics4915.atlas.Logger;
 import com.spartronics4915.atlas.subsystems.Drivetrain;
+import com.spartronics4915.util.Rotation2d;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * QuickTurnDrivetrain runs the drivetrain using a drive stick.
@@ -33,18 +35,22 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
         mPIDController.setOutputRange(-1, 1);
         mPIDController.setInputRange(0, 360); // Guranteed by the Rotation2d class
         mPIDController.setAbsoluteTolerance(kAllowedError);
+
+        mPIDController.setSetpoint(mDrivetrain.getIMUHeading().rotateBy(Rotation2d.fromDegrees(180)).getDegrees());
     }
 
     @Override
     protected void initialize()
     {
+        mPIDController.enable();
         Logger.info("QuickTurnDrivetrain initialized");
     }
 
     @Override
     protected void execute()
     {
-        mDrivetrain.stop();
+        SmartDashboard.putNumber("IMU Value", mDrivetrain.getIMUHeading().getDegrees());
+        SmartDashboard.putNumber("PID Setpoint", mPIDController.getSetpoint());
     }
 
     @Override
