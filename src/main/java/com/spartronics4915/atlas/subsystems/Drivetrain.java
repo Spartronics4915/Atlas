@@ -66,7 +66,7 @@ public class Drivetrain extends SpartronicsSubsystem
     {
         if (isInitialized())
         {
-            setDefaultCommand(new StopCommand(this));
+            setDefaultCommand(new StopCommand());
         }
     }
 

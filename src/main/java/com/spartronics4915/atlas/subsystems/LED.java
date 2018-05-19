@@ -44,7 +44,7 @@ public class LED extends SpartronicsSubsystem
     		RESET
     }
     /**
-     * this will change the style ofthe bling code we wanted based on input from the driver.
+     * this will change the style of the bling code we wanted based on input from the driver.
      */
     private final byte[] kPurple = "a".getBytes();
     private final byte[] kDefault = "0".getBytes();

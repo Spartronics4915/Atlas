@@ -1,6 +1,7 @@
 package com.spartronics4915.atlas.subsystems;
 
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
+import com.spartronics4915.atlas.subsystems.LED.BlingState;
 import com.spartronics4915.atlas.commands.HarvesterStopWheels;
 import com.spartronics4915.atlas.RobotMap;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -99,11 +100,13 @@ public class Harvester extends SpartronicsSubsystem
     public void extendPneumatics()
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kForward); //TODO: is this correct
+        LED.getInstance().setBlingState(BlingState.SPARTRONICS_FADE);
     }
 
     public void retractPneumatics()
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kReverse);  //TODO: is this correct
+        LED.getInstance().setBlingState(BlingState.BLUE);
     }
 
     public void stopPneumatics()
