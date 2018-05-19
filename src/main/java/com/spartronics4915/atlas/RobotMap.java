@@ -28,8 +28,8 @@ public class RobotMap
 	//Motor IDs
 	public static final int kLeftDriveMotorId = 0;
     public static final int kRightDriveMotorId = 1;
-	public static final int kHarvesterCollectionMotorId = 3;
-	public static final int kLauncherWindingMotorId = 4;
+	public static final int kHarvesterCollectionMotorId = 2;
+	public static final int kLauncherWindingMotorId = 3;
     
     //Analog IDs
     public static final int kBallPresentSensorId = 0; //Analog port 0
