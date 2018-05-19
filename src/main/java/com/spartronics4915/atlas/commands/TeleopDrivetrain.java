@@ -1,6 +1,7 @@
 package com.spartronics4915.atlas.commands;
 
 import com.spartronics4915.atlas.Logger;
+import com.spartronics4915.atlas.OI;
 import com.spartronics4915.atlas.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -29,7 +30,10 @@ public class TeleopDrivetrain extends Command
     @Override
     protected void execute()
     {
-        mDrivetrain.stop();
+        mDrivetrain.driveOpenLoop(
+            Math.max(OI.sDriveStick.getThrottle() - OI.sDriveStick.getTwist(), 1),
+            Math.max(OI.sDriveStick.getThrottle() + OI.sDriveStick.getTwist(), 1)
+        );
     }
 
     @Override
