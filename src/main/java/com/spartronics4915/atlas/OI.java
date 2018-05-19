@@ -27,6 +27,9 @@ public class OI
     private static final int kDriveJoystickPort = 1;
     private static final int kArcadeStickPort = 2;
 
+    // drivetrain controls
+    private static final int kQuickTurnDriveStickButton = 1;
+
     // launcher controls TODO: Fix button
     private static final int kLaunchDriveStickButton = 2;
     private static final int kLaunchArcadeStickButton = 2;
@@ -81,6 +84,8 @@ public class OI
         }
 
         // initialize joystick buttons
+        JoystickButton quickTurnDrivetrain = new JoystickButton(sDriveStick, kQuickTurnDriveStickButton);
+
         JoystickButton launchCommandGroupButtonOnDriveStick = new JoystickButton(sDriveStick, kLaunchDriveStickButton);
         JoystickButton launchCommandGroupButtonOnArcadeStick = new JoystickButton(sArcadeStick, kLaunchArcadeStickButton);
         JoystickButton windCommandGroupButtonOnDriveStick = new JoystickButton(sDriveStick, kWindLauncherDriveStickButton);
@@ -101,6 +106,10 @@ public class OI
         mLED = LED.getInstance();
 
         initDrivetrainOI();
+
+        // initialize drivetrain buttons
+        quickTurnDrivetrain.whenPressed(new QuickTurnDrivetrain());
+        quickTurnDrivetrain.whenReleased(new TeleopDrivetrain());
 
         // initialize launcher buttons
         launchCommandGroupButtonOnDriveStick.whenPressed(new ActivateLauncherCommandGroup(mLED));

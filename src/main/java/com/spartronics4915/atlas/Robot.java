@@ -2,6 +2,7 @@
 package com.spartronics4915.atlas;
 
 import com.spartronics4915.atlas.subsystems.Drivetrain;
+import com.spartronics4915.atlas.commands.TeleopDrivetrain;
 import com.spartronics4915.atlas.subsystems.*;
 
 import com.spartronics4915.util.CANProbe;
@@ -73,7 +74,8 @@ public class Robot extends IterativeRobot
         {
             Logger.error("can't cancel a null autonomous command.");
         }
-        // FIXME: Actually initialize TeleOp here
+        new TeleopDrivetrain().start(); // Start arcade drive
+
         Logger.notice("teleop initalized.");
     }
 
