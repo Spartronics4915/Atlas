@@ -1,6 +1,7 @@
 package com.spartronics4915.atlas.subsystems;
 
 import com.spartronics4915.atlas.Logger;
+
 import com.spartronics4915.atlas.RobotMap;
 import com.spartronics4915.atlas.commands.StopCommand;
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
@@ -10,6 +11,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
+import com.spartronics4915.atlas.subsystems.LED;
+import com.spartronics4915.atlas.subsystems.LED.BlingState;
 
 /**
  * The subsystem that controls the Launcher.
@@ -134,11 +137,13 @@ public class Launcher extends SpartronicsSubsystem
     public void launcherRetractSolenoid()
     {
         mLauncherActivate.set(DoubleSolenoid.Value.kReverse);
+        LED.getInstance().setBlingState(BlingState.YELLOW);
     }
 
     public void launcherExtendSolenoid() 
     {
         mLauncherActivate.set(DoubleSolenoid.Value.kForward);
+        LED.getInstance().setBlingState(BlingState.BLUE);
     }
 
     public void launcherStopSolenoid() 
@@ -152,6 +157,7 @@ public class Launcher extends SpartronicsSubsystem
     public boolean isBallPresent()
     {
         return mBallPresentSensor.isTargetAcquired();
+        
     }
 
     public double getBallRangeSensorDistance()
