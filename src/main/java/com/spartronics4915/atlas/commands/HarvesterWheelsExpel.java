@@ -23,26 +23,31 @@ public class HarvesterWheelsExpel extends Command
         requires(mHarvester);
     }
 
+    @Override
     protected void initialize()
     {
         mHarvester.setWheelSpeed(0.0);
     }
 
+    @Override
     protected void execute()
     {
         mHarvester.setWheelSpeed(RobotMap.kHarvesterExpelWheelSpeed);
     }
 
+    @Override
     protected boolean isFinished()
     {
         return interruptionFinish;
     }
 
+    @Override
     protected void end()
     {
         //stop wheels?
     }
 
+    @Override
     protected void interrupted()
     {
         interruptionFinish = true;

@@ -20,26 +20,31 @@ public class IntakeRelease extends Command
         requires(mHarvester);
     }
 
+    @Override
     protected void initialize()
     {
         setTimeout(6.0);
     }
 
+    @Override
     protected void execute()
     {
         mHarvester.setWheelSpeed(RobotMap.kHarvesterExpelWheelSpeed);
     }
 
+    @Override
     protected boolean isFinished()
     {
         return isTimedOut();
     }
 
+    @Override
     protected void end()
     {
         mHarvester.setWheelSpeed(0.0);
     }
 
+    @Override
     protected void interrupted()
     {
         end();

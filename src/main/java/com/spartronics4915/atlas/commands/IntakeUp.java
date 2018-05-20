@@ -23,6 +23,7 @@ public class IntakeUp extends Command
         requires(mHarvester);
     }
 
+    @Override
     protected void initialize()
     {
         mHarvester.setWheelSpeed(0.0);
@@ -38,6 +39,7 @@ public class IntakeUp extends Command
         setTimeout(1.0);
     }
 
+    @Override
     protected void execute()
     {
         if(!shouldQuit)
@@ -46,6 +48,7 @@ public class IntakeUp extends Command
         }
     }
 
+    @Override
     protected boolean isFinished()
     {
         if(shouldQuit)
@@ -58,11 +61,13 @@ public class IntakeUp extends Command
         }
     }
 
+    @Override
     protected void end()
     {
         mHarvester.setWheelSpeed(0.0);
     }
 
+    @Override
     protected void interrupted()
     {
         end();

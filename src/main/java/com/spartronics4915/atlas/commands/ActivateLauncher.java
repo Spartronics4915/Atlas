@@ -24,6 +24,7 @@ public class ActivateLauncher extends Command
         requires(mLauncher);
     }
 
+    @Override
     protected void initialize()
     {
         Logger.info("Command: ActivateLauncher initialize");
@@ -40,6 +41,7 @@ public class ActivateLauncher extends Command
         setInterruptible(false);
     }
 
+    @Override
     protected void execute()
     {
         // if any motors running, turn them off
@@ -52,6 +54,7 @@ public class ActivateLauncher extends Command
         shouldQuit = true;
     }
 
+    @Override
     protected boolean isFinished()
     {
         if (shouldQuit)
@@ -62,6 +65,7 @@ public class ActivateLauncher extends Command
         return false;
     }
 
+    @Override
     protected void end()
     {
         Logger.info("Command:ActivateLauncher: time to end()");

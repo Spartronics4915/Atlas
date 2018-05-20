@@ -23,6 +23,7 @@ public class ExtendPneumatics extends Command
         requires(mHarvester);
     }
 
+    @Override
     protected void initialize()
     {
         if (mHarvester.isHarvesterUp()) 
@@ -36,22 +37,26 @@ public class ExtendPneumatics extends Command
         }
     }
 
+    @Override
     protected void execute()
     {
         mHarvester.setWheelSpeed(0.1); //TODO: set speed!
         mLauncher.stopLauncherWindingMotor();
     }
 
+    @Override
     protected boolean isFinished()
     {
         return mHarvester.isHarvesterDown();
     }
 
+    @Override
     protected void end()
     {
         Logger.info("Extend Pneumatics done.");
     }
 
+    @Override
     protected void interrupted()
     {
         end();
