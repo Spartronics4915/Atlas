@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -25,6 +26,7 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
 
     private Drivetrain mDrivetrain;
     private PIDController mPIDController;
+    private DifferentialDrive mDifferentialDrive;
 
     public QuickTurnDrivetrain()
     {
@@ -33,9 +35,13 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
 
         mPIDController = new PIDController(kP, kI, kD, kF, this, this);
         mPIDController.setOutputRange(-1, 1);
-        mPIDController.setInputRange(0, 360); // Guranteed by the Rotation2d class
+        mPIDController.setInputRange(0, 360); // Guaranteed by the Rotation2d class
         mPIDController.setAbsoluteTolerance(kAllowedError);
 
+        mDifferentialDrive = mDrivetrain.getNewDifferentialDrive();
+        // We don't want a deadband for this command
+
+        // Rotate current heading by 180 degrees
         mPIDController.setSetpoint(mDrivetrain.getIMUHeading().rotateBy(Rotation2d.fromDegrees(180)).getDegrees());
     }
 
@@ -49,7 +55,7 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
     @Override
     protected void execute()
     {
-        SmartDashboard.putNumber("IMU Value", mDrivetrain.getIMUHeading().getDegrees());
+        SmartDashboard.putNumber("IMU Heading", mDrivetrain.getIMUHeading().getDegrees());
         SmartDashboard.putNumber("PID Setpoint", mPIDController.getSetpoint());
     }
 
@@ -103,6 +109,6 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
     @Override
     public void pidWrite(double output)
     {
-        mDrivetrain.driveOpenLoop(output, -output);
+        mDifferentialDrive.arcadeDrive(0, output);
     }
 }
