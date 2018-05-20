@@ -25,8 +25,8 @@ public class Drivetrain extends SpartronicsSubsystem
     private static Drivetrain sInstance = null;
 
     // Motors
-    public SpeedController mLeftMotor;
-    public SpeedController mRightMotor;
+    public Victor mLeftMotor;
+    public Victor mRightMotor;
 
     // IMU
     public PigeonIMU mIMU;
@@ -96,7 +96,7 @@ public class Drivetrain extends SpartronicsSubsystem
     {
         DifferentialDrive diffDrive = new DifferentialDrive(mLeftMotor, mRightMotor);
         diffDrive.setMaxOutput(1); 
-        
+
         return diffDrive;
     }
 }
