@@ -50,6 +50,9 @@ public class OI
     private static final int kHarvesterWheelsStopDriveStickButton = 8;
     private static final int kHarvesterWheelsStopArcadeStickButton = 8;
 
+    // launcher test controls
+    private static final int kTestLauncherWindingMotor = 9;
+
     public static final Joystick sDriveStick = new Joystick(kDriveJoystickPort);
     public static final Joystick sArcadeStick = new Joystick(kArcadeStickPort);
 
@@ -94,6 +97,9 @@ public class OI
         JoystickButton windCommandGroupButtonOnDriveStick = new JoystickButton(sDriveStick, kWindLauncherDriveStickButton);
         JoystickButton windCommandGroupButtonOnArcadeStick = new JoystickButton(sArcadeStick, kWindLauncherArcadeStickButton);
 
+        // for testing of the winding motor
+        JoystickButton testLauncherWindingMotor = new JoystickButton(sArcadeStick, kTestLauncherWindingMotor);
+
         JoystickButton intakeDownButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterExtendDriveStickButton);
         JoystickButton intakeDownButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterExtendArcadeStickButton);
         JoystickButton intakeUpButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterRetractDriveStickButton);
@@ -120,6 +126,9 @@ public class OI
         windCommandGroupButtonOnDriveStick.whenPressed(new WindLauncherCommandGroup(mLED));
         windCommandGroupButtonOnArcadeStick.whenPressed(new WindLauncherCommandGroup(mLED));
 
+        // test buttons for launcher
+        testLauncherWindingMotor.whenPressed(new WindLauncher());
+
         // initialize harvester buttons
         intakeDownButtonOnDriveStick.whenPressed(new IntakeDown());
         intakeDownButtonOnArcadeStick.whenPressed(new IntakeDown());
@@ -140,14 +149,14 @@ public class OI
 
     private Command ToggleHarvesterWheels()
     {
-        //if the command "HarvesterStopWheels" is not currently running
-        if(!mHarvester.getIsStopWheelsRunning())
+        //if the collection motor is set to 0.0
+        if(mHarvester.areWheelsStopped())
         {
-            return new HarvesterStopWheels();
+            return new HarvesterWheelsIntake();
         }
         else
         {
-            return new HarvesterWheelsIntake();
+            return new HarvesterStopWheels();
         }
     }
 }

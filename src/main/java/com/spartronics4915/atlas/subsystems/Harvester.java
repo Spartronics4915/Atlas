@@ -4,10 +4,13 @@ import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
 import com.spartronics4915.atlas.subsystems.LED.BlingState;
 import com.spartronics4915.atlas.commands.HarvesterStopWheels;
 import com.spartronics4915.atlas.RobotMap;
+import com.spartronics4915.util.Util;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The subsystem that controls the Harvester.
@@ -26,7 +29,8 @@ public class Harvester extends SpartronicsSubsystem
 	private SpeedController mCollectionMotor;
 	private DigitalInput mTopMagneticSwitch;
     private DigitalInput mBottomMagneticSwitch;
-    private boolean isStopWheelsRunning = false;
+
+    private double mHarvesterCollectionMotorSpeed = 0.5;
 
     private static Harvester sInstance = null;
 
@@ -52,7 +56,9 @@ public class Harvester extends SpartronicsSubsystem
         	mCollectionMotor = new Talon(RobotMap.kHarvesterCollectionMotorId);
         	mTopMagneticSwitch = new DigitalInput(RobotMap.kHarvesterTopMagneticSwitchId);
             mBottomMagneticSwitch = new DigitalInput(RobotMap.kHarvesterBottomMagneticSwitchId);
-        	
+            
+            outputToSmartDashboard();
+
             // This needs to go at the end. We *don't* set
             // m_initalized here (we only set it on failure).
             logInitialized(true);
@@ -87,14 +93,9 @@ public class Harvester extends SpartronicsSubsystem
         return !mTopMagneticSwitch.get(); //TODO:  is this correct
     }
 
-    public boolean getIsStopWheelsRunning()
+    public boolean areWheelsStopped()
     {
-        return isStopWheelsRunning;
-    }
-
-    public void setIsStopWheelsRunning(boolean b)
-    {
-        isStopWheelsRunning = b;
+        return Util.epsilonEquals(mCollectionMotor.get(), 0.0, 0.00001);
     }
 
     public void extendPneumatics()
@@ -135,5 +136,30 @@ public class Harvester extends SpartronicsSubsystem
     {
         setWheelSpeed(0.0);
         stopPneumatics(); //TODO: is this correct??
+    }
+
+    public String getHarvesterSolenoidState()
+    {
+        DoubleSolenoid.Value state = mHarvesterArms.get();
+        if (state == DoubleSolenoid.Value.kOff)
+            return "kOff";
+        else if (state == DoubleSolenoid.Value.kReverse)
+            return "kReverse";
+        else if (state == DoubleSolenoid.Value.kForward)
+            return "kForward";
+        else
+            return "Unexpected Error: check mHarvesterArms";
+    }
+
+    /**
+     * SmartDashboard experience
+     */
+    public void outputToSmartDashboard()
+    {
+        // Update network tables for the launcher
+        SmartDashboard.putNumber("mHarvesterCollectionMotorCurrentSpeed", mCollectionMotor.get());
+        SmartDashboard.putBoolean("mHarvesterTopMagneticSwitchTriggered", mTopMagneticSwitch.get());
+        SmartDashboard.putBoolean("mHarvesterBottomMagneticSwitchTriggered", mBottomMagneticSwitch.get());
+        SmartDashboard.putString("mHarvesterSolenoidState", getHarvesterSolenoidState());
     }
 }
