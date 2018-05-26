@@ -4,6 +4,7 @@ import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
 import com.spartronics4915.atlas.subsystems.LED.BlingState;
 import com.spartronics4915.atlas.commands.HarvesterStopWheels;
 import com.spartronics4915.atlas.RobotMap;
+import com.spartronics4915.util.Util;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -29,7 +30,6 @@ public class Harvester extends SpartronicsSubsystem
 	private DigitalInput mTopMagneticSwitch;
     private DigitalInput mBottomMagneticSwitch;
 
-    private boolean isStopWheelsRunning = false;
     private double mHarvesterCollectionMotorSpeed = 0.5;
 
     private static Harvester sInstance = null;
@@ -93,14 +93,9 @@ public class Harvester extends SpartronicsSubsystem
         return !mTopMagneticSwitch.get(); //TODO:  is this correct
     }
 
-    public boolean getIsStopWheelsRunning()
+    public boolean areWheelsStopped()
     {
-        return isStopWheelsRunning;
-    }
-
-    public void setIsStopWheelsRunning(boolean b)
-    {
-        isStopWheelsRunning = b;
+        return Util.epsilonEquals(mCollectionMotor.get(), 0.0, 0.00001);
     }
 
     public void extendPneumatics()

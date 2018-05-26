@@ -23,7 +23,6 @@ public class HarvesterStopWheels extends Command
     @Override
     protected void initialize()
     {
-        mHarvester.setIsStopWheelsRunning(true);
         mHarvester.setWheelSpeed(0.0);
     }
 
@@ -42,7 +41,6 @@ public class HarvesterStopWheels extends Command
     @Override
     protected void end()
     {
-        mHarvester.setIsStopWheelsRunning(false);
     }
 
     @Override

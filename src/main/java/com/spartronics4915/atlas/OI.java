@@ -149,14 +149,14 @@ public class OI
 
     private Command ToggleHarvesterWheels()
     {
-        //if the command "HarvesterStopWheels" is not currently running
-        if(!mHarvester.getIsStopWheelsRunning())
+        //if the collection motor is set to 0.0
+        if(mHarvester.areWheelsStopped())
         {
-            return new HarvesterStopWheels();
+            return new HarvesterWheelsIntake();
         }
         else
         {
-            return new HarvesterWheelsIntake();
+            return new HarvesterStopWheels();
         }
     }
 }
