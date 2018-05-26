@@ -25,6 +25,7 @@ public class HarvesterWheelsIntake extends Command
     @Override
     protected void initialize()
     {
+        interruptionFinish = false;
         mHarvester.setWheelSpeed(0.0);
     }
 
@@ -50,5 +51,6 @@ public class HarvesterWheelsIntake extends Command
     protected void interrupted()
     {
         interruptionFinish = true;
+        isFinished();
     }
 }

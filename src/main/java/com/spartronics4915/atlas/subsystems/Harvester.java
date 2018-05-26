@@ -27,8 +27,8 @@ public class Harvester extends SpartronicsSubsystem
 	
 	private DoubleSolenoid mHarvesterArms;
 	private SpeedController mCollectionMotor;
-	private DigitalInput mTopMagneticSwitch;
-    private DigitalInput mBottomMagneticSwitch;
+	private DigitalInput mTopMagneticSwitch; //detects if intake is up: the physical switch is lower than the other one
+    private DigitalInput mBottomMagneticSwitch; //detects if intake is down: the physical switch is higher than the other one
 
     private static Harvester sInstance = null;
 
@@ -83,12 +83,12 @@ public class Harvester extends SpartronicsSubsystem
 
     public boolean isHarvesterDown()
     {
-        return !mBottomMagneticSwitch.get(); // TODO: is this correct
+        return !mBottomMagneticSwitch.get();
     }
 
     public boolean isHarvesterUp()
     {
-        return !mTopMagneticSwitch.get(); //TODO:  is this correct
+        return !mTopMagneticSwitch.get();
     }
 
     public boolean areWheelsStopped()
