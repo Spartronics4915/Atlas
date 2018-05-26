@@ -56,6 +56,7 @@ public class TeleopDrivetrain extends Command
     @Override
     protected void interrupted()
     {
+        mDrivetrain.stop();
         Logger.info("TeleopDrivetrain interrupted");
     }
 }

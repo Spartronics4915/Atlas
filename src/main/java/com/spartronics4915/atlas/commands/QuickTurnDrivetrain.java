@@ -18,11 +18,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
 {
 
-    private static final float kP = 1;
-    private static final float kI = 0;
-    private static final float kD = 0;
-    private static final float kF = 0;
-    private static final float kAllowedError = 3; // In degrees
+    private static final double kP = 0;
+    private static final double kI = 0;
+    private static final double kD = 0;
+    private static final double kF = 0;
+    private static final double kAllowedError = 3; // In degrees
 
     private Drivetrain mDrivetrain;
     private PIDController mPIDController;
@@ -57,6 +57,7 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
     {
         SmartDashboard.putNumber("IMU Heading", mDrivetrain.getIMUHeading().getDegrees());
         SmartDashboard.putNumber("PID Setpoint", mPIDController.getSetpoint());
+        mPIDController.enable();
     }
 
     @Override
@@ -68,19 +69,30 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
     @Override
     protected void end()
     {
-        if (mPIDController.isEnabled())
-        {
-            mPIDController.reset();
-            assert(!mPIDController.isEnabled());
-        }
-        mDrivetrain.stop();
+        disable();
         Logger.info("QuickTurnDrivetrain ended");
     }
 
     @Override
     protected void interrupted()
     {
+        disable();
+
+        // Rotate current heading by 180 degrees
+        mPIDController.setSetpoint(mDrivetrain.getIMUHeading().rotateBy(Rotation2d.fromDegrees(180)).getDegrees());
+
         Logger.info("QuickTurnDrivetrain interrupted");
+    }
+
+    private void disable()
+    {
+        if (mPIDController.isEnabled())
+        {
+            mPIDController.reset();
+            mPIDController.disable();
+            assert(!mPIDController.isEnabled());
+        }
+        mDrivetrain.stop();
     }
 
     // PIDSource -----------------------------------------------------------------------
