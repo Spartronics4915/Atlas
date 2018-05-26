@@ -22,27 +22,32 @@ public class SetBlingStateCommand extends Command
         mBlingState = blingState;
     }
 
+    @Override
     protected void initialize()
     {
         Logger.info("SetBlingStateCommand initialized");
         mLED.setBlingState(mBlingState);
     }
     
+    @Override
     protected void execute()
     {
         //doesn't need to do anything
     }
 
+    @Override
     protected boolean isFinished()
     {
         return true;
     }
 
+    @Override
     protected void end()
     {
         Logger.info("SetBlingStateCommand ended");
     }
 
+    @Override
     protected void interrupted()
     {
         Logger.info("SetBlingStateCommand interrupted");

@@ -22,26 +22,31 @@ public class HarvesterWheelsIntake extends Command
         requires(mHarvester);
     }
 
+    @Override
     protected void initialize()
     {
         mHarvester.setWheelSpeed(0.0);
     }
 
+    @Override
     protected void execute()
     {
         mHarvester.setWheelSpeed(RobotMap.kHarvesterIntakeWheelSpeed);
     }
 
+    @Override
     protected boolean isFinished()
     {
         return interruptionFinish;
     }
 
+    @Override
     protected void end()
     {
         //Stop wheels?
     }
 
+    @Override
     protected void interrupted()
     {
         interruptionFinish = true;

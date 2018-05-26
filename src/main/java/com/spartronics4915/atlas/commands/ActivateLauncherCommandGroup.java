@@ -12,8 +12,8 @@ public class ActivateLauncherCommandGroup extends CommandGroup
     public ActivateLauncherCommandGroup(LED mLed)
     {
         addSequential(new SetBlingStateCommand(mLed, BlingState.SPARTRONICS_FADE));
-        // TODO: ensure harvester is extended
-        // addSequential(new ExtendHarvester());
+        // ensure harvester is extended
+        addSequential(new IntakeDown());
         addSequential(new ActivateLauncher());
     }
 }

@@ -23,13 +23,13 @@ public class RobotMap
     public static final int kHarvesterRetractSolenoidId = 0; //PCM 0
 	public static final int kHarvesterExtendSolenoidId = 1; // PCM 1
     public static final int kLaunchExtendSolenoidId = 3; //PCM 3
-    public static final int kLaunchRetractSolenoidId = 4; //PCM 4
+    public static final int kLaunchRetractSolenoidId = 2; //PCM 2
 	
 	//Motor IDs
 	public static final int kLeftDriveMotorId = 0;
     public static final int kRightDriveMotorId = 1;
-	public static final int kHarvesterCollectionMotorId = 3;
-	public static final int kLauncherWindingMotorId = 4;
+	public static final int kHarvesterCollectionMotorId = 2;
+	public static final int kLauncherWindingMotorId = 3;
     
     //Analog IDs
     public static final int kBallPresentSensorId = 0; //Analog port 0
@@ -37,9 +37,9 @@ public class RobotMap
     //DIO IDs
     public static final int kHarvesterTopMagneticSwitchId = 0; //DIO 0
     public static final int kHarvesterBottomMagneticSwitchId = 1; //DIO 1
-    public static final int klauncherRewoundSwitchId = 3; //DIO 3
+    public static final int klauncherRewoundSwitchId = 2; //DIO 2
 
     //CAN IDs
-    public static final int kDriveTrainIMUID = 1;
+    public static final int kDriveTrainIMUID = 2;
     
 }

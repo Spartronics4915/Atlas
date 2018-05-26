@@ -23,6 +23,7 @@ public class IntakeDown extends Command
         requires(mHarvester);
     }
 
+    @Override
     protected void initialize()
     {
         if(mHarvester.isHarvesterUp())
@@ -31,22 +32,26 @@ public class IntakeDown extends Command
         }
     }
 
+    @Override
     protected void execute()
     {
         mHarvester.setWheelSpeed(RobotMap.kHarvesterIntakeWheelSpeed);
         mLauncher.stopLauncherWindingMotor();
     }
 
+    @Override
     protected boolean isFinished()
     {
         return mHarvester.isHarvesterDown();
     }
 
+    @Override
     protected void end()
     {
         mHarvester.setWheelSpeed(0.0); //TODO: ???????
     }
 
+    @Override
     protected void interrupted()
     {
         end();

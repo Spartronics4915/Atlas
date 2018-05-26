@@ -12,8 +12,8 @@ public class WindLauncherCommandGroup extends CommandGroup
     public WindLauncherCommandGroup(LED mLed)
     {
         addSequential(new SetBlingStateCommand(mLed, BlingState.FAST_FLASHING));
-        // TODO: ensure harvester is extended
-        // addSequential(new ExtendHarvester());
+        // ensure harvester is extended
+        addSequential(new IntakeDown());
         addSequential(new WindLauncher());
     }
 }

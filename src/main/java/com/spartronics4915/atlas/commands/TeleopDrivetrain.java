@@ -4,8 +4,8 @@ import com.spartronics4915.atlas.Logger;
 import com.spartronics4915.atlas.OI;
 import com.spartronics4915.atlas.subsystems.Drivetrain;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  * TeleopDrivetrain runs the drivetrain using a drive stick.
@@ -14,10 +14,17 @@ public class TeleopDrivetrain extends Command
 {
 
     private Drivetrain mDrivetrain;
+    private DifferentialDrive mDifferentialDrive;
+
+    private static final double kDeadband = 0.1;
 
     public TeleopDrivetrain()
     {
         mDrivetrain = Drivetrain.getInstance();
+       
+        mDifferentialDrive = mDrivetrain.getNewDifferentialDrive();
+        mDifferentialDrive.setDeadband(kDeadband);
+
         requires(mDrivetrain);
     }
 
@@ -30,10 +37,7 @@ public class TeleopDrivetrain extends Command
     @Override
     protected void execute()
     {
-        mDrivetrain.driveOpenLoop(
-            Math.max(OI.sDriveStick.getThrottle() - OI.sDriveStick.getTwist(), 1),
-            Math.max(OI.sDriveStick.getThrottle() + OI.sDriveStick.getTwist(), 1)
-        );
+        mDifferentialDrive.arcadeDrive(OI.sDriveStick.getY(), OI.sDriveStick.getX());
     }
 
     @Override
@@ -45,6 +49,7 @@ public class TeleopDrivetrain extends Command
     @Override
     protected void end()
     {
+        mDrivetrain.stop();
         Logger.info("TeleopDrivetrain ended");
     }
 

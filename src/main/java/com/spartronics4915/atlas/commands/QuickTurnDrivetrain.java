@@ -2,12 +2,15 @@ package com.spartronics4915.atlas.commands;
 
 import com.spartronics4915.atlas.Logger;
 import com.spartronics4915.atlas.subsystems.Drivetrain;
+import com.spartronics4915.util.Rotation2d;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * QuickTurnDrivetrain runs the drivetrain using a drive stick.
@@ -23,6 +26,7 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
 
     private Drivetrain mDrivetrain;
     private PIDController mPIDController;
+    private DifferentialDrive mDifferentialDrive;
 
     public QuickTurnDrivetrain()
     {
@@ -31,20 +35,28 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
 
         mPIDController = new PIDController(kP, kI, kD, kF, this, this);
         mPIDController.setOutputRange(-1, 1);
-        mPIDController.setInputRange(0, 360); // Guranteed by the Rotation2d class
+        mPIDController.setInputRange(0, 360); // Guaranteed by the Rotation2d class
         mPIDController.setAbsoluteTolerance(kAllowedError);
+
+        mDifferentialDrive = mDrivetrain.getNewDifferentialDrive();
+        // We don't want a deadband for this command
+
+        // Rotate current heading by 180 degrees
+        mPIDController.setSetpoint(mDrivetrain.getIMUHeading().rotateBy(Rotation2d.fromDegrees(180)).getDegrees());
     }
 
     @Override
     protected void initialize()
     {
+        mPIDController.enable();
         Logger.info("QuickTurnDrivetrain initialized");
     }
 
     @Override
     protected void execute()
     {
-        mDrivetrain.stop();
+        SmartDashboard.putNumber("IMU Heading", mDrivetrain.getIMUHeading().getDegrees());
+        SmartDashboard.putNumber("PID Setpoint", mPIDController.getSetpoint());
     }
 
     @Override
@@ -97,6 +109,6 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
     @Override
     public void pidWrite(double output)
     {
-        mDrivetrain.driveOpenLoop(output, -output);
+        mDifferentialDrive.arcadeDrive(0, output);
     }
 }

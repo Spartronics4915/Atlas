@@ -23,6 +23,7 @@ public class WindLauncher extends Command
         requires(mLauncher);
     }
 
+    @Override
     protected void initialize()
     {
         Logger.info("Command: WindLauncher initialize");
@@ -42,6 +43,7 @@ public class WindLauncher extends Command
         setInterruptible(false);
     }
 
+    @Override
     protected void execute()
     {
         // start winding the motors
@@ -52,6 +54,7 @@ public class WindLauncher extends Command
         }
     }
 
+    @Override
     protected boolean isFinished()
     {
         if (shouldQuit || isTimedOut() || mLauncher.isLauncherRewound())
@@ -62,12 +65,14 @@ public class WindLauncher extends Command
         return false;
     }
 
+    @Override
     protected void end()
     {
         Logger.info("Command:WindLauncher: time to end()");
         mLauncher.stopLauncherWindingMotor();
     }
 
+    @Override
     protected void interrupted()
     {
         Logger.info("Command:WindLauncher: interrupted called, but wasn't interruptable -- why?!");

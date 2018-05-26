@@ -8,6 +8,7 @@ import com.spartronics4915.util.Rotation2d;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  * The subsystem that controls the Drivetrain.
@@ -24,10 +25,10 @@ public class Drivetrain extends SpartronicsSubsystem
     private static Drivetrain sInstance = null;
 
     // Motors
-    public SpeedController mLeftMotor;
-    public SpeedController mRightMotor;
+    public Victor mLeftMotor;
+    public Victor mRightMotor;
 
-    //IMU
+    // IMU
     public PigeonIMU mIMU;
 
     public static Drivetrain getInstance() {
@@ -40,7 +41,6 @@ public class Drivetrain extends SpartronicsSubsystem
 
     private Drivetrain()
     {
-        
         try
         {
             // Initialize motors
@@ -50,8 +50,6 @@ public class Drivetrain extends SpartronicsSubsystem
             //Initialize IMU
             mIMU = new PigeonIMU(RobotMap.kDriveTrainIMUID);
 
-            // This needs to go at the end. We *don't* set
-            // mInitalized here (we only set it on faliure).
             logInitialized(true);
         }
         catch (Exception e)
@@ -83,9 +81,22 @@ public class Drivetrain extends SpartronicsSubsystem
         return Rotation2d.fromDegrees(ypr[0]);
     }
 
-    public void driveOpenLoop(double left, double right)
+    /*
+    Although we could return the same DifferentialDrive here,
+    reuse could cause bugs (especially with inversion or deadbands).
+    This also allows us to have different settings for different
+    commands.
+
+    One could argue that this allows multiple differential drives
+    to fight, but that was already a possibility with other methods,
+    and we defer stopping conflicts like this to WPILib's scheduler
+    (see the Command.requires method).
+    */
+    public DifferentialDrive getNewDifferentialDrive()
     {
-        mLeftMotor.set(left);
-        mRightMotor.set(right);
+        DifferentialDrive diffDrive = new DifferentialDrive(mLeftMotor, mRightMotor);
+        diffDrive.setMaxOutput(1); 
+
+        return diffDrive;
     }
 }
