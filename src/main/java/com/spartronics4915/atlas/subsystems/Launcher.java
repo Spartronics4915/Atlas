@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.Talon;
 import com.spartronics4915.atlas.subsystems.LED;
 import com.spartronics4915.atlas.subsystems.LED.BlingState;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * The subsystem that controls the Launcher.
  *
@@ -39,11 +41,12 @@ public class Launcher extends SpartronicsSubsystem
     private static Launcher sInstance = null;
 
     // Launcher subsystem
-    private static SpeedController mLauncherWindingMotor;    // winding motor
+    private static Talon mLauncherWindingMotor;              // winding motor
     private static DigitalInput mLauncherRewound;            // limit switch to detect IF rewound complete
     private static DoubleSolenoid mLauncherActivate;         // pneumatic for launching ball    
-    private double mLauncherWindingMotorSpeed=0.5;           // IMPORTANT: test winding motor direction 
+    private double mLauncherWindingMotorSpeed = 0.5;         // IMPORTANT: test winding motor direction 
     private SpartIRSensor mBallPresentSensor = null;         // sensor to detect presence of the ball
+
 
     // Subsystems are a singleton
     public static Launcher getInstance() 
@@ -69,6 +72,9 @@ public class Launcher extends SpartronicsSubsystem
             mLauncherActivate = new DoubleSolenoid(RobotMap.kLaunchExtendSolenoidId, RobotMap.kLaunchRetractSolenoidId);
             mBallPresentSensor = new SpartIRSensor(RobotMap.kBallPresentSensorId);
 
+            // update smartdashboard
+            outputToSmartDashboard();
+            
             // This needs to go at the end. We *don't* set
             // m_initalized here (we only set it on faliure).
             logInitialized(true);
@@ -150,6 +156,19 @@ public class Launcher extends SpartronicsSubsystem
     {
         mLauncherActivate.set(DoubleSolenoid.Value.kForward);
     }
+
+    public String getLauncherSolenoidState()
+    {
+        DoubleSolenoid.Value state = mLauncherActivate.get();
+        if (state == DoubleSolenoid.Value.kOff)
+            return "kOff";
+        else if (state == DoubleSolenoid.Value.kReverse)
+            return "kReverse";
+        else if (state == DoubleSolenoid.Value.kForward)
+            return "kForward";
+        else
+            return "Unexpected Error: check launcherSolenoid";
+    }
     
     /** 
      * Ball sensor methods for detecting ball & sensor distances
@@ -163,5 +182,26 @@ public class Launcher extends SpartronicsSubsystem
     public double getBallRangeSensorDistance()
     {
         return mBallPresentSensor.getDistance();
+    }
+
+    /**
+     * SmartDashboard experience
+     */
+    public void outputToSmartDashboard()
+    {
+        // Update network tables for the launcher
+        SmartDashboard.putNumber("mLauncherWindingMotorDefaultSpeed", getLauncherWindingMotorSetSpeed());
+        SmartDashboard.putNumber("mLauncherWindingMotorCurrentSpeed", mLauncherWindingMotor.get());
+        SmartDashboard.putBoolean("mLauncherRewoundSwitchTriggered", mLauncherRewound.get());
+        SmartDashboard.putString("mLauncherSolenoidState", getLauncherSolenoidState());
+        SmartDashboard.putBoolean("mBallPresent", isBallPresent());
+        SmartDashboard.putNumber("mDistanceToBall", mBallPresentSensor.getDistance());
+    }
+
+    public void updateFromSmartDashboard()
+    {
+        // extract defaults from network tables
+        Double speed = SmartDashboard.getNumber("mLauncherWindingMotorDefaultSpeed", mLauncherWindingMotorSpeed);
+        setLauncherWindingMotorSpeed(speed);
     }
 }
