@@ -14,11 +14,13 @@ import edu.wpi.first.wpilibj.command.Command;
 public class IntakeUp extends Command
 {
     private Harvester mHarvester;
+    private Launcher mLauncher;
     private boolean shouldQuit;
 
     public IntakeUp()
     {
         mHarvester = Harvester.getInstance();
+        mLauncher = Launcher.getInstance();
         shouldQuit = false;
         requires(mHarvester);
     }
@@ -28,7 +30,7 @@ public class IntakeUp extends Command
     {
         mHarvester.setWheelSpeed(0.0);
         
-        if(mHarvester.isHarvesterUp())
+        if(mHarvester.isHarvesterUp() || !mLauncher.isLauncherRewound())
         {
             shouldQuit = true;
         }
