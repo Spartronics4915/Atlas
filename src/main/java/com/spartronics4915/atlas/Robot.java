@@ -74,6 +74,10 @@ public class Robot extends IterativeRobot
         {
             Logger.error("can't cancel a null autonomous command.");
         }
+
+        // update subsystem defaults from the network tables as needed
+        mLauncher.updateFromSmartDashboard();
+
         new TeleopDrivetrain().start(); // Start arcade drive
 
         Logger.notice("teleop initalized.");
@@ -83,6 +87,7 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        mLauncher.outputToSmartDashboard();
     }
 
     @Override
