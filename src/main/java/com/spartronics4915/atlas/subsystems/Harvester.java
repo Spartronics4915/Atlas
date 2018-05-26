@@ -107,6 +107,7 @@ public class Harvester extends SpartronicsSubsystem
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kReverse);  //TODO: is this correct
         LED.getInstance().setBlingState(BlingState.BLUE);
+        LED.getInstance().setBlingState(BlingState.FLASHING);
     }
 
     public void stopPneumatics()
