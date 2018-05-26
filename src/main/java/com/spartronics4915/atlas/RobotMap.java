@@ -22,8 +22,8 @@ public class RobotMap
     //Solenoid IDs
     public static final int kHarvesterRetractSolenoidId = 0; //PCM 0
 	public static final int kHarvesterExtendSolenoidId = 1; // PCM 1
-    public static final int kLaunchExtendSolenoidId = 3; //PCM 3
-    public static final int kLaunchRetractSolenoidId = 2; //PCM 2
+    public static final int kLaunchExtendSolenoidId = 2; //PCM 2
+    public static final int kLaunchRetractSolenoidId = 3; //PCM 3
 	
 	//Motor IDs
 	public static final int kLeftDriveMotorId = 0;

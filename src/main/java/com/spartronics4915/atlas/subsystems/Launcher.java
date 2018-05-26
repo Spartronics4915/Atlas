@@ -27,13 +27,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *      - requires the harvester to be extended -- check IF the extended limit switch is activated 
  *          - do we want to automatically extend the harvester if it is closed? (and wait for limit switch?)
  *      - launchActivate to set(true) 
- *      - TBD -- check IF ball is present before launching
+ *      - checks IF ball is present before launching
  *  - Rewind 
  *      - requires the harvester to be extended -- check IF the extended limit switch is activated 
  *      - launchActivate to set(false) 
  *      - run the launcherWindingMotor UNTIL the rewind limit switch is activated 
- *      - TBD -- set timeout for the safety
- * system -- needs experimenting
+ *      - set timeout for the safety handled in the commands
  * 
  */
 public class Launcher extends SpartronicsSubsystem
@@ -140,22 +139,18 @@ public class Launcher extends SpartronicsSubsystem
      * Pneumatics to activate launcher: retract & extend & stop 
      *  Stop: Stops filling the cylinder. Will not retract it, but will allow it to be pushed back
      */
-    public void launcherRetractSolenoid()
+    // prepares for winding
+    public void launcherPrepareForWinding()
     {
         mLauncherActivate.set(DoubleSolenoid.Value.kReverse);
         LED.getInstance().setBlingState(BlingState.YELLOW);
     }
 
-    public void launcherExtendSolenoid() 
+    // Extend launches the ball
+    public void launcherLaunchBall() 
     {
         mLauncherActivate.set(DoubleSolenoid.Value.kForward);
         LED.getInstance().setBlingState(BlingState.BLUE);
-    }
-
-    public void launcherStopSolenoid() 
-    {
-        mLauncherActivate.set(DoubleSolenoid.Value.kForward);
-        LED.getInstance().setBlingState(BlingState.RESET);
     }
 
     public String getLauncherSolenoidState()
@@ -164,9 +159,9 @@ public class Launcher extends SpartronicsSubsystem
         if (state == DoubleSolenoid.Value.kOff)
             return "kOff";
         else if (state == DoubleSolenoid.Value.kReverse)
-            return "kReverse";
+            return "ready to wind";
         else if (state == DoubleSolenoid.Value.kForward)
-            return "kForward";
+            return "launched";
         else
             return "Unexpected Error: check launcherSolenoid";
     }
@@ -203,5 +198,11 @@ public class Launcher extends SpartronicsSubsystem
         // extract defaults from network tables
         Double speed = SmartDashboard.getNumber("mLauncherWindingMotorDefaultSpeed", mLauncherWindingMotorSpeed);
         setLauncherWindingMotorSpeed(speed);
+    }
+
+    public double readFromSmartDashboard()
+    {
+        // extract changes from network tables but don't store it
+        return SmartDashboard.getNumber("mLauncherWindingMotorDefaultSpeed", mLauncherWindingMotorSpeed);
     }
 }
