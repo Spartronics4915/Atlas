@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 /**
  * The subsystem that controls the LED.
  * Communicating to the Arduino by giving
- * a byte using Serial to the wanted blingstate to be
+ * a byte using Serial to the wanted BlingState to be
  * read by the Arduino to show the given Bling style wanted.
  * 
  * Based off the Arduino code under Spartronics4915/Bling/Roborio_functionality

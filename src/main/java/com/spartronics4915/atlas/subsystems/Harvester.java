@@ -54,7 +54,7 @@ public class Harvester extends SpartronicsSubsystem
             mBottomMagneticSwitch = new DigitalInput(RobotMap.kHarvesterBottomMagneticSwitchId);
         	
             // This needs to go at the end. We *don't* set
-            // m_initalized here (we only set it on faliure).
+            // m_initalized here (we only set it on failure).
             logInitialized(true);
         }
         catch (Exception e)
