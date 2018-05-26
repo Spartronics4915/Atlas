@@ -1,6 +1,7 @@
 package com.spartronics4915.atlas.commands;
 
 import com.spartronics4915.atlas.Logger;
+import com.spartronics4915.atlas.RobotMap;
 import com.spartronics4915.atlas.subsystems.Harvester;
 import com.spartronics4915.atlas.subsystems.Launcher;
 
@@ -40,7 +41,7 @@ public class ExtendPneumatics extends Command
     @Override
     protected void execute()
     {
-        mHarvester.setWheelSpeed(0.1); //TODO: set speed!
+        mHarvester.setWheelSpeed(RobotMap.kHarvesterIntakeWheelSpeed);
         mLauncher.stopLauncherWindingMotor();
     }
 

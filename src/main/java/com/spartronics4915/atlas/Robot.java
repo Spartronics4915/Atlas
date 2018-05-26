@@ -88,6 +88,7 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
         mLauncher.outputToSmartDashboard();
+        mHarvester.outputToSmartDashboard();
     }
 
     @Override
