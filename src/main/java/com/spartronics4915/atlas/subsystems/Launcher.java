@@ -157,7 +157,6 @@ public class Launcher extends SpartronicsSubsystem
     public boolean isBallPresent()
     {
         return mBallPresentSensor.isTargetAcquired();
-        
     }
 
     public double getBallRangeSensorDistance()
