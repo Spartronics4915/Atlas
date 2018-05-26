@@ -155,6 +155,7 @@ public class Launcher extends SpartronicsSubsystem
     public void launcherStopSolenoid() 
     {
         mLauncherActivate.set(DoubleSolenoid.Value.kForward);
+        LED.getInstance().setBlingState(BlingState.RESET);
     }
 
     public String getLauncherSolenoidState()
@@ -176,7 +177,6 @@ public class Launcher extends SpartronicsSubsystem
     public boolean isBallPresent()
     {
         return mBallPresentSensor.isTargetAcquired();
-        
     }
 
     public double getBallRangeSensorDistance()

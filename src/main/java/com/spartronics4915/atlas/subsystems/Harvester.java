@@ -58,7 +58,7 @@ public class Harvester extends SpartronicsSubsystem
             outputToSmartDashboard();
 
             // This needs to go at the end. We *don't* set
-            // m_initalized here (we only set it on faliure).
+            // m_initalized here (we only set it on failure).
             logInitialized(true);
         }
         catch (Exception e)
@@ -106,11 +106,14 @@ public class Harvester extends SpartronicsSubsystem
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kReverse);  //TODO: is this correct
         LED.getInstance().setBlingState(BlingState.BLUE);
+        LED.getInstance().setBlingState(BlingState.FLASHING);
     }
 
     public void stopPneumatics()
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kOff);  //TODO: is this correct
+        LED.getInstance().setBlingState(BlingState.RESET);
+
     }
 
     public void setWheelSpeed(double speed)
