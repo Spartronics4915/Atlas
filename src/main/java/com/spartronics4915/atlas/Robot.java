@@ -87,14 +87,31 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-        mLauncher.outputToSmartDashboard();
-        mHarvester.outputToSmartDashboard();
+        outputAllToSmartDashboard();
     }
 
     @Override
     public void testPeriodic()
     {
         LiveWindow.run();
+    }
+
+    @Override
+    public void disabledInit()
+    {
+        mLauncher.updateFromSmartDashboard();
+    }
+
+    @Override
+    public void disabledPeriodic()
+    {
+        outputAllToSmartDashboard();
+    }
+
+    private void outputAllToSmartDashboard()
+    {
+        mLauncher.outputToSmartDashboard();
+        mHarvester.outputToSmartDashboard();
     }
 
 }

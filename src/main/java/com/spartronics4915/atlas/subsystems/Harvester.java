@@ -30,8 +30,6 @@ public class Harvester extends SpartronicsSubsystem
 	private DigitalInput mTopMagneticSwitch;
     private DigitalInput mBottomMagneticSwitch;
 
-    private double mHarvesterCollectionMotorSpeed = 0.5;
-
     private static Harvester sInstance = null;
 
     public static Harvester getInstance()
@@ -161,6 +159,8 @@ public class Harvester extends SpartronicsSubsystem
         SmartDashboard.putNumber("mHarvesterCollectionMotorCurrentSpeed", mCollectionMotor.get());
         SmartDashboard.putBoolean("mHarvesterTopMagneticSwitchTriggered", mTopMagneticSwitch.get());
         SmartDashboard.putBoolean("mHarvesterBottomMagneticSwitchTriggered", mBottomMagneticSwitch.get());
+        SmartDashboard.putBoolean("mHarvesterIsHarvesterDown", isHarvesterDown());
+        SmartDashboard.putBoolean("mHarvesterIsHarvesterUp", isHarvesterUp());
         SmartDashboard.putString("mHarvesterSolenoidState", getHarvesterSolenoidState());
     }
 }

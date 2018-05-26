@@ -35,7 +35,7 @@ public class IntakeDown extends Command
     @Override
     protected void execute()
     {
-        mHarvester.setWheelSpeed(RobotMap.kHarvesterIntakeWheelSpeed);
+        mHarvester.setWheelSpeed(0.0);
         mLauncher.stopLauncherWindingMotor();
     }
 
@@ -48,7 +48,7 @@ public class IntakeDown extends Command
     @Override
     protected void end()
     {
-        mHarvester.setWheelSpeed(0.0); //TODO: ???????
+        mHarvester.setWheelSpeed(0.0);
     }
 
     @Override
