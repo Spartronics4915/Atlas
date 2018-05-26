@@ -18,11 +18,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
 {
 
-    private static final double kP = 0;
+    private static final double kP = 0.02;
     private static final double kI = 0;
     private static final double kD = 0;
     private static final double kF = 0;
-    private static final double kAllowedError = 3; // In degrees
+    private static final double kAllowedError = 10; // In degrees
 
     private Drivetrain mDrivetrain;
     private PIDController mPIDController;
@@ -37,18 +37,21 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
         mPIDController.setOutputRange(-1, 1);
         mPIDController.setInputRange(0, 360); // Guaranteed by the Rotation2d class
         mPIDController.setAbsoluteTolerance(kAllowedError);
+        mPIDController.setContinuous();
 
         mDifferentialDrive = mDrivetrain.getNewDifferentialDrive();
         // We don't want a deadband for this command
-
-        // Rotate current heading by 180 degrees
-        mPIDController.setSetpoint(mDrivetrain.getIMUHeading().rotateBy(Rotation2d.fromDegrees(180)).getDegrees());
     }
 
     @Override
     protected void initialize()
     {
+        // Rotate current heading by 180 degrees
+        mPIDController.setSetpoint(mDrivetrain.getIMUHeading().rotateBy(Rotation2d.fromDegrees(180)).getDegrees());
+
+        // Actually start the controller
         mPIDController.enable();
+
         Logger.info("QuickTurnDrivetrain initialized");
     }
 
@@ -77,10 +80,6 @@ public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
     protected void interrupted()
     {
         disable();
-
-        // Rotate current heading by 180 degrees
-        mPIDController.setSetpoint(mDrivetrain.getIMUHeading().rotateBy(Rotation2d.fromDegrees(180)).getDegrees());
-
         Logger.info("QuickTurnDrivetrain interrupted");
     }
 
