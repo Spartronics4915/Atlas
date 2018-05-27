@@ -15,12 +15,12 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ActivateLauncher extends Command
 {
 
-    private Harvester mHarvester = Harvester.getInstance();
-    private Launcher mLauncher = Launcher.getInstance();
-
-    private boolean shouldQuit = false;
+    private Harvester mHarvester;
+    private Launcher mLauncher;
 
     public ActivateLauncher() {
+        mHarvester = Harvester.getInstance();
+        mLauncher = Launcher.getInstance();
         requires(mLauncher);
     }
 
@@ -29,14 +29,18 @@ public class ActivateLauncher extends Command
     {
         Logger.info("Command: ActivateLauncher initialize");
         // If harvester is up, cancel the command & turn of harvester wheels
-        if (mHarvester.isHarvesterUp() || !mLauncher.isBallPresent()) 
+        if (!mHarvester.isHarvesterDown() || !mLauncher.isBallPresent()) 
         {
-            shouldQuit = true;
+            Logger.info("Command:ActivateLauncher: Initialize quitting -- harvester is up or ball is not present");
             return;
         }
 
+        // if any motors running, turn them off
+        mHarvester.setWheelSpeed(0.0);
+        mLauncher.stopLauncherWindingMotor();
+
         // extand/release the launcher pneumatics 
-        mLauncher.launcherExtendSolenoid();
+        mLauncher.launcherLaunchBall();
 
         setInterruptible(false);
     }
@@ -44,25 +48,14 @@ public class ActivateLauncher extends Command
     @Override
     protected void execute()
     {
-        // if any motors running, turn them off
-        if (!shouldQuit)
-        {
-            mHarvester.setWheelSpeed(0.0);
-            mLauncher.stopLauncherWindingMotor();
-        }
         // activating pneumatics is instantenous -- indicate ready to quit
-        shouldQuit = true;
     }
 
     @Override
     protected boolean isFinished()
     {
-        if (shouldQuit)
-        {
-            Logger.info("Command:ActivateLauncher: isFinished True");
-            return true;
-        }
-        return false;
+        Logger.info("Command:ActivateLauncher: isFinished True");
+        return true;
     }
 
     @Override
