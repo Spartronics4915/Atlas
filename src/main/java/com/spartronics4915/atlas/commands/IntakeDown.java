@@ -26,10 +26,8 @@ public class IntakeDown extends Command
     @Override
     protected void initialize()
     {
-        if(mHarvester.isHarvesterUp())
-        {
-            mHarvester.extendPneumatics();
-        }
+        // no need to check the harvester position -- just extend the intake
+        mHarvester.extendPneumatics();
     }
 
     @Override
