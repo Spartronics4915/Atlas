@@ -44,6 +44,7 @@ public class Launcher extends SpartronicsSubsystem
     private static DigitalInput mLauncherRewound;            // limit switch to detect IF rewound complete
     private static DoubleSolenoid mLauncherActivate;         // pneumatic for launching ball    
     private double mLauncherWindingMotorSpeed = 0.5;         // IMPORTANT: test winding motor direction 
+    private final double kLauncherWindingMaxSpeed = 0.75;    // Safety limit for the motor
     private SpartIRSensor mBallPresentSensor = null;         // sensor to detect presence of the ball
 
 
@@ -197,6 +198,11 @@ public class Launcher extends SpartronicsSubsystem
     {
         // extract defaults from network tables
         Double speed = SmartDashboard.getNumber("mLauncherWindingMotorDefaultSpeed", mLauncherWindingMotorSpeed);
+        if (speed > kLauncherWindingMaxSpeed)
+        {
+            Logger.info("Launcher: updateFromSmartDashboard -- speed > allowed max speed");
+            speed = kLauncherWindingMaxSpeed;
+        }
         setLauncherWindingMotorSpeed(speed);
     }
 
