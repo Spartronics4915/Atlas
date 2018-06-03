@@ -30,7 +30,8 @@ public class IntakeUp extends Command
     {
         mHarvester.setWheelSpeed(0.0);
         
-        if(mHarvester.isHarvesterUp() || !mLauncher.isLauncherRewound())
+        // Only check IF launcher is unwound -- we may need to pressuraize harvester
+        if (!mLauncher.isLauncherRewound())
         {
             shouldQuit = true;
         }

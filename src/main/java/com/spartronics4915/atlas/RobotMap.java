@@ -11,8 +11,8 @@ package com.spartronics4915.atlas;
 public class RobotMap
 {
     //Speeds
-    public static final double kHarvesterIntakeWheelSpeed = -0.1;
-    public static final double kHarvesterExpelWheelSpeed = 0.1;
+    public static final double kHarvesterIntakeWheelSpeed = -0.75;
+    public static final double kHarvesterExpelWheelSpeed = 0.75;
 
     //CAN Devices
     public static final int kNumPigeons = 1;
@@ -22,8 +22,8 @@ public class RobotMap
     //Solenoid IDs
     public static final int kHarvesterRetractSolenoidId = 0; //PCM 0
 	public static final int kHarvesterExtendSolenoidId = 1; // PCM 1
-    public static final int kLaunchExtendSolenoidId = 3; //PCM 3
-    public static final int kLaunchRetractSolenoidId = 2; //PCM 2
+    public static final int kLaunchExtendSolenoidId = 2; //PCM 2
+    public static final int kLaunchRetractSolenoidId = 3; //PCM 3
 	
 	//Motor IDs
 	public static final int kLeftDriveMotorId = 0;

@@ -13,7 +13,7 @@ public class Logger
 {
 
     private static final UUID RUN_INSTANCE_UUID = UUID.randomUUID();
-    public static int sVerbosity = 0; // 0: notices and above,  1: info and above, 2: all
+    public static int sVerbosity = 2; // 0: notices and above,  1: info and above, 2: all
 
     public static void setVerbosity(String nm)
     {

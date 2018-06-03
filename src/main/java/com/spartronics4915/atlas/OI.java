@@ -52,6 +52,7 @@ public class OI
 
     // launcher test controls
     private static final int kTestLauncherWindingMotor = 9;
+    private static final int kTestLauncherSolenoid = 10;
 
     public static final Joystick sDriveStick = new Joystick(kDriveJoystickPort);
     public static final Joystick sArcadeStick = new Joystick(kArcadeStickPort);
@@ -99,6 +100,7 @@ public class OI
 
         // for testing of the winding motor
         JoystickButton testLauncherWindingMotor = new JoystickButton(sArcadeStick, kTestLauncherWindingMotor);
+        JoystickButton testLauncherSolenoid = new JoystickButton(sArcadeStick, kTestLauncherSolenoid);
 
         JoystickButton intakeDownButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterExtendDriveStickButton);
         JoystickButton intakeDownButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterExtendArcadeStickButton);
@@ -127,7 +129,9 @@ public class OI
         windCommandGroupButtonOnArcadeStick.whenPressed(new WindLauncherCommandGroup(mLED));
 
         // test buttons for launcher
-        testLauncherWindingMotor.whenPressed(new WindLauncher());
+        //testLauncherWindingMotor.whenPressed(new TestWindLauncherSpeed());
+        testLauncherWindingMotor.whileHeld(new TestWindLauncherSpeed());
+        testLauncherSolenoid.whenPressed(new TestLauncherSolenoid());
 
         // initialize harvester buttons
         intakeDownButtonOnDriveStick.whenPressed(new IntakeDown());

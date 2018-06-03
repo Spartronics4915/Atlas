@@ -47,6 +47,10 @@ public class Drivetrain extends SpartronicsSubsystem
             mLeftMotor = new Victor(RobotMap.kLeftDriveMotorId);
             mRightMotor = new Victor(RobotMap.kRightDriveMotorId);
             
+            // Reverse motors
+            mLeftMotor.setInverted(true);
+            mRightMotor.setInverted(true);
+
             //Initialize IMU
             mIMU = new PigeonIMU(RobotMap.kDriveTrainIMUID);
 

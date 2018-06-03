@@ -37,7 +37,8 @@ public class TeleopDrivetrain extends Command
     @Override
     protected void execute()
     {
-        mDifferentialDrive.arcadeDrive(OI.sDriveStick.getY(), OI.sDriveStick.getX());
+        // getZ is the throttle
+        mDifferentialDrive.arcadeDrive(OI.sDriveStick.getY()*OI.sDriveStick.getZ(), OI.sDriveStick.getX()*-1); // Steering is reversed!
     }
 
     @Override
@@ -56,6 +57,7 @@ public class TeleopDrivetrain extends Command
     @Override
     protected void interrupted()
     {
+        mDrivetrain.stop();
         Logger.info("TeleopDrivetrain interrupted");
     }
 }

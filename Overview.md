@@ -123,32 +123,29 @@ IMPORTANT: launcher winder can only operate in one direction -- anything else wi
 
 # OI Controls
 * Harvester
-    * Open  -- extend the harvester
+    * Buttons 4 -- intake down
         * command completes when limit switch is reached
-    * Close -- retract the harvester
-        * command completes when limit switch is reached
-    * Forward/Stop collection motor -- start/stop motor on forward direction --> wired to same button action
-    * Reverse/Stop collection motor -- start/stop motor on reverse direction --> wired to same button action
-    * Pick up ball
-        * requires the harvester to be extended; 
-        * run the harvester collection motor
-    * Eject ball
-        * requires the harvester to be closed/retracted; 
-        * run the harvester collection motor
-        * stop the harvester collection motor after a timeout (maybe 5 seconds)
+    * Buttons 5 -- intake up
+        * command completes when 1sec timeout reached
+    * Buttons 6 -- spits the ball
+        * runs harvester wheels for 6 secs
+    * Buttons 7 -- toggles harvester wheels for ball intake
+        * Toggles wheels for intake of ball or stops
+    * Buttons 8 -- stop harvester wheels
 
 * Launcher
-    * Launch
-        * requires the harvester to be extended -- check IF the extended limit switch is activated
-            * do we want to automatically extend the harvester if it is closed? (and wait for limit switch?)
-        * launchActivate to set(true)
-        * TBD -- check IF ball is present before launching
-    * Rewind
-        * requires the harvester to be extended -- check IF the extended limit switch is activated
-        * launchActivate to set(false)
-        * run the launcherWindingMotor UNTIL the rewind limit switch is activated
-        * TBD -- set timeout for the safety system -- needs experimenting
+    * Buttons 2 - Launch ball command group
+        * harvester extends
+        * launches only IF ball present
+    * Buttons 3 -- Rewind launcher command group
+        * runs the launcherWindingMotor UNTIL the rewind limit switch is activated
+        * uses a set timeout for the safety
+    * FIX! Buttons 9 -- test button to wind motor
+        * rewinds the launcher while updating speed from smart dashboard or limit switch is hit
+    * FIX! Buttons 10 -- test button to activate/deactivate launcher solenoid
+        * activates launcher, waits 2 secs. and deactivates launcher
+    
 * Drive train
     * Throttle controls
-    * TBD: 180 turn
+    * Buttons 9 -- Quick turn
 

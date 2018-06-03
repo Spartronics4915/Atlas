@@ -17,6 +17,8 @@ public class ExtendPneumatics extends Command
     private Harvester mHarvester;
     private Launcher mLauncher;
 
+    private boolean interruptionFinish = false;
+
     public ExtendPneumatics()
     {
         mHarvester = Harvester.getInstance();
@@ -27,6 +29,8 @@ public class ExtendPneumatics extends Command
     @Override
     protected void initialize()
     {
+        interruptionFinish = false;
+
         if (mHarvester.isHarvesterUp()) 
         {
             mHarvester.extendPneumatics();
@@ -48,7 +52,7 @@ public class ExtendPneumatics extends Command
     @Override
     protected boolean isFinished()
     {
-        return mHarvester.isHarvesterDown();
+        return mHarvester.isHarvesterDown() || interruptionFinish;
     }
 
     @Override
@@ -60,6 +64,7 @@ public class ExtendPneumatics extends Command
     @Override
     protected void interrupted()
     {
-        end();
+        interruptionFinish = true;
+        isFinished();
     }
 }

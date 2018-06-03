@@ -14,12 +14,12 @@ import edu.wpi.first.wpilibj.command.Command;
 public class WindLauncher extends Command
 {
 
-    private Harvester mHarvester = Harvester.getInstance();
-    private Launcher mLauncher = Launcher.getInstance();
-
-    private boolean shouldQuit = false;
+    private Harvester mHarvester;
+    private Launcher mLauncher;
 
     public WindLauncher() {
+        mHarvester = Harvester.getInstance();
+        mLauncher = Launcher.getInstance();
         requires(mLauncher);
     }
 
@@ -27,15 +27,10 @@ public class WindLauncher extends Command
     protected void initialize()
     {
         Logger.info("Command: WindLauncher initialize");
-        // If harvester is up, cancel the command & turn of harvester wheels
-        if (mHarvester.isHarvesterUp()) 
-        {
-            shouldQuit = true;
-            return;
-        }
+        // Riyadth says we don't need to check for Harvester -- the launcher will wind down w/o problem
 
         // retract the launcher pneumatics 
-        mLauncher.launcherRetractSolenoid();
+        mLauncher.launcherPrepareForWinding();
         
         // set a safety timeout if something goes wrong w/ switch
         setTimeout(4.5);
@@ -47,17 +42,14 @@ public class WindLauncher extends Command
     protected void execute()
     {
         // start winding the motors
-        if (!shouldQuit)
-        {
-            mHarvester.setWheelSpeed(0.0);
-            mLauncher.startLauncherWindingMotor();
-        }
+        mHarvester.setWheelSpeed(0.0);
+        mLauncher.startLauncherWindingMotor();
     }
 
     @Override
     protected boolean isFinished()
     {
-        if (shouldQuit || isTimedOut() || mLauncher.isLauncherRewound())
+        if (isTimedOut() || mLauncher.isLauncherRewound())
         {
             Logger.info("Command:WindLauncher: isFinished True");
             return true;
@@ -76,5 +68,6 @@ public class WindLauncher extends Command
     protected void interrupted()
     {
         Logger.info("Command:WindLauncher: interrupted called, but wasn't interruptable -- why?!");
+        end();
     }
 }
