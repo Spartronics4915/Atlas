@@ -24,6 +24,8 @@ public class Drivetrain extends SpartronicsSubsystem
 {
     private static Drivetrain sInstance = null;
 
+    private DifferentialDrive mDifferentialDrive;
+
     // Motors
     public Victor mLeftMotor;
     public Victor mRightMotor;
@@ -53,6 +55,9 @@ public class Drivetrain extends SpartronicsSubsystem
 
             //Initialize IMU
             mIMU = new PigeonIMU(RobotMap.kDriveTrainIMUID);
+
+            // Setup the differential drive
+            mDifferentialDrive = new DifferentialDrive(mLeftMotor, mRightMotor);
 
             logInitialized(true);
         }
@@ -85,22 +90,8 @@ public class Drivetrain extends SpartronicsSubsystem
         return Rotation2d.fromDegrees(ypr[0]);
     }
 
-    /*
-    Although we could return the same DifferentialDrive here,
-    reuse could cause bugs (especially with inversion or deadbands).
-    This also allows us to have different settings for different
-    commands.
-
-    One could argue that this allows multiple differential drives
-    to fight, but that was already a possibility with other methods,
-    and we defer stopping conflicts like this to WPILib's scheduler
-    (see the Command.requires method).
-    */
-    public DifferentialDrive getNewDifferentialDrive()
+    public void arcadeDrive(double speed, double rotation)
     {
-        DifferentialDrive diffDrive = new DifferentialDrive(mLeftMotor, mRightMotor);
-        diffDrive.setMaxOutput(1); 
-
-        return diffDrive;
+        mDifferentialDrive.arcadeDrive(speed, rotation);
     }
 }
