@@ -23,7 +23,7 @@ public class IntakeRelease extends Command
     @Override
     protected void initialize()
     {
-        setTimeout(6.0);
+        setTimeout(3.0);
     }
 
     @Override

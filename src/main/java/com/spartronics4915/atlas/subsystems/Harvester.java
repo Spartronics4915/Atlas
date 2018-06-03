@@ -93,7 +93,7 @@ public class Harvester extends SpartronicsSubsystem
 
     public boolean areWheelsStopped()
     {
-        return Util.epsilonEquals(mCollectionMotor.get(), 0.0, 0.00001);
+        return mCollectionMotor.get() == 0.0;
     }
 
     public void extendPneumatics()

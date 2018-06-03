@@ -33,7 +33,7 @@ public class WindLauncher extends Command
         mLauncher.launcherPrepareForWinding();
         
         // set a safety timeout if something goes wrong w/ switch
-        setTimeout(4.5);
+        setTimeout(6.0);
 
         setInterruptible(false);
     }
