@@ -152,6 +152,7 @@ public class Launcher extends SpartronicsSubsystem
     {
         mLauncherActivate.set(DoubleSolenoid.Value.kForward);
         LED.getInstance().setBlingState(BlingState.BLUE);
+        LED.getInstance().setBlingState(BlingState.FLASHING);
     }
 
     public String getLauncherSolenoidState()

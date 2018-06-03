@@ -99,14 +99,12 @@ public class Harvester extends SpartronicsSubsystem
     public void extendPneumatics()
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kForward); //TODO: is this correct
-        LED.getInstance().setBlingState(BlingState.RESET);
         LED.getInstance().setBlingState(BlingState.SPARTRONICS_FADE);
     }
 
     public void retractPneumatics()
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kReverse);  //TODO: is this correct
-        LED.getInstance().setBlingState(BlingState.RESET);
         LED.getInstance().setBlingState(BlingState.BLUE);
         LED.getInstance().setBlingState(BlingState.FLASHING);
     }
@@ -114,7 +112,8 @@ public class Harvester extends SpartronicsSubsystem
     public void stopPneumatics()
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kOff);  //TODO: is this correct
-        LED.getInstance().setBlingState(BlingState.RESET);
+        LED.getInstance().setBlingState(BlingState.RED);
+        LED.getInstance().setBlingState(BlingState.FADING);
     }
 
     public void setWheelSpeed(double speed)
