@@ -33,16 +33,16 @@ public class OI
     private static final int kQuickTurnDriveStickButton = 9;
     private static final int kDriveStraightDriveStickButton = 8;
 
-    // launcher controls TODO: Fix button
+    // launcher controls 
     private static final int kLaunchDriveStickButton = 2;
     private static final int kLaunchArcadeStickButton = 2;
     private static final int kWindLauncherDriveStickButton = 3;
     private static final int kWindLauncherArcadeStickButton = 4;
 
-    // harvester controls TODO: Fix button
-    private static final int kHarvesterExtendDriveStickButton = 4;
+    // harvester controls 
+    private static final int kHarvesterExtendDriveStickButton = 5;
     private static final int kHarvesterExtendArcadeStickButton = 1;
-    private static final int kHarvesterRetractDriveStickButton = 5;
+    private static final int kHarvesterRetractDriveStickButton = 4;
     private static final int kHarvesterRetractArcadeStickButton = 3;
     private static final int kHarvesterReleaseDriveStickButton = 10;
     private static final int kHarvesterReleaseArcadeStickButton = 6;
@@ -143,8 +143,8 @@ public class OI
         intakeUpButtonOnArcadeStick.whenPressed(new IntakeUp());
         intakeReleaseButtonOnDriveStick.whenPressed(new IntakeRelease());
         intakeReleaseButtonOnArcadeStick.whenPressed(new IntakeRelease());
-        toggleHarvesterWheelsButtonOnDriveStick.whenReleased(toggleHarvesterWheels());
-        toggleHarvesterWheelsButtonOnArcadeStick.whenReleased(toggleHarvesterWheels());
+        toggleHarvesterWheelsButtonOnDriveStick.toggleWhenPressed(new ToggleHarvesterWheels());
+        toggleHarvesterWheelsButtonOnArcadeStick.toggleWhenPressed(new ToggleHarvesterWheels());
         stopHarvesterWheelsButtonOnDriveStick.whenPressed(new HarvesterStopWheels());
         stopHarvesterWheelsButtonOnArcadeStick.whenPressed(new HarvesterStopWheels());
     }
@@ -154,17 +154,4 @@ public class OI
         // Initalize the drivetrain
     }
 
-    private Command toggleHarvesterWheels()
-    {
-        Logger.info("Are wheels stopped: "+mHarvester.areWheelsStopped());
-        //if the collection motor is set to 0.0
-        if(mHarvester.areWheelsStopped())
-        {
-            return new HarvesterWheelsIntake();
-        }
-        else
-        {
-            return new HarvesterStopWheels();
-        }
-    }
 }

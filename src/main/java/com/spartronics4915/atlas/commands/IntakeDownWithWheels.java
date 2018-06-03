@@ -10,47 +10,50 @@ import edu.wpi.first.wpilibj.command.Command;
  * This command is to keep motors safety happy, and is also an example of the
  * boilerplate/logger type code you need for a command.
  */
-public class HarvesterWheelsIntake extends Command
+public class IntakeDownWithWheels extends Command
 {
     private boolean interruptionFinish = false;
 
     private Harvester mHarvester;
 
-    public HarvesterWheelsIntake()
+    public IntakeDownWithWheels()
     {
         mHarvester = Harvester.getInstance();
+        //setTimeout(1.0);
+        setInterruptible(false);
         requires(mHarvester);
     }
 
     @Override
     protected void initialize()
     {
-        interruptionFinish = false;
-        mHarvester.setWheelSpeed(0.0);
+        //Logger.info("Command: IntakeDownWithWheels initialize");
+        mHarvester.extendPneumatics();
     }
 
     @Override
     protected void execute()
     {
-        mHarvester.setWheelSpeed(RobotMap.kHarvesterIntakeWheelSpeed);
+        // give a gentle push to the ball towards the launcher in case it gets stuck
+        mHarvester.setWheelSpeed(RobotMap.kHarvesterIntakeWheelSpeed/2);
     }
 
     @Override
     protected boolean isFinished()
     {
-        return interruptionFinish;
+        return mHarvester.isHarvesterDown();
     }
 
     @Override
     protected void end()
     {
-        //Stop wheels?
+        mHarvester.setWheelSpeed(0.0);
     }
 
     @Override
     protected void interrupted()
     {
-        interruptionFinish = true;
-        isFinished();
+        Logger.info("Command: IntakeDownWithWheels interrupted -- why??");
+        end();
     }
 }

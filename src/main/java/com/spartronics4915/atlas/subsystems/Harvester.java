@@ -3,6 +3,7 @@ package com.spartronics4915.atlas.subsystems;
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
 import com.spartronics4915.atlas.subsystems.LED.BlingState;
 import com.spartronics4915.atlas.commands.HarvesterStopWheels;
+import com.spartronics4915.atlas.Logger;
 import com.spartronics4915.atlas.RobotMap;
 import com.spartronics4915.util.Util;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -93,6 +94,7 @@ public class Harvester extends SpartronicsSubsystem
 
     public boolean areWheelsStopped()
     {
+        System.out.println("Harvester wheel speed == " + mCollectionMotor.get());
         return mCollectionMotor.get() == 0.0;
     }
 
@@ -126,7 +128,7 @@ public class Harvester extends SpartronicsSubsystem
     {
         if (isInitialized())
         {
-            setDefaultCommand(new HarvesterStopWheels());
+            // setDefaultCommand(new HarvesterStopWheels());
         }
     }
 

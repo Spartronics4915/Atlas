@@ -15,9 +15,12 @@ public class TestLauncherSolenoid extends Command
 {
 
     private Launcher mLauncher;
+    private Harvester mHarvester;
+    private boolean isAborted = false;
 
     public TestLauncherSolenoid() {
         mLauncher = Launcher.getInstance();
+        mHarvester = Harvester.getInstance();
         requires(mLauncher);
     }
 
@@ -28,10 +31,21 @@ public class TestLauncherSolenoid extends Command
 
         setInterruptible(false);
 
-        // launches the ball
-        mLauncher.launcherLaunchBall();
+        // If harvester is up, cancel the command & turn of harvester wheels
+        if (mHarvester.isHarvesterUp() || !mLauncher.isBallPresent()) 
+        {
+            Logger.info("Command:TestLauncherSolenoid: Initialize quitting -- harvester is up or ball is not present");
+            isAborted = true;
+            return;
+        }
+        isAborted = false;
+
         // waits before reengaging the gears 
         setTimeout(2.0);
+
+        // launches the ball
+        Logger.info("Cmd: Test Launch Activated");
+        mLauncher.launcherLaunchBall();
     }
 
     @Override
@@ -43,8 +57,9 @@ public class TestLauncherSolenoid extends Command
     protected boolean isFinished()
     {
         Logger.info("Command:TestLauncherSolenoid: isFinished True");
-        if (isTimedOut())
+        if (isTimedOut() || isAborted)
         {
+            Logger.info("Cmd Test Launcher isTimedout OR aborted");
             return true;
         }
         return false;
