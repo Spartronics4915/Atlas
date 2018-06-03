@@ -28,7 +28,7 @@ public class SetBlingStateCommand extends Command
         Logger.info("SetBlingStateCommand initialized");
         mLED.setBlingState(mBlingState);
     }
-    
+
     @Override
     protected void execute()
     {

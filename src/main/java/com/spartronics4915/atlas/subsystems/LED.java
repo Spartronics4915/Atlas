@@ -1,7 +1,11 @@
 package com.spartronics4915.atlas.subsystems;
 
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
+import com.spartronics4915.atlas.subsystems.LED.BlingState;
+
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The subsystem that controls the LED.
@@ -119,6 +123,7 @@ public class LED extends SpartronicsSubsystem
         		break;
         }
         mBling.write(message, message.length);
+        SmartDashboard.putRaw("mBlingTest", message);
     }
 
     @Override
@@ -134,4 +139,46 @@ public class LED extends SpartronicsSubsystem
     {
         // FIXME: Actually stop the motors
     }
+    
+/*    private void mBlingTest()
+    {     
+    	
+    	//mBlingTest = SmartDashboard key
+    	
+        getInstance().setBlingState(BlingState.BLUE);
+        Timer.delay(2.0);
+        
+        getInstance().setBlingState(BlingState.FADING);
+        Timer.delay(5.0);
+        
+        getInstance().setBlingState(BlingState.FLASHING);
+        Timer.delay(5.0);
+        
+        getInstance().setBlingState(BlingState.FAST_FLASHING);
+        Timer.delay(5.0);
+        
+        getInstance().setBlingState(BlingState.YELLOW);
+        Timer.delay(2.0);
+
+        getInstance().setBlingState(BlingState.RED);
+        Timer.delay(2.0);
+     
+        getInstance().setBlingState(BlingState.PURPLE);
+        Timer.delay(2.0);
+
+        getInstance().setBlingState(BlingState.GREEN);
+        Timer.delay(2.0);
+
+        getInstance().setBlingState(BlingState.SPARTRONICS_FADE);
+        Timer.delay(5.0);
+        
+        getInstance().setBlingState(BlingState.FADING);
+        Timer.delay(2.0);
+        
+        getInstance().setBlingState(BlingState.FLASHING);
+        Timer.delay(2.0);
+        
+        getInstance().setBlingState(BlingState.FAST_FLASHING);
+        Timer.delay(2.0);
+    }*/
 }

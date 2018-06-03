@@ -112,8 +112,8 @@ public class Harvester extends SpartronicsSubsystem
     public void stopPneumatics()
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kOff);  //TODO: is this correct
-        LED.getInstance().setBlingState(BlingState.RESET);
-
+        LED.getInstance().setBlingState(BlingState.RED);
+        LED.getInstance().setBlingState(BlingState.FADING);
     }
 
     public void setWheelSpeed(double speed)
