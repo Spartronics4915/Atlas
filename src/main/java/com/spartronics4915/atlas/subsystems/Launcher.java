@@ -43,8 +43,8 @@ public class Launcher extends SpartronicsSubsystem
     private static Talon mLauncherWindingMotor;              // winding motor
     private static DigitalInput mLauncherRewound;            // limit switch to detect IF rewound complete
     private static DoubleSolenoid mLauncherActivate;         // pneumatic for launching ball    
-    private double mLauncherWindingMotorSpeed = 0.5;         // IMPORTANT: test winding motor direction 
-    private final double kLauncherWindingMaxSpeed = 0.75;    // Safety limit for the motor
+    private double mLauncherWindingMotorSpeed = 0.85;         // IMPORTANT: test winding motor direction 
+    private final double kLauncherWindingMaxSpeed = 1.0;    // Safety limit for the motor
     private SpartIRSensor mBallPresentSensor = null;         // sensor to detect presence of the ball
 
 
@@ -187,6 +187,8 @@ public class Launcher extends SpartronicsSubsystem
     public void outputToSmartDashboard()
     {
         // Update network tables for the launcher
+        // Default Speed needs to be commented out IF we want to read from the dashboard for testing
+        // slider values and dynamic updates during the TestLauncherSpeed
         SmartDashboard.putNumber("mLauncherWindingMotorDefaultSpeed", getLauncherWindingMotorSetSpeed());
         SmartDashboard.putNumber("mLauncherWindingMotorCurrentSpeed", mLauncherWindingMotor.get());
         SmartDashboard.putBoolean("mLauncherRewoundSwitchTriggered", mLauncherRewound.get());
@@ -210,6 +212,8 @@ public class Launcher extends SpartronicsSubsystem
     public double readFromSmartDashboard()
     {
         // extract changes from network tables but don't store it
+        // Default Speed (outputToSmartDashboard) needs to be commented out IF we want to read from the dashboard for testing
+        // slider values and dynamic updates during the TestLauncherSpeed
         return SmartDashboard.getNumber("mLauncherWindingMotorDefaultSpeed", mLauncherWindingMotorSpeed);
     }
 }

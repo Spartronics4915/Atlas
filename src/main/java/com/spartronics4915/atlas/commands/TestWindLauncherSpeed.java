@@ -48,8 +48,8 @@ public class TestWindLauncherSpeed extends Command
             // retract the launcher pneumatics
             mLauncher.launcherPrepareForWinding();
         }
-        // check if safe to wind the launcher
-        if (mHarvester.isHarvesterUp() || mLauncher.isLauncherRewound()) {
+        // check if safe to wind the launcher -- rewound regardless of harvester state
+        if (mLauncher.isLauncherRewound()) {
             mLauncher.stopLauncherWindingMotor();
             return;
         }
@@ -57,6 +57,7 @@ public class TestWindLauncherSpeed extends Command
         // update mSpeed from the latest values
         mHarvester.setWheelSpeed(0.0);
         mSpeed = mLauncher.readFromSmartDashboard();
+        Logger.info("Command: TestWindLauncherSpeed is = " +  mSpeed);
         //mSpeed = mLauncher.getLauncherWindingMotorSetSpeed();
         mLauncher.startLauncherWindingMotor(mSpeed);
     }

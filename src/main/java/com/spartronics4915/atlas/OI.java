@@ -50,11 +50,9 @@ public class OI
     private static final int kHarvesterWheelsStopDriveStickButton = 7;
     private static final int kHarvesterWheelsStopArcadeStickButton = 7;
 
-    // launcher test controls
+    // launcher test controls -- not on ArcadeStick due to the 'mode' button
     private static final int kTestLauncherWindingMotorDriveStickButton = 6;
-    private static final int kTestLauncherWindingMotorArcadeStickButton = 10;
     private static final int kTestLauncherSolenoidDriveStickButton = 11;
-    private static final int kTestLauncherSolenoidArcadeStickButton = 9;
 
     public static final Joystick sDriveStick = new Joystick(kDriveJoystickPort);
     public static final Joystick sArcadeStick = new Joystick(kArcadeStickPort);
@@ -102,9 +100,7 @@ public class OI
 
         // for testing of the winding motor
         JoystickButton testLauncherWindingMotorButtonOnDriveStick = new JoystickButton(sDriveStick, kTestLauncherWindingMotorDriveStickButton);
-        JoystickButton testLauncherWindingMotorButtonOnArcadeStick = new JoystickButton(sArcadeStick, kTestLauncherWindingMotorArcadeStickButton);
         JoystickButton testLauncherSolenoidButtonOnDriveStick = new JoystickButton(sDriveStick, kTestLauncherSolenoidDriveStickButton);
-        JoystickButton testLauncherSolenoidButtonOnArcadeStick = new JoystickButton(sArcadeStick, kTestLauncherSolenoidArcadeStickButton);
 
         JoystickButton intakeDownButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterExtendDriveStickButton);
         JoystickButton intakeDownButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterExtendArcadeStickButton);
@@ -134,10 +130,8 @@ public class OI
 
         // test buttons for launcher
         //testLauncherWindingMotor.whenPressed(new TestWindLauncherSpeed());
-        testLauncherWindingMotorButtonOnArcadeStick.whileHeld(new TestWindLauncherSpeed());
         testLauncherWindingMotorButtonOnDriveStick.whileHeld(new TestWindLauncherSpeed());
         testLauncherSolenoidButtonOnDriveStick.whenPressed(new TestLauncherSolenoid());
-        testLauncherSolenoidButtonOnArcadeStick.whenPressed(new TestLauncherSolenoid());
 
         // initialize harvester buttons
         intakeDownButtonOnDriveStick.whenPressed(new IntakeDown());
@@ -146,8 +140,8 @@ public class OI
         intakeUpButtonOnArcadeStick.whenPressed(new IntakeUp());
         intakeReleaseButtonOnDriveStick.whenPressed(new IntakeRelease());
         intakeReleaseButtonOnArcadeStick.whenPressed(new IntakeRelease());
-        toggleHarvesterWheelsButtonOnDriveStick.whenPressed(ToggleHarvesterWheels());
-        toggleHarvesterWheelsButtonOnArcadeStick.whenPressed(ToggleHarvesterWheels());
+        toggleHarvesterWheelsButtonOnDriveStick.whenReleased(toggleHarvesterWheels());
+        toggleHarvesterWheelsButtonOnArcadeStick.whenReleased(toggleHarvesterWheels());
         stopHarvesterWheelsButtonOnDriveStick.whenPressed(new HarvesterStopWheels());
         stopHarvesterWheelsButtonOnArcadeStick.whenPressed(new HarvesterStopWheels());
     }
@@ -157,8 +151,9 @@ public class OI
         // Initalize the drivetrain
     }
 
-    private Command ToggleHarvesterWheels()
+    private Command toggleHarvesterWheels()
     {
+        Logger.info("Are wheels stopped: "+mHarvester.areWheelsStopped());
         //if the collection motor is set to 0.0
         if(mHarvester.areWheelsStopped())
         {
