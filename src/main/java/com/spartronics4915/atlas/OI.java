@@ -36,23 +36,25 @@ public class OI
     private static final int kLaunchDriveStickButton = 2;
     private static final int kLaunchArcadeStickButton = 2;
     private static final int kWindLauncherDriveStickButton = 3;
-    private static final int kWindLauncherArcadeStickButton = 3;
+    private static final int kWindLauncherArcadeStickButton = 4;
 
     // harvester controls TODO: Fix button
     private static final int kHarvesterExtendDriveStickButton = 4;
-    private static final int kHarvesterExtendArcadeStickButton = 4;
+    private static final int kHarvesterExtendArcadeStickButton = 1;
     private static final int kHarvesterRetractDriveStickButton = 5;
-    private static final int kHarvesterRetractArcadeStickButton = 5;
-    private static final int kHarvesterReleaseDriveStickButton = 6;
+    private static final int kHarvesterRetractArcadeStickButton = 3;
+    private static final int kHarvesterReleaseDriveStickButton = 10;
     private static final int kHarvesterReleaseArcadeStickButton = 6;
-    private static final int kHarvesterWheelsToggleDriveStickButton = 7;
-    private static final int kHarvesterWheelsToggleArcadeStickButton = 7;
-    private static final int kHarvesterWheelsStopDriveStickButton = 8;
-    private static final int kHarvesterWheelsStopArcadeStickButton = 8;
+    private static final int kHarvesterWheelsToggleDriveStickButton = 1;
+    private static final int kHarvesterWheelsToggleArcadeStickButton = 5;
+    private static final int kHarvesterWheelsStopDriveStickButton = 7;
+    private static final int kHarvesterWheelsStopArcadeStickButton = 7;
 
     // launcher test controls
-    private static final int kTestLauncherWindingMotor = 9;
-    private static final int kTestLauncherSolenoid = 10;
+    private static final int kTestLauncherWindingMotorDriveStickButton = 6;
+    private static final int kTestLauncherWindingMotorArcadeStickButton = 10;
+    private static final int kTestLauncherSolenoidDriveStickButton = 11;
+    private static final int kTestLauncherSolenoidArcadeStickButton = 9;
 
     public static final Joystick sDriveStick = new Joystick(kDriveJoystickPort);
     public static final Joystick sArcadeStick = new Joystick(kArcadeStickPort);
@@ -99,8 +101,10 @@ public class OI
         JoystickButton windCommandGroupButtonOnArcadeStick = new JoystickButton(sArcadeStick, kWindLauncherArcadeStickButton);
 
         // for testing of the winding motor
-        JoystickButton testLauncherWindingMotor = new JoystickButton(sArcadeStick, kTestLauncherWindingMotor);
-        JoystickButton testLauncherSolenoid = new JoystickButton(sArcadeStick, kTestLauncherSolenoid);
+        JoystickButton testLauncherWindingMotorButtonOnDriveStick = new JoystickButton(sDriveStick, kTestLauncherWindingMotorDriveStickButton);
+        JoystickButton testLauncherWindingMotorButtonOnArcadeStick = new JoystickButton(sArcadeStick, kTestLauncherWindingMotorArcadeStickButton);
+        JoystickButton testLauncherSolenoidButtonOnDriveStick = new JoystickButton(sDriveStick, kTestLauncherSolenoidDriveStickButton);
+        JoystickButton testLauncherSolenoidButtonOnArcadeStick = new JoystickButton(sArcadeStick, kTestLauncherSolenoidArcadeStickButton);
 
         JoystickButton intakeDownButtonOnDriveStick = new JoystickButton(sDriveStick, kHarvesterExtendDriveStickButton);
         JoystickButton intakeDownButtonOnArcadeStick = new JoystickButton(sArcadeStick, kHarvesterExtendArcadeStickButton);
@@ -130,8 +134,10 @@ public class OI
 
         // test buttons for launcher
         //testLauncherWindingMotor.whenPressed(new TestWindLauncherSpeed());
-        testLauncherWindingMotor.whileHeld(new TestWindLauncherSpeed());
-        testLauncherSolenoid.whenPressed(new TestLauncherSolenoid());
+        testLauncherWindingMotorButtonOnArcadeStick.whileHeld(new TestWindLauncherSpeed());
+        testLauncherWindingMotorButtonOnDriveStick.whileHeld(new TestWindLauncherSpeed());
+        testLauncherSolenoidButtonOnDriveStick.whenPressed(new TestLauncherSolenoid());
+        testLauncherSolenoidButtonOnArcadeStick.whenPressed(new TestLauncherSolenoid());
 
         // initialize harvester buttons
         intakeDownButtonOnDriveStick.whenPressed(new IntakeDown());
