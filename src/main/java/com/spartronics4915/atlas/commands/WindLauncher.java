@@ -26,6 +26,7 @@ public class WindLauncher extends Command
     @Override
     protected void initialize()
     {
+        setInterruptible(false);
         Logger.info("Command: WindLauncher initialize");
         // Riyadth says we don't need to check for Harvester -- the launcher will wind down w/o problem
 
@@ -35,7 +36,6 @@ public class WindLauncher extends Command
         // set a safety timeout if something goes wrong w/ switch
         setTimeout(6.0);
 
-        setInterruptible(false);
     }
 
     @Override

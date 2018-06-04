@@ -123,9 +123,9 @@ IMPORTANT: launcher winder can only operate in one direction -- anything else wi
 
 # OI Controls
 * Harvester
-    * Buttons DS:4/AS:1 -- intake down
+    * Buttons DS:5/AS:1 -- intake down
         * command completes when limit switch is reached
-    * Buttons DS:5/AS:3 -- intake up
+    * Buttons DS:4/AS:3 -- intake up
         * command completes when 1sec timeout reached
     * Buttons DS:10/AS:6 -- spits the ball
         * runs harvester wheels for 6 secs
@@ -144,6 +144,7 @@ IMPORTANT: launcher winder can only operate in one direction -- anything else wi
         * rewinds the launcher while updating speed from smart dashboard or limit switch is hit
     * Buttons DS:11/AS:9 -- test button to activate/deactivate launcher solenoid
         * activates launcher, waits 2 secs. and deactivates launcher
+        * requires ball/hand presence to trick the ball present sensor & harvester to be down
     
 * Drive train
     * Throttle controls

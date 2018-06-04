@@ -27,6 +27,7 @@ public class ActivateLauncher extends Command
     @Override
     protected void initialize()
     {
+        setInterruptible(false);
         Logger.info("Command: ActivateLauncher initialize");
         // If harvester is up, cancel the command & turn of harvester wheels
         if (!mHarvester.isHarvesterDown() || !mLauncher.isBallPresent()) 
@@ -35,6 +36,8 @@ public class ActivateLauncher extends Command
             return;
         }
 
+        // initialize timeout
+        setTimeout(2.0);
         // if any motors running, turn them off
         mHarvester.setWheelSpeed(0.0);
         mLauncher.stopLauncherWindingMotor();
@@ -42,7 +45,6 @@ public class ActivateLauncher extends Command
         // extand/release the launcher pneumatics 
         mLauncher.launcherLaunchBall();
 
-        setInterruptible(false);
     }
 
     @Override
@@ -54,8 +56,11 @@ public class ActivateLauncher extends Command
     @Override
     protected boolean isFinished()
     {
-        Logger.info("Command:ActivateLauncher: isFinished True");
-        return true;
+        if (isTimedOut())
+        {
+            return true;
+        }
+        return false;
     }
 
     @Override
