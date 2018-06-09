@@ -20,7 +20,7 @@ public class DriveStraightDrivetrain extends Command implements PIDSource, PIDOu
 
     private static final double kP = 0.5;
     private static final double kI = 0;
-    private static final double kD = 15;
+    private static final double kD = 10;
     private static final double kF = 0;
     private static final double kAllowedError = 0; // In degrees
 

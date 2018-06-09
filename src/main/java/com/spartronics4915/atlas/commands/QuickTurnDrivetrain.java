@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * QuickTurnDrivetrain turns the drivetrain 180 degrees in a closed
@@ -19,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class QuickTurnDrivetrain extends Command implements PIDSource, PIDOutput
 {
 
-    private static final double kP = 0.02;
+    private static final double kP = 0.01;
     private static final double kI = 0;
     private static final double kD = 0;
     private static final double kF = 0;
