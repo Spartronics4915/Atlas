@@ -121,9 +121,8 @@ public class OI
         initDrivetrainOI();
 
         // initialize drivetrain buttons
-        quickTurnDrivetrain.whenPressed(new QuickTurnDrivetrain());
-        quickTurnDrivetrain.whenReleased(new TeleopDrivetrain());
-        driveStraightDrivetrain.whenPressed(new DriveStraightDrivetrain(sDriveStick.getX()));
+        quickTurnDrivetrain.whileHeld(new QuickTurnDrivetrain());
+        driveStraightDrivetrain.whenPressed(new DriveStraightDrivetrain());
 
         // initialize launcher buttons
         launchCommandGroupButtonOnDriveStick.whenPressed(new ActivateLauncherCommandGroup(mLED));

@@ -1,6 +1,7 @@
 package com.spartronics4915.atlas.commands;
 
 import com.spartronics4915.atlas.Logger;
+import com.spartronics4915.atlas.OI;
 import com.spartronics4915.atlas.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.PIDController;
@@ -8,6 +9,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * DriveStraightDrivetrain runs the drivetrain straight forward,
@@ -16,21 +18,17 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveStraightDrivetrain extends Command implements PIDSource, PIDOutput
 {
 
-    private static final double kP = 0.02;
+    private static final double kP = 0.5;
     private static final double kI = 0;
-    private static final double kD = 0;
+    private static final double kD = 15;
     private static final double kF = 0;
-    private static final double kAllowedError = 3; // In degrees
+    private static final double kAllowedError = 0; // In degrees
 
     private Drivetrain mDrivetrain;
     private PIDController mPIDController;
 
-    private final double mSpeed;
-
-    public DriveStraightDrivetrain(double speed)
+    public DriveStraightDrivetrain()
     {
-        mSpeed = speed;
-
         mDrivetrain = Drivetrain.getInstance();
         requires(mDrivetrain);
 
@@ -57,11 +55,16 @@ public class DriveStraightDrivetrain extends Command implements PIDSource, PIDOu
     protected void execute()
     {
         mPIDController.enable();
+
+        SmartDashboard.putNumber("IMU Heading", mDrivetrain.getIMUHeading().getDegrees());
     }
 
     @Override
     protected boolean isFinished()
     {
+        if (Math.abs(OI.sDriveStick.getX()) > 0.3 || Math.abs(OI.sDriveStick.getY()) > 0.3) {
+            return true;
+        }
         return false;
     }
 
@@ -116,6 +119,6 @@ public class DriveStraightDrivetrain extends Command implements PIDSource, PIDOu
     @Override
     public void pidWrite(double output)
     {
-        mDrivetrain.arcadeDrive(mSpeed, output);
+        mDrivetrain.arcadeDrive(OI.sDriveStick.getZ(), output);
     }
 }

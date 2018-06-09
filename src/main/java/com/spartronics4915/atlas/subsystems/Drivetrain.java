@@ -2,7 +2,9 @@ package com.spartronics4915.atlas.subsystems;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.spartronics4915.atlas.RobotMap;
+import com.spartronics4915.atlas.commands.DriveStraightDrivetrain;
 import com.spartronics4915.atlas.commands.StopCommand;
+import com.spartronics4915.atlas.commands.TeleopDrivetrain;
 import com.spartronics4915.atlas.subsystems.SpartronicsSubsystem;
 import com.spartronics4915.util.Rotation2d;
 
@@ -73,7 +75,7 @@ public class Drivetrain extends SpartronicsSubsystem
     {
         if (isInitialized())
         {
-            setDefaultCommand(new StopCommand());
+            setDefaultCommand(new TeleopDrivetrain());
         }
     }
 

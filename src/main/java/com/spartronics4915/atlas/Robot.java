@@ -78,8 +78,6 @@ public class Robot extends IterativeRobot
         // update subsystem defaults from the network tables as needed
         mLauncher.updateFromSmartDashboard();
 
-        new TeleopDrivetrain().start(); // Start arcade drive
-
         Logger.notice("teleop initalized.");
     }
 
