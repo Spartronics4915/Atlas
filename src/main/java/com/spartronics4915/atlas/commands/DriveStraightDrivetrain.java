@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveStraightDrivetrain extends Command implements PIDSource, PIDOutput
 {
 
-    private static final double kP = 0.5;
-    private static final double kI = 0;
-    private static final double kD = 10;
+    private static final double kP = 0; // Was 0.4
+    private static final double kI = 0.2;
+    private static final double kD = 0;
     private static final double kF = 0;
     private static final double kAllowedError = 0; // In degrees
 
@@ -55,8 +55,7 @@ public class DriveStraightDrivetrain extends Command implements PIDSource, PIDOu
     protected void execute()
     {
         mPIDController.enable();
-
-        SmartDashboard.putNumber("IMU Heading", mDrivetrain.getIMUHeading().getDegrees());
+        SmartDashboard.putNumber("Error", mPIDController.getError());
     }
 
     @Override
@@ -119,6 +118,6 @@ public class DriveStraightDrivetrain extends Command implements PIDSource, PIDOu
     @Override
     public void pidWrite(double output)
     {
-        mDrivetrain.arcadeDrive(OI.sDriveStick.getZ(), output);
+        mDrivetrain.arcadeDrive(-1*OI.getScaledThrottle(), output);
     }
 }

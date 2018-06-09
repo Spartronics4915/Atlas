@@ -153,4 +153,9 @@ public class OI
         // Initalize the drivetrain
     }
 
+    public static double getScaledThrottle()
+    {
+        return Math.max(Math.min(1-OI.sDriveStick.getZ(),1),0.4);
+    }
+
 }

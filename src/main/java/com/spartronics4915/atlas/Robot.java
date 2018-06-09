@@ -46,8 +46,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotPeriodic()
     {
-        // This is invoked in both Autonomous and TeleOp, in
-        // addition to the autonomousPeriodic and TeleOp periodic.
+        SmartDashboard.putNumber("IMU Heading", mDrivetrain.getIMUHeading().getDegrees());
     }
 
     @Override
