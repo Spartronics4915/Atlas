@@ -17,6 +17,8 @@ public class HarvesterStopWheels extends Command
     public HarvesterStopWheels()
     {
         mHarvester = Harvester.getInstance();
+        mHarvester.setWheelSpeed(0.0);
+        setInterruptible(true);
         requires(mHarvester);
     }
 
