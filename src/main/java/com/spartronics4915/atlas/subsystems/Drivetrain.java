@@ -11,6 +11,7 @@ import com.spartronics4915.util.Rotation2d;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The subsystem that controls the Drivetrain.
@@ -27,6 +28,9 @@ public class Drivetrain extends SpartronicsSubsystem
     private static Drivetrain sInstance = null;
 
     private DifferentialDrive mDifferentialDrive;
+
+    // CTRE does a pass-by-reference thing, so we might as well not allocate a new array every time
+    private double[] yawPitchRoll = new double[3];
 
     // Motors
     public Victor mLeftMotor;
@@ -58,6 +62,9 @@ public class Drivetrain extends SpartronicsSubsystem
             //Initialize IMU
             mIMU = new PigeonIMU(RobotMap.kDriveTrainIMUID);
 
+            // Do a song and dance to make the IMU work
+            mIMU.clearStickyFaults(0); // 0 timeout means no timeout
+
             // Setup the differential drive
             mDifferentialDrive = new DifferentialDrive(mLeftMotor, mRightMotor);
 
@@ -87,9 +94,9 @@ public class Drivetrain extends SpartronicsSubsystem
 
     public Rotation2d getIMUHeading()
     {
-        double[] ypr = new double[3];
-        mIMU.getYawPitchRoll(ypr);
-        return Rotation2d.fromDegrees(ypr[0]);
+        mIMU.getYawPitchRoll(yawPitchRoll);
+        SmartDashboard.putString("YawPitchRoll", "[0]: "+yawPitchRoll[0]+"; [1]: "+yawPitchRoll[1]+"; [2]: "+yawPitchRoll[2]+"; Fused: "+mIMU.getFusedHeading());
+        return Rotation2d.fromDegrees(yawPitchRoll[0]);
     }
 
     public void arcadeDrive(double speed, double rotation)
