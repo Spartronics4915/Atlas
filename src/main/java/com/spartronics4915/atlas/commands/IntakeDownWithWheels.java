@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class IntakeDownWithWheels extends Command
 {
-    private boolean interruptionFinish = false;
-
     private Harvester mHarvester;
 
     public IntakeDownWithWheels()
