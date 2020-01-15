@@ -45,6 +45,8 @@ public class RobotContainer {
 
   // The driver's controller
   public static final Joystick mDriverController = new Joystick(OIConstants.kDriveJoystickPort);
+
+  // If Arcade Controller requested, this should be enabled
   // public static final Joystick mArcadeController = new Joystick(OIConstants.kArcadeStickPort);
 
 
@@ -81,7 +83,6 @@ public class RobotContainer {
    */
   private void configureButtonBindings()
   {
-        // TODO Reimplement in Gradle
         // Version string and related information
         try (InputStream manifest = getClass().getClassLoader().getResourceAsStream("META-INF/MANIFEST.MF"))
         {
@@ -124,36 +125,42 @@ public class RobotContainer {
 
 
         // initialize launcher buttons
-        // FIXME command group
         new JoystickButton(mDriverController, OIConstants.kLaunchDriveStickButton).whenPressed(new ActivateLauncherCommandGroup(mHarvester, mLauncher, mLED));
-		    // new JoystickButton(mArcadeController, OIConstants.kLaunchArcadeStickButton).whenPressed(new ActivateLauncherCommandGroup(mHarvester, mLauncher, mLED));
-        new JoystickButton(mDriverController, OIConstants.kWindLauncherDriveStickButton).whenPressed(new WindLauncherCommandGroup(mHarvester, mLauncher, mLED));
-        // new JoystickButton(mArcadeController, OIConstants.kWindLauncherArcadeStickButton).whenPressed(new WindLauncherCommandGroup(mHarvester, mLauncher, mLED));
+        new JoystickButton(mDriverController, OIConstants.kWindLauncherDriveStickButton).whenPressed(new WindLauncher(mHarvester, mLauncher));
 
-        // test buttons for launcher & winding motor
-        // note: whileHeld repeatedly calls Command.schedule and
-        // cancelled when button is released
-        new JoystickButton(mDriverController, OIConstants.kTestLauncherWindingMotorDriveStickButton).whileHeld(new TestWindLauncherSpeed(mHarvester, mLauncher));
-        new JoystickButton(mDriverController, OIConstants.kTestLauncherSolenoidDriveStickButton).whenPressed(new TestLauncherSolenoid(mHarvester, mLauncher).withTimeout(2.0));
+        // Release launcher solenoid -- used for releasing elastics
+        new JoystickButton(mDriverController, OIConstants.kTestLauncherSolenoidDriveStickButton).whenPressed(new ReleaseLauncher(mHarvester, mLauncher).withTimeout(2.0));
 
         // initialize harvester buttons
-        new JoystickButton(mDriverController, OIConstants.kHarvesterExtendDriveStickButton).whenPressed(new IntakeDown(mHarvester, mLauncher));
-        // new JoystickButton(mArcadeController, OIConstants.kHarvesterExtendArcadeStickButton).whenPressed(new IntakeDown(mHarvester, mLauncher));
-        new JoystickButton(mDriverController, OIConstants.kHarvesterRetractDriveStickButton).whenPressed(new IntakeUp(mHarvester, mLauncher).withTimeout(1.0));
-        // new JoystickButton(mArcadeController, OIConstants.kHarvesterRetractArcadeStickButton).whenPressed(new IntakeUp(mHarvester, mLauncher));
-        new JoystickButton(mDriverController, OIConstants.kHarvesterReleaseDriveStickButton).whenPressed(new IntakeRelease(mHarvester).withTimeout(3.0));
-        // new JoystickButton(mArcadeController, OIConstants.kHarvesterReleaseArcadeStickButton).whenPressed(new IntakeRelease(mHarvester).withTimeout(3.0));
+        new JoystickButton(mDriverController, OIConstants.kHarvesterExtendDriveStickButton).whenPressed(new IntakeDownForPickup(mHarvester, mLauncher));
+        new JoystickButton(mDriverController, OIConstants.kHarvesterRetractDriveStickButton).whenPressed(new IntakeUp(mHarvester, mLauncher));
+        new JoystickButton(mDriverController, OIConstants.kHarvesterReleaseDriveStickButton).whenPressed(new IntakeExpelBall(mHarvester, mLauncher).withTimeout(3.0));
 
-        // FIXME Interruptable for Harvester Wheel controls?
-        new JoystickButton(mDriverController, OIConstants.kHarvesterWheelsToggleDriveStickButton).toggleWhenPressed(new ToggleHarvesterWheels(mHarvester));
-        // new JoystickButton(mArcadeController, OIConstants.kHarvesterWheelsToggleArcadeStickButton).toggleWhenPressed(new ToggleHarvesterWheels(mHarvester));
+        // new JoystickButton(mDriverController, OIConstants.kHarvesterWheelsToggleDriveStickButton).whenPressed(new InstantCommand(mHarvester::toggleHarvesterWheels));
+        new JoystickButton(mDriverController, OIConstants.kHarvesterWheelsToggleDriveStickButton)
+                                .whileHeld(new InstantCommand(mHarvester::runHarvesterWheels))
+                                .whenReleased(() -> mHarvester.stopHarversterWheels());
         new JoystickButton(mDriverController, OIConstants.kHarvesterWheelsStopDriveStickButton).whenPressed(new InstantCommand(mHarvester::stopHarversterWheels, mHarvester));
+        new JoystickButton(mDriverController, OIConstants.kHarvesterWheelsStopDriveStickButton_2).whenPressed(new InstantCommand(mHarvester::stopHarversterWheels, mHarvester));
+
+		    // new JoystickButton(mArcadeController, OIConstants.kLaunchArcadeStickButton).whenPressed(new ActivateLauncherCommandGroup(mHarvester, mLauncher, mLED));
+        // new JoystickButton(mArcadeController, OIConstants.kWindLauncherArcadeStickButton).whenPressed(new WindLauncherCommandGroup(mHarvester, mLauncher, mLED));
+        // new JoystickButton(mArcadeController, OIConstants.kHarvesterExtendArcadeStickButton).whenPressed(new IntakeDown(mHarvester, mLauncher));
+        // new JoystickButton(mArcadeController, OIConstants.kHarvesterRetractArcadeStickButton).whenPressed(new IntakeUp(mHarvester, mLauncher));
+        // new JoystickButton(mArcadeController, OIConstants.kHarvesterReleaseArcadeStickButton).whenPressed(new IntakeRelease(mHarvester).withTimeout(3.0));
+        // new JoystickButton(mArcadeController, OIConstants.kHarvesterWheelsToggleArcadeStickButton).toggleWhenPressed(new ToggleHarvesterWheels(mHarvester));
         // new JoystickButton(mArcadeController, OIConstants.kHarvesterWheelsStopArcadeStickButton).whenPressed(new InstantCommand(mHarvester::stopHarversterWheels, mHarvester));
+
     }
 
     public static final double getScaledThrottle()
     {
-        return Math.max(Math.min(1 - mDriverController.getZ(), 1), 0.4);
+        double MAX_THROTTLE = 1.0;
+        double MIN_THROTTLE = 0.45;
+        double scaledThrottle = (((mDriverController.getZ() * -1) + 1) * 0.5) * (MAX_THROTTLE - MIN_THROTTLE) + MIN_THROTTLE ;
+        SmartDashboard.putNumber("throttle", scaledThrottle);
+
+        return (scaledThrottle);
     }
 
   /**

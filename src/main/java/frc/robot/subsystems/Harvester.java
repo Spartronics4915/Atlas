@@ -25,7 +25,7 @@ public class Harvester extends SpartronicsSubsystem
 
 	private DoubleSolenoid mHarvesterArms;
 	private SpeedController mCollectionMotor;
-	private DigitalInput mTopMagneticSwitch; //detects if intake is up: the physical switch is lower than the other one
+	private DigitalInput mTopMagneticSwitch;    //detects if intake is up: the physical switch is lower than the other one
     private DigitalInput mBottomMagneticSwitch; //detects if intake is down: the physical switch is higher than the other one
 
     private static Harvester sInstance = null;
@@ -38,6 +38,12 @@ public class Harvester extends SpartronicsSubsystem
         }
         return sInstance;
     }
+    @Override
+    public void periodic()
+    {
+        mCollectionMotor.set(mCollectionMotor.get());
+    }
+
 
     private Harvester()
     {
@@ -125,16 +131,20 @@ public class Harvester extends SpartronicsSubsystem
         mCollectionMotor.set(0.0);
     }
 
-    @Override
-    public void periodic()
-    {
-        // FIXME what is periodic events for harvester?
-    }
-
     public void stop()
     {
-        setWheelSpeed(0.0);
+        stopHarversterWheels();
         stopPneumatics(); //TODO: is this correct??
+    }
+
+    // save the internal state of the collection motors
+    public void runHarvesterWheels()
+    {
+        // only toggle if harvester is down
+        if (this.isHarvesterDown())
+        {
+            setWheelSpeed(RobotMapConstants.kHarvesterIntakeWheelSpeed);
+        }
     }
 
     public String getHarvesterSolenoidState()

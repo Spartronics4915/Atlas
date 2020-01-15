@@ -11,15 +11,18 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  * Extends the intake in order to pick up ball.
  * The harvester wheels runs until launcher confirms ball is present in
  * the subsystem.
+ *
+ * Note: for demonstration purposes and in the hopes to extend battery
+ * life, once the ball is acquired, code just stops the wheels while
+ * leaving intake down. This allows the driver to easily eject the ball
+ * or perform launch operation.
  */
-public class IntakeDown extends CommandBase
+public class IntakeDownForPickup extends CommandBase
 {
     private Harvester mHarvester;
     private Launcher mLauncher;
 
-    private boolean shouldStop = true;
-
-    public IntakeDown(Harvester harvester, Launcher launcher)
+    public IntakeDownForPickup(Harvester harvester, Launcher launcher)
     {
         mHarvester = harvester;
         mLauncher = launcher;           // confirms ball is harvested
@@ -29,70 +32,43 @@ public class IntakeDown extends CommandBase
     @Override
     public void initialize()
     {
-        if (mLauncher.isBallPresent())
-        {
-            shouldStop = true;
-        }
-        else
-        {
-            shouldStop = false;
-        }
-    }
-
-    @Override
-    public void execute()
-    {
-
-        // Based on ball presence, run wheels continously or not w/ diff speeds
-        if (shouldStop)
-        {
-            mHarvester.setWheelSpeed(RobotMapConstants.kHarvesterIntakeWheelSpeed / 2);
-        }
-        else
-        {
-            mHarvester.setWheelSpeed(RobotMapConstants.kHarvesterIntakeWheelSpeed);
-        }
-
         // no need to check the harvester position -- just extend the intake
         mHarvester.extendPneumatics();
     }
 
     @Override
+    public void execute()
+    {
+        // Ball's presence determines how fast we run the wheels
+        if (mLauncher.isBallPresent())
+        {
+            // Ball is present: run the wheels slowly to keep the ball within the intake
+            mHarvester.setWheelSpeed(RobotMapConstants.kHarvesterIntakeWheelSpeed / 2);
+        }
+        else
+        {
+            // Hunting for ball: run the wheels faster to harvest
+            mHarvester.setWheelSpeed(RobotMapConstants.kHarvesterIntakeWheelSpeed);
+        }
+    }
+
+    @Override
     public boolean isFinished()
     {
-        // FIXME review shouldStop objective -- when to reset its value
-        // (did we say don't ever stop?)
-        if (shouldStop && mHarvester.isHarvesterDown())
-        {
-            mHarvester.stopHarversterWheels();
-            return true;
-        }
-        else if (mLauncher.isBallPresent())
+        if (mLauncher.isBallPresent())
         {
             // return true only if intake successfully picked up the ball
             Logger.info("Command: IntakeDown picked up a ball -- time to stop");
-            mHarvester.stopHarversterWheels();
             return true;
         }
 
-        Logger.info("Command: IntakeDown should NOT finish!");
         return false;
     }
 
     @Override
     public void end(boolean isInterrupted)
     {
-        if (isInterrupted)
-        {
-            Logger.info("Command: IntakeDown is interrupted");
-        }
-
-        if (mLauncher.isBallPresent())
-        {
-            // stop wheels only if the intake successfully picked up the ball
-            Logger.info("Command: IntakeDown picked up a ball -- time to stop");
-            mHarvester.stopHarversterWheels();
-        }
+        mHarvester.stopHarversterWheels();
         Logger.info("Command: IntakeDown is ended");
     }
 }

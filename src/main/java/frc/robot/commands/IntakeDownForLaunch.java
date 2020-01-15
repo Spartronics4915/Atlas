@@ -3,35 +3,39 @@ package frc.robot.commands;
 import frc.robot.Logger;
 import frc.robot.Constants.RobotMapConstants;
 import frc.robot.subsystems.Harvester;
-
+import frc.robot.subsystems.Launcher;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
- * This command is to keep motors safety happy, and is also an example of the
- * boilerplate/logger type code you need for a command.
+ * IntakeDownForLaunch runs the harvester wheels to keep the ball in
+ * while pneumatics extended.
  */
-public class IntakeDownWithWheels extends CommandBase
+public class IntakeDownForLaunch extends CommandBase
 {
     private Harvester mHarvester;
+    private Launcher mLauncher;
 
-    public IntakeDownWithWheels(Harvester harvester)
+    public IntakeDownForLaunch(Harvester harvester, Launcher launcher)
     {
         mHarvester = harvester;
+        mLauncher = launcher;
         addRequirements(mHarvester);
     }
 
     @Override
     public void initialize()
     {
-        //Logger.info("Command: IntakeDownWithWheels initialize");
         mHarvester.extendPneumatics();
     }
 
     @Override
     public void execute()
     {
-        // give a gentle push to the ball towards the launcher in case it gets stuck
-        mHarvester.setWheelSpeed(RobotMapConstants.kHarvesterIntakeWheelSpeed/2);
+        // give a gentle push to the ball towards launcher in case it gets stuck
+        if (mLauncher.isBallPresent())
+        {
+            mHarvester.setWheelSpeed(RobotMapConstants.kHarvesterIntakeWheelSpeed/2);
+        }
     }
 
     @Override
@@ -45,8 +49,9 @@ public class IntakeDownWithWheels extends CommandBase
     {
         if (isInterrupted)
         {
-            Logger.info("Command: IntakeDownWithWheels interrupted -- why??");
+            Logger.info("Command: IntakeDownWithWheels interrupted");
         }
         mHarvester.stopHarversterWheels();
+        Logger.info("Command: IntakeDownWithWheels is ended");
     }
 }

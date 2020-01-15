@@ -60,7 +60,8 @@ public class Drivetrain extends SpartronicsSubsystem
             mIMU = new PigeonIMU(RobotMapConstants.kDriveTrainIMUID);
 
             // Do a song and dance to make the IMU work
-            mIMU.clearStickyFaults(0); // 0 timeout means no timeout
+            // FIXME imu clearStickyFaults is not supported!?
+            // mIMU.clearStickyFaults(0); // 0 timeout means no timeout
 
             // Setup the differential drive
             mDifferentialDrive = new DifferentialDrive(mLeftMotor, mRightMotor);
@@ -78,6 +79,8 @@ public class Drivetrain extends SpartronicsSubsystem
     public void periodic()
     {
         SmartDashboard.putNumber("IMU Heading", this.getIMUHeading().getDegrees());
+        SmartDashboard.putNumber("rightMotor Speed", mRightMotor.get());
+        SmartDashboard.putNumber("leftMotor Speed", mLeftMotor.get());
     }
 
     public void stop()

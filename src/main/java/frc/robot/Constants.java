@@ -19,7 +19,7 @@ public final class Constants {
     public static final class RobotMapConstants {
         //Speeds
         public static final double kHarvesterIntakeWheelSpeed = -0.75;
-        public static final double kHarvesterExpelWheelSpeed = 0.75;
+        public static final double kHarvesterExpelWheelSpeed = 0.6;
 
         //CAN Devices
         public static final int kNumPigeons = 1;
@@ -56,35 +56,36 @@ public final class Constants {
      */
     public static final class OIConstants
     {
-        public static final int kDriveJoystickPort = 1;
-        public static final int kArcadeStickPort = 2;
-        public static final int kXboxControllerPort = 3;
+        public static final int kDriveJoystickPort = 0;
 
         // drivetrain controls
         public static final int kQuickTurnDriveStickButton = 9;
         public static final int kDriveStraightDriveStickButton = 8;
 
         // launcher controls
-        public static final int kLaunchDriveStickButton = 2;
-        public static final int kLaunchArcadeStickButton = 2;
-        public static final int kWindLauncherDriveStickButton = 3;
-        public static final int kWindLauncherArcadeStickButton = 4;
+        public static final int kLaunchDriveStickButton = 7;            // was: 2
+        public static final int kWindLauncherDriveStickButton = 11;     // was: 3
 
         // harvester controls
-        public static final int kHarvesterExtendDriveStickButton = 5;
-        public static final int kHarvesterExtendArcadeStickButton = 1;
-        public static final int kHarvesterRetractDriveStickButton = 4;
-        public static final int kHarvesterRetractArcadeStickButton = 3;
-        public static final int kHarvesterReleaseDriveStickButton = 10;
-        public static final int kHarvesterReleaseArcadeStickButton = 6;
+        public static final int kHarvesterExtendDriveStickButton = 2;           // was: 5
+        public static final int kHarvesterRetractDriveStickButton = 3;          // was; 4
+        public static final int kHarvesterReleaseDriveStickButton = 4;          // was: 10
         public static final int kHarvesterWheelsToggleDriveStickButton = 1;
-        public static final int kHarvesterWheelsToggleArcadeStickButton = 5;
-        public static final int kHarvesterWheelsStopDriveStickButton = 7;
-        public static final int kHarvesterWheelsStopArcadeStickButton = 7;
+        public static final int kHarvesterWheelsStopDriveStickButton = 5;       // was: 7 
+        public static final int kHarvesterWheelsStopDriveStickButton_2 = 10;    // yes - 2nd button for convinience
 
         // launcher test controls -- not on ArcadeStick due to the 'mode' button
-        public static final int kTestLauncherWindingMotorDriveStickButton = 6;
-        public static final int kTestLauncherSolenoidDriveStickButton = 11;
+        public static final int kTestLauncherSolenoidDriveStickButton = 6;     // was: 11
+
+        // Arcade button assignments -- unused currently
+        // public static final int kArcadeStickPort = 1;
+        // public static final int kLaunchArcadeStickButton = 2;
+        // public static final int kWindLauncherArcadeStickButton = 4;
+        // public static final int kHarvesterExtendArcadeStickButton = 1;
+        // public static final int kHarvesterRetractArcadeStickButton = 3;
+        // public static final int kHarvesterReleaseArcadeStickButton = 6;
+        // public static final int kHarvesterWheelsToggleArcadeStickButton = 5;
+        // public static final int kHarvesterWheelsStopArcadeStickButton = 7;
     }
 
     /**

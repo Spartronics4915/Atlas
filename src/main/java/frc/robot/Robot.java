@@ -85,12 +85,9 @@ public class Robot extends TimedRobot {
     // stop any autonomous commands
     if (m_autonomousCommand != null)
     {
+      Logger.error("Error: there shouldn't be an autonomous command!");
       m_autonomousCommand.cancel();
       m_autonomousCommand = null;
-    }
-    else
-    {
-      Logger.error("can't cancel a null autonomous command.");
     }
 
     // FIXME what is the need to update from smartdashboard?

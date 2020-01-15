@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat;
+
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2020.1.2"
@@ -64,5 +66,20 @@ dependencies {
 // knows where to look for our Robot Class.
 jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest {
+        String user = System.getProperty("user.name");
+        SimpleDateFormat fmt = new SimpleDateFormat("MMMMM dd, hh:mm a");
+        ByteArrayOutputStream gitinfo = new ByteArrayOutputStream();
+        exec {
+            ignoreExitValue true
+            commandLine 'git', 'describe', "--tags", "--dirty"
+            standardOutput = gitinfo
+        }
+        attributes (
+            "Built-By": user,
+            "Built-At": fmt.format(new Date()),
+            "Code-Version": gitinfo.toString().trim()
+        )
+    }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
 }
