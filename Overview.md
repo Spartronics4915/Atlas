@@ -147,6 +147,8 @@ IMPORTANT: launcher winder can only operate in one direction -- anything else wi
         * requires ball/hand presence to trick the ball present sensor & harvester to be down
 
 * Drive train
-    * Throttle controls
-    * ~~Not implemented! Buttons 9 -- Quick turn~~
+    * Throttle controls from min (0.45) to max (1.0) drive speed
+    * **Important follow is NOT tested!**
+        * Drive straight while held: Button DS: 8
+        * 180 turn: Button DS: 9
 

@@ -9,7 +9,6 @@ import frc.util.SpartIRSensor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -43,7 +42,6 @@ public class Launcher extends SpartronicsSubsystem
     private final double kLauncherWindingMaxSpeed = 1.0;    // Safety limit for the motor
     private SpartIRSensor mBallPresentSensor = null;         // sensor to detect presence of the ball
 
-
     // Subsystems are a singleton
     public static Launcher getInstance()
     {
@@ -68,6 +66,9 @@ public class Launcher extends SpartronicsSubsystem
             mLauncherActivate = new DoubleSolenoid(RobotMapConstants.kLaunchExtendSolenoidId, RobotMapConstants.kLaunchRetractSolenoidId);
             mBallPresentSensor = new SpartIRSensor(RobotMapConstants.kBallPresentSensorId);
 
+            // set the default launcher state to ensure NO accidental fire
+            mLauncherActivate.set(DoubleSolenoid.Value.kReverse);
+
             // update smartdashboard
             outputToSmartDashboard();
 
@@ -85,7 +86,8 @@ public class Launcher extends SpartronicsSubsystem
     @Override
     public void periodic()
     {
-        // FIXME what is Launcher periodic events
+        // default command to stop motor safety
+        mLauncherWindingMotor.set(0.0);
     }
 
     /**

@@ -17,12 +17,12 @@ public class WindLauncher extends CommandBase
 
     private Harvester mHarvester;
     private Launcher mLauncher;
-    private boolean isAbort = false;
+    private boolean shouldAbort = false;
 
     public WindLauncher(Harvester harvester, Launcher launcher) {
         mHarvester = harvester;
         mLauncher = launcher;
-        addRequirements(mLauncher);
+        addRequirements(mLauncher, mHarvester);
     }
 
     @Override
@@ -33,13 +33,18 @@ public class WindLauncher extends CommandBase
 
         if (mLauncher.isBallPresent())
         {
-            isAbort = true;
+            shouldAbort = true;
             return;
+        }
+        else
+        {
+            shouldAbort = false;
         }
         // bring harvester down
         mHarvester.stopHarversterWheels();
 
         // retract the launcher pneumatics
+        Logger.info("Cmd: WindLauncher: set the DoubleSolenoid.Value.kReverse");
         mLauncher.launcherPrepareForWinding();
     }
 
@@ -53,7 +58,7 @@ public class WindLauncher extends CommandBase
     @Override
     public boolean isFinished()
     {
-        if (isAbort || mLauncher.isLauncherRewound())
+        if (shouldAbort || mLauncher.isLauncherRewound())
         {
             Logger.info("Command:WindLauncher: isFinished True");
             return true;

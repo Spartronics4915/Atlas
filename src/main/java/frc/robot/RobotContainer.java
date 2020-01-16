@@ -10,25 +10,30 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
+import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj.controller.PIDController;
+
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-
+import frc.robot.subsystems.LED.BlingState;
 import frc.robot.Constants.RobotMapConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.DriveStraightConstants;
 
 import frc.util.CANProbe;
+import java.util.ArrayList;
+import java.util.jar.Manifest;
+import java.util.jar.Attributes;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.jar.Manifest;
-import java.util.jar.Attributes;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -67,6 +72,10 @@ public class RobotContainer {
     SmartDashboard.putString("CANBusStatus",
             numDevices == RobotMapConstants.kNumCANDevices ? "OK"
                 : ("" + numDevices + "/" + RobotMapConstants.kNumCANDevices));
+
+
+    // add LED test to the smartdashboard
+    SmartDashboard.putData("Test Blue LED", (Sendable) new SetBlingStateCommand(mLED, BlingState.BLUE));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -108,49 +117,51 @@ public class RobotContainer {
         }
 
         // // initialize drivetrain buttons
-        // new JoystickButton(mDriverController, OIConstants.kQuickTurnDriveStickButton).whileHeld(new QuickTurnDrivetrain());
-        // // was: new JoystickButton(mDriverController, OIConstants.kDriveStraightDriveStickButton).whenPressed(new DriveStraightDrivetrain());
-        // new JoystickButton(mDriverController, OIConstants.kDriveStraightDriveStickButton).whenHeld(new PIDCommand(
-        //     new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD),
-        //     // Close the loop on the turn rate
-        //     mDrivetrain::getTurnRate,
-        //     // Setpoint is 0
-        //     0,
-        //     // Pipe the output to the turning controls
-        //     output -> mDrivetrain.arcadeDrive(mDriverController.getY(), output),
-        //     // Require the robot drive
-        //     mDrivetrain
-        //   )
-        // );
+        // TODO important: quick turn needs testing & validation!
+        // Turn to 180 degrees, with a 5 second timeout
+        new JoystickButton(mDriverController, OIConstants.kQuickTurnDriveStickButton)
+              .whenPressed(new QuickTurnDrivetrain(mDrivetrain).withTimeout(5));
+
+        // TODO important: drive straight needs testing & validation!
+        new JoystickButton(mDriverController, OIConstants.kDriveStraightDriveStickButton).whenHeld(new PIDCommand(
+                new PIDController(DriveStraightConstants.kP, DriveStraightConstants.kI, DriveStraightConstants.kD),
+                // Close the loop on the turn rate
+                () -> mDrivetrain.getIMUHeading().getDegrees(),
+                // Setpoint is 0
+                0,
+                // Pipe the output to the turning controls
+                output -> mDrivetrain.arcadeDrive(mDriverController.getY() * getScaledThrottle(), output),
+                // Require the robot drive
+                mDrivetrain
+            ));
 
 
         // initialize launcher buttons
-        new JoystickButton(mDriverController, OIConstants.kLaunchDriveStickButton).whenPressed(new ActivateLauncherCommandGroup(mHarvester, mLauncher, mLED));
-        new JoystickButton(mDriverController, OIConstants.kWindLauncherDriveStickButton).whenPressed(new WindLauncher(mHarvester, mLauncher));
+        new JoystickButton(mDriverController, OIConstants.kLaunchDriveStickButton)
+                                .whenPressed(new ActivateLauncherCommandGroup(mHarvester, mLauncher, mLED));
+        new JoystickButton(mDriverController, OIConstants.kWindLauncherDriveStickButton)
+                                .whenPressed(new WindLauncher(mHarvester, mLauncher));
 
         // Release launcher solenoid -- used for releasing elastics
-        new JoystickButton(mDriverController, OIConstants.kTestLauncherSolenoidDriveStickButton).whenPressed(new ReleaseLauncher(mHarvester, mLauncher).withTimeout(2.0));
+        new JoystickButton(mDriverController, OIConstants.kTestLauncherSolenoidDriveStickButton)
+                                .whenPressed(new ReleaseLauncher(mHarvester, mLauncher).withTimeout(2.0));
 
         // initialize harvester buttons
-        new JoystickButton(mDriverController, OIConstants.kHarvesterExtendDriveStickButton).whenPressed(new IntakeDownForPickup(mHarvester, mLauncher));
-        new JoystickButton(mDriverController, OIConstants.kHarvesterRetractDriveStickButton).whenPressed(new IntakeUp(mHarvester, mLauncher));
-        new JoystickButton(mDriverController, OIConstants.kHarvesterReleaseDriveStickButton).whenPressed(new IntakeExpelBall(mHarvester, mLauncher).withTimeout(3.0));
+        new JoystickButton(mDriverController, OIConstants.kHarvesterExtendDriveStickButton)
+                                .whenPressed(new IntakeDownForPickup(mHarvester, mLauncher));
+        new JoystickButton(mDriverController, OIConstants.kHarvesterRetractDriveStickButton)
+                                .whenPressed(new IntakeUp(mHarvester, mLauncher));
+        new JoystickButton(mDriverController, OIConstants.kHarvesterReleaseDriveStickButton)
+                                .whenPressed(new IntakeExpelBall(mHarvester, mLauncher).withTimeout(3.0));
 
         // new JoystickButton(mDriverController, OIConstants.kHarvesterWheelsToggleDriveStickButton).whenPressed(new InstantCommand(mHarvester::toggleHarvesterWheels));
         new JoystickButton(mDriverController, OIConstants.kHarvesterWheelsToggleDriveStickButton)
                                 .whileHeld(new InstantCommand(mHarvester::runHarvesterWheels))
                                 .whenReleased(() -> mHarvester.stopHarversterWheels());
-        new JoystickButton(mDriverController, OIConstants.kHarvesterWheelsStopDriveStickButton).whenPressed(new InstantCommand(mHarvester::stopHarversterWheels, mHarvester));
-        new JoystickButton(mDriverController, OIConstants.kHarvesterWheelsStopDriveStickButton_2).whenPressed(new InstantCommand(mHarvester::stopHarversterWheels, mHarvester));
-
-		    // new JoystickButton(mArcadeController, OIConstants.kLaunchArcadeStickButton).whenPressed(new ActivateLauncherCommandGroup(mHarvester, mLauncher, mLED));
-        // new JoystickButton(mArcadeController, OIConstants.kWindLauncherArcadeStickButton).whenPressed(new WindLauncherCommandGroup(mHarvester, mLauncher, mLED));
-        // new JoystickButton(mArcadeController, OIConstants.kHarvesterExtendArcadeStickButton).whenPressed(new IntakeDown(mHarvester, mLauncher));
-        // new JoystickButton(mArcadeController, OIConstants.kHarvesterRetractArcadeStickButton).whenPressed(new IntakeUp(mHarvester, mLauncher));
-        // new JoystickButton(mArcadeController, OIConstants.kHarvesterReleaseArcadeStickButton).whenPressed(new IntakeRelease(mHarvester).withTimeout(3.0));
-        // new JoystickButton(mArcadeController, OIConstants.kHarvesterWheelsToggleArcadeStickButton).toggleWhenPressed(new ToggleHarvesterWheels(mHarvester));
-        // new JoystickButton(mArcadeController, OIConstants.kHarvesterWheelsStopArcadeStickButton).whenPressed(new InstantCommand(mHarvester::stopHarversterWheels, mHarvester));
-
+        new JoystickButton(mDriverController, OIConstants.kHarvesterWheelsStopDriveStickButton)
+                                .whenPressed(new InstantCommand(mHarvester::stopHarversterWheels, mHarvester));
+        new JoystickButton(mDriverController, OIConstants.kHarvesterWheelsStopDriveStickButton_2)
+                                .whenPressed(new InstantCommand(mHarvester::stopHarversterWheels, mHarvester));
     }
 
     public static final double getScaledThrottle()

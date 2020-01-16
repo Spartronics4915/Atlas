@@ -42,8 +42,7 @@ public class IntakeDownForPickup extends CommandBase
         // Ball's presence determines how fast we run the wheels
         if (mLauncher.isBallPresent())
         {
-            // Ball is present: run the wheels slowly to keep the ball within the intake
-            mHarvester.setWheelSpeed(RobotMapConstants.kHarvesterIntakeWheelSpeed / 2);
+            return;     // we already have the ball...
         }
         else
         {

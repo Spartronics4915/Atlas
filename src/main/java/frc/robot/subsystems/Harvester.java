@@ -59,6 +59,16 @@ public class Harvester extends SpartronicsSubsystem
         	mTopMagneticSwitch = new DigitalInput(RobotMapConstants.kHarvesterTopMagneticSwitchId);
             mBottomMagneticSwitch = new DigitalInput(RobotMapConstants.kHarvesterBottomMagneticSwitchId);
 
+            // Read and set intake state
+            if (isHarvesterDown())
+            {
+                extendPneumatics();
+            }
+            else
+            {
+                retractPneumatics();
+            }
+
             outputToSmartDashboard();
 
             // This needs to go at the end. We *don't* set

@@ -91,11 +91,20 @@ public final class Constants {
     /**
      * Drive constants for PID controls
      */
-    public static final class DriveConstants
+    public static final class DriveStraightConstants
     {
         public static final double kP = 0; // Was 0.4
         public static final double kI = 0.2;
         public static final double kD = 0;
         public static final double kAllowedError = 0; // In degrees
+    }
+
+    public static final class DriveTurnConstants
+    {
+        public static final double kP = 0.02; // Was 0.4
+        public static final double kI = 0;
+        public static final double kD = 0;
+        public static final double kTurnToleranceDeg = 10;
+        public static final double kTurnRateToleranceDegPerS = 10;
     }
 }

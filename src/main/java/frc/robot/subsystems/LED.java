@@ -18,12 +18,14 @@ public class LED extends SpartronicsSubsystem
     private SerialPort mBling;
 
     private static LED sInstance = null;
+    private static BlingState mBlinkState;
 
     public static LED getInstance()
     {
         if (sInstance == null)
         {
             sInstance = new LED();
+            mBlinkState = BlingState.DEFAULT;
         }
         return sInstance;
     }
@@ -44,6 +46,15 @@ public class LED extends SpartronicsSubsystem
     		FAST_FLASHING,
     		RESET
     }
+
+    @Override
+    public void periodic()
+    {
+        // TODO if this works, delete the blingToString method below... 
+        SmartDashboard.putString("LED state:", mBlinkState.toString());
+    }
+
+
     /**
      * this will change the style of the bling code we wanted based on input from the driver.
      */
@@ -69,7 +80,7 @@ public class LED extends SpartronicsSubsystem
         }
         catch (Exception e)
         {
-            logException("Couldn't initialize LED", e);
+            logException("LED: Couldn't initialize SerialPort", e);
             logInitialized(false);
         }
     }
@@ -119,55 +130,78 @@ public class LED extends SpartronicsSubsystem
         		message = kReset;
         		break;
         }
+        // FIXME ensure write only happens if init is successful
         mBling.write(message, message.length);
         SmartDashboard.putRaw("mBlingTest", message);
     }
 
-
-    public void stop()
+    public String blingStateToString(BlingState blingState)
     {
-        // FIXME: Actually stop the motors
+        switch(blingState)
+        {
+            case DEFAULT:
+            case GREEN:
+            case RESET:
+                return "DEFAULT";
+            case YELLOW:
+                return "YELLOW";
+            case PURPLE:
+                return "PURPLE";
+            case BLUE:
+                return "BLUE";
+            case RED:
+                return "RED";
+            case SPARTRONICS_FADE:
+                return "SPARTRONICS_FADE";
+            case FADING:
+                return "FADING";
+            case FLASHING:
+                return "FLASHING";
+            case FAST_FLASHING:
+                return "FAST_FLASHING";
+        }
+        return null;
     }
 
-/*    private void mBlingTest()
-    {
+    // private void mBlingTest()
+    // {
 
-    	//mBlingTest = SmartDashboard key
+    // 	//mBlingTest = SmartDashboard key
 
-        getInstance().setBlingState(BlingState.BLUE);
-        Timer.delay(2.0);
+    //     getInstance().setBlingState(BlingState.BLUE);
+    //     Timer.delay(2.0);
 
-        getInstance().setBlingState(BlingState.FADING);
-        Timer.delay(5.0);
+    //     getInstance().setBlingState(BlingState.FADING);
+    //     Timer.delay(5.0);
 
-        getInstance().setBlingState(BlingState.FLASHING);
-        Timer.delay(5.0);
+    //     getInstance().setBlingState(BlingState.FLASHING);
+    //     Timer.delay(5.0);
 
-        getInstance().setBlingState(BlingState.FAST_FLASHING);
-        Timer.delay(5.0);
+    //     getInstance().setBlingState(BlingState.FAST_FLASHING);
+    //     Timer.delay(5.0);
 
-        getInstance().setBlingState(BlingState.YELLOW);
-        Timer.delay(2.0);
+    //     getInstance().setBlingState(BlingState.YELLOW);
+    //     Timer.delay(2.0);
 
-        getInstance().setBlingState(BlingState.RED);
-        Timer.delay(2.0);
+    //     getInstance().setBlingState(BlingState.RED);
+    //     Timer.delay(2.0);
 
-        getInstance().setBlingState(BlingState.PURPLE);
-        Timer.delay(2.0);
+    //     getInstance().setBlingState(BlingState.PURPLE);
+    //     Timer.delay(2.0);
 
-        getInstance().setBlingState(BlingState.GREEN);
-        Timer.delay(2.0);
+    //     getInstance().setBlingState(BlingState.GREEN);
+    //     Timer.delay(2.0);
 
-        getInstance().setBlingState(BlingState.SPARTRONICS_FADE);
-        Timer.delay(5.0);
+    //     getInstance().setBlingState(BlingState.SPARTRONICS_FADE);
+    //     Timer.delay(5.0);
 
-        getInstance().setBlingState(BlingState.FADING);
-        Timer.delay(2.0);
+    //     getInstance().setBlingState(BlingState.FADING);
+    //     Timer.delay(2.0);
 
-        getInstance().setBlingState(BlingState.FLASHING);
-        Timer.delay(2.0);
+    //     getInstance().setBlingState(BlingState.FLASHING);
+    //     Timer.delay(2.0);
 
-        getInstance().setBlingState(BlingState.FAST_FLASHING);
-        Timer.delay(2.0);
-    }*/
+    //     getInstance().setBlingState(BlingState.FAST_FLASHING);
+    //     Timer.delay(2.0);
+    // }
 }

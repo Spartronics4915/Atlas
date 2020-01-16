@@ -19,7 +19,7 @@ public class IntakeDownForLaunch extends CommandBase
     {
         mHarvester = harvester;
         mLauncher = launcher;
-        addRequirements(mHarvester);
+        addRequirements(mHarvester, mLauncher);
     }
 
     @Override

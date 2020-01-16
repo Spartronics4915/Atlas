@@ -21,7 +21,7 @@ public class ActivateLauncher extends CommandBase
     public ActivateLauncher(Harvester harvester, Launcher launcher) {
         mHarvester = harvester;
         mLauncher = launcher;
-        addRequirements(mLauncher);
+        addRequirements(mHarvester, mLauncher);
     }
 
     @Override
@@ -47,11 +47,15 @@ public class ActivateLauncher extends CommandBase
     public void execute()
     {
         // activating pneumatics is instantenous -- indicate ready to quit
+        // if any motors running, turn them off
+        mHarvester.stopHarversterWheels();
+        mLauncher.stopLauncherWindingMotor();
     }
 
     @Override
     public boolean isFinished()
     {
+        // TODO review timeout approach to ending command
         return false;
     }
 

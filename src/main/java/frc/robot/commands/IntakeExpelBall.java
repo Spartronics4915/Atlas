@@ -16,7 +16,7 @@ public class IntakeExpelBall extends CommandBase
 {
     private Harvester mHarvester;
     private Launcher mLauncher;
-    private boolean isAbort = false;
+    private boolean shouldAbort = false;
 
     public IntakeExpelBall(Harvester harvester, Launcher launcher)
     {
@@ -31,18 +31,18 @@ public class IntakeExpelBall extends CommandBase
         // do not run wheels when harverster is down
         if (mHarvester.isHarvesterDown())
         {
-            isAbort = true;
+            shouldAbort = true;
         }
         else
         {
-            isAbort = false;
+            shouldAbort = false;
         }
     }
 
     @Override
     public void execute()
     {
-        if (!isAbort && mLauncher.isBallPresent())
+        if (!shouldAbort && mLauncher.isBallPresent())
         {
             mHarvester.setWheelSpeed(RobotMapConstants.kHarvesterExpelWheelSpeed);
         }
@@ -52,7 +52,7 @@ public class IntakeExpelBall extends CommandBase
     public boolean isFinished()
     {
         // keep running wheels until ball expelled
-        if (isAbort || !mLauncher.isBallPresent())
+        if (shouldAbort || !mLauncher.isBallPresent())
         {
             return true;
         }
