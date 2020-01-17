@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.LED.BlingState;
 
 
 /**
@@ -57,6 +58,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    Logger.notice("@disabledInit: Requested BlingState.DISABLED");
+    m_robotContainer.setBlingState(BlingState.DISABLED);
   }
 
   @Override
@@ -89,6 +92,9 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
       m_autonomousCommand = null;
     }
+
+    Logger.notice("@ teleopInit: Requested BlingState.INTAKE_UP");
+    m_robotContainer.setBlingState(BlingState.INTAKE_UP);
 
     // FIXME what is the need to update from smartdashboard?
     // update subsystem defaults from the network tables as needed

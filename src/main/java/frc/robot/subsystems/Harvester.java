@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import frc.robot.subsystems.SpartronicsSubsystem;
-import frc.robot.subsystems.LED.BlingState;
 import frc.robot.Constants.RobotMapConstants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -114,21 +113,16 @@ public class Harvester extends SpartronicsSubsystem
     public void extendPneumatics()
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kForward);
-        LED.getInstance().setBlingState(BlingState.SPARTRONICS_FADE);
     }
 
     public void retractPneumatics()
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kReverse);
-        LED.getInstance().setBlingState(BlingState.BLUE);
-        LED.getInstance().setBlingState(BlingState.FLASHING);
     }
 
     public void stopPneumatics()
     {
         mHarvesterArms.set(DoubleSolenoid.Value.kOff);
-        LED.getInstance().setBlingState(BlingState.RED);
-        LED.getInstance().setBlingState(BlingState.FADING);
     }
 
     public void setWheelSpeed(final double speed)
@@ -144,7 +138,6 @@ public class Harvester extends SpartronicsSubsystem
     public void stop()
     {
         stopHarversterWheels();
-        stopPneumatics(); //TODO: is this correct??
     }
 
     // save the internal state of the collection motors

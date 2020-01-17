@@ -44,6 +44,5 @@ public class SetBlingStateCommand extends CommandBase
     @Override
     public void end(boolean isInterrupted)
     {
-        Logger.info("SetBlingStateCommand ended");
     }
 }

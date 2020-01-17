@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import frc.robot.Logger;
 import frc.robot.Constants.RobotMapConstants;
 import frc.robot.subsystems.SpartronicsSubsystem;
-import frc.robot.subsystems.LED.*;
 import frc.util.SpartIRSensor;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -139,15 +138,12 @@ public class Launcher extends SpartronicsSubsystem
     public void launcherPrepareForWinding()
     {
         mLauncherActivate.set(DoubleSolenoid.Value.kReverse);
-        LED.getInstance().setBlingState(BlingState.YELLOW);
     }
 
     // Extend launches the ball
     public void launcherLaunchBall()
     {
         mLauncherActivate.set(DoubleSolenoid.Value.kForward);
-        LED.getInstance().setBlingState(BlingState.BLUE);
-        LED.getInstance().setBlingState(BlingState.FLASHING);
     }
 
     public String getLauncherSolenoidState()
@@ -185,7 +181,6 @@ public class Launcher extends SpartronicsSubsystem
         // Default Speed needs to be commented out IF we want to read from the dashboard for testing
         // slider values and dynamic updates during the TestLauncherSpeed
         SmartDashboard.putNumber("mLauncherWindingMotorDefaultSpeed", getLauncherWindingMotorSetSpeed());
-        SmartDashboard.putNumber("mLauncherWindingMotorCurrentSpeed", mLauncherWindingMotor.get());
         SmartDashboard.putBoolean("mLauncherRewoundSwitchTriggered", mLauncherRewound.get());
         SmartDashboard.putString("mLauncherSolenoidState", getLauncherSolenoidState());
         SmartDashboard.putBoolean("mBallPresent", isBallPresent());

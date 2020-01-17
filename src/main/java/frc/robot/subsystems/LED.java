@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import frc.robot.Logger;
 import frc.robot.subsystems.SpartronicsSubsystem;
 
 import edu.wpi.first.wpilibj.SerialPort;
@@ -18,57 +19,17 @@ public class LED extends SpartronicsSubsystem
     private SerialPort mBling;
 
     private static LED sInstance = null;
-    private static BlingState mBlinkState;
+    private static BlingState mBlingState;
 
     public static LED getInstance()
     {
         if (sInstance == null)
         {
             sInstance = new LED();
-            mBlinkState = BlingState.DEFAULT;
+            mBlingState = BlingState.OFF;
         }
         return sInstance;
     }
-/**
- * This enum is giving the possible styles we can have the Arduino express.
- */
-    public enum BlingState
-    {
-    		PURPLE,
-    		DEFAULT,
-    		BLUE,
-    		YELLOW,
-    		RED,
-    		GREEN,
-    		SPARTRONICS_FADE,
-    		FADING,
-    		FLASHING,
-    		FAST_FLASHING,
-    		RESET
-    }
-
-    @Override
-    public void periodic()
-    {
-        // TODO if this works, delete the blingToString method below... 
-        SmartDashboard.putString("LED state:", mBlinkState.toString());
-    }
-
-
-    /**
-     * this will change the style of the bling code we wanted based on input from the driver.
-     */
-    private final byte[] kPurple = "a".getBytes();
-    private final byte[] kDefault = "0".getBytes();
-    private final byte[] kBlue = "1".getBytes();
-    private final byte[] kYellow = "2".getBytes();
-    private final byte[] kRed = "3".getBytes();
-    private final byte[] kGreen = "4".getBytes();
-    private final byte[] kSpartronics_Fade = "5".getBytes();
-    private final byte[] kFading = "6".getBytes();
-    private final byte[] kFlashing = "9".getBytes();
-    private final byte[] kFast_Flashing = "7".getBytes();
-    private final byte[] kReset = "8".getBytes();
 
     private LED()
     {
@@ -84,6 +45,37 @@ public class LED extends SpartronicsSubsystem
             logInitialized(false);
         }
     }
+
+    @Override
+    public void periodic()
+    {
+        SmartDashboard.putString("LED state:", mBlingState.toString());
+    }
+
+/**
+ * This enum is giving the possible styles we can have the Arduino express.
+ */
+    public enum BlingState {
+        OFF("0"),            // call constructor w/ bling code
+        DISABLED("1"),
+        INTAKE_UP("2"),
+        INTAKE_DOWN("3"),
+        LAUNCH("4")
+        ;                    // semicolon to state more to follow
+
+        private final String blingCode;
+
+        BlingState(String code)
+        {
+            this.blingCode = code;
+        }
+
+        public byte[] getBlingMessage()
+        {
+            return this.blingCode.getBytes();
+        }
+    }
+
     /**
      * This will go through what we want the bling to do and express that style of bling.
      */
@@ -93,115 +85,13 @@ public class LED extends SpartronicsSubsystem
         {
             return;
         }
-        byte[] message = kSpartronics_Fade;
-        switch(blingState)
-        {
-        case DEFAULT:
-        		message = kDefault;
-        		break;
-        case YELLOW:
-        		message = kYellow;
-        		break;
-        case PURPLE:
-        		message = kPurple;
-        		break;
-        case BLUE:
-        		message = kBlue;
-        		break;
-        case RED:
-        		message = kRed;
-        		break;
-        case GREEN:
-        		message = kGreen;
-        		break;
-        case SPARTRONICS_FADE:
-        		message = kSpartronics_Fade;
-        		break;
-        case FADING:
-        		message = kFading;
-        		break;
-        case FLASHING:
-        		message = kFlashing;
-        		break;
-        case FAST_FLASHING:
-        		message = kFast_Flashing;
-        		break;
-        case RESET:
-        		message = kReset;
-        		break;
-        }
-        // FIXME ensure write only happens if init is successful
+
+        // save current blingState for smartdashboard display
+        mBlingState = blingState;
+
+        // convert state to byte message and sent to serial port
+        byte[] message = blingState.getBlingMessage();
         mBling.write(message, message.length);
-        SmartDashboard.putRaw("mBlingTest", message);
+        Logger.notice("LED: setBlingState is set to: " + blingState.name());
     }
-
-    public String blingStateToString(BlingState blingState)
-    {
-        switch(blingState)
-        {
-            case DEFAULT:
-            case GREEN:
-            case RESET:
-                return "DEFAULT";
-            case YELLOW:
-                return "YELLOW";
-            case PURPLE:
-                return "PURPLE";
-            case BLUE:
-                return "BLUE";
-            case RED:
-                return "RED";
-            case SPARTRONICS_FADE:
-                return "SPARTRONICS_FADE";
-            case FADING:
-                return "FADING";
-            case FLASHING:
-                return "FLASHING";
-            case FAST_FLASHING:
-                return "FAST_FLASHING";
-        }
-        return null;
-    }
-
-    // private void mBlingTest()
-    // {
-
-    // 	//mBlingTest = SmartDashboard key
-
-    //     getInstance().setBlingState(BlingState.BLUE);
-    //     Timer.delay(2.0);
-
-    //     getInstance().setBlingState(BlingState.FADING);
-    //     Timer.delay(5.0);
-
-    //     getInstance().setBlingState(BlingState.FLASHING);
-    //     Timer.delay(5.0);
-
-    //     getInstance().setBlingState(BlingState.FAST_FLASHING);
-    //     Timer.delay(5.0);
-
-    //     getInstance().setBlingState(BlingState.YELLOW);
-    //     Timer.delay(2.0);
-
-    //     getInstance().setBlingState(BlingState.RED);
-    //     Timer.delay(2.0);
-
-    //     getInstance().setBlingState(BlingState.PURPLE);
-    //     Timer.delay(2.0);
-
-    //     getInstance().setBlingState(BlingState.GREEN);
-    //     Timer.delay(2.0);
-
-    //     getInstance().setBlingState(BlingState.SPARTRONICS_FADE);
-    //     Timer.delay(5.0);
-
-    //     getInstance().setBlingState(BlingState.FADING);
-    //     Timer.delay(2.0);
-
-    //     getInstance().setBlingState(BlingState.FLASHING);
-    //     Timer.delay(2.0);
-
-    //     getInstance().setBlingState(BlingState.FAST_FLASHING);
-    //     Timer.delay(2.0);
-    // }
 }

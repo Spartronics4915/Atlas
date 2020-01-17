@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
 import frc.robot.commands.*;
@@ -75,7 +76,7 @@ public class RobotContainer {
 
 
     // add LED test to the smartdashboard
-    SmartDashboard.putData("Test Blue LED", (Sendable) new SetBlingStateCommand(mLED, BlingState.BLUE));
+    SmartDashboard.putData("Test LED CMD IntakeUp", (Sendable) new SetBlingStateCommand(mLED, BlingState.INTAKE_UP));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -138,7 +139,7 @@ public class RobotContainer {
 
         // initialize launcher buttons
         new JoystickButton(mDriverController, OIConstants.kLaunchDriveStickButton)
-                                .whenPressed(new ActivateLauncherCommandGroup(mHarvester, mLauncher, mLED));
+                                .whenPressed(new ActivateLauncherCommandGroup(mHarvester, mLauncher));
         new JoystickButton(mDriverController, OIConstants.kWindLauncherDriveStickButton)
                                 .whenPressed(new WindLauncher(mHarvester, mLauncher));
 
@@ -148,9 +149,11 @@ public class RobotContainer {
 
         // initialize harvester buttons
         new JoystickButton(mDriverController, OIConstants.kHarvesterExtendDriveStickButton)
-                                .whenPressed(new IntakeDownForPickup(mHarvester, mLauncher));
+                                .whenPressed(new IntakeDownForPickup(mHarvester, mLauncher)
+                                .alongWith(new SetBlingStateCommand(mLED, BlingState.INTAKE_DOWN)));
         new JoystickButton(mDriverController, OIConstants.kHarvesterRetractDriveStickButton)
-                                .whenPressed(new IntakeUp(mHarvester, mLauncher));
+                                .whenPressed(new IntakeUp(mHarvester, mLauncher)
+                                .alongWith(new SetBlingStateCommand(mLED, BlingState.INTAKE_UP)));
         new JoystickButton(mDriverController, OIConstants.kHarvesterReleaseDriveStickButton)
                                 .whenPressed(new IntakeExpelBall(mHarvester, mLauncher).withTimeout(3.0));
 
@@ -183,6 +186,16 @@ public class RobotContainer {
     // Atlas does not support autonomous
     return null;
   }
+
+  public void setBlingState(BlingState blingState)
+  {
+    mLED.setBlingState(blingState);
+  }
+
+  // public void scheduleBlingCommand(BlingState blingState)
+  // {
+  //   new ScheduleCommand(new SetBlingStateCommand(mLED, blingState));
+  // }
 
   public void outputAllToSmartDashboard()
   {

@@ -2,8 +2,9 @@ package frc.robot.commands;
 
 import frc.robot.Logger;
 import frc.robot.subsystems.Launcher;
+import frc.robot.subsystems.LED.BlingState;
 import frc.robot.subsystems.Harvester;
-
+import frc.robot.subsystems.LED;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -41,6 +42,7 @@ public class ActivateLauncher extends CommandBase
 
         // extand/release the launcher pneumatics
         mLauncher.launcherLaunchBall();
+        LED.getInstance().setBlingState(BlingState.LAUNCH);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class ActivateLauncher extends CommandBase
     @Override
     public boolean isFinished()
     {
-        // TODO review timeout approach to ending command
+        // wait for timeout to finish, i.e. don't end!
         return false;
     }
 
