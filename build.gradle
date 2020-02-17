@@ -56,6 +56,8 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
+    implementation("com.fazecast:jSerialComm:2.4.1")
+
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
     simulation wpi.deps.sim.gui(wpi.platforms.desktop, false)
